@@ -1,7 +1,8 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
 import {
   fetchSmallTopicByParentId,
   fetchSmallTopicOnProgress,
+  setLargeCurrentTopic,
 } from '../actions/topic';
 import {
   setCurrentLesson,
@@ -17,6 +18,8 @@ import {
   fetchReferenceByParentId,
   fetchReferenceOnProgress,
 } from '../actions/reference';
+import { setCurrentCourse } from '../actions/course';
+import { getCourseByCourseId } from './course';
 import { getTopicByTopicId, getTopicByParentId } from './topic';
 import { OPERATION_FETCH_DATA_IN_LESSON_PAGE } from '../actions/types';
 
@@ -41,6 +44,17 @@ export function* fetchDataInLessonPage(action: any) {
 
     // fetch topic-part in the right hand side
     yield put(fetchSmallTopicByParentId(response.parentId));
+
+    // fetch course to put in breadcrumb
+    const course = yield call(getCourseByCourseId, response.courseId);
+    yield put(setCurrentCourse(course));
+
+    // fetch current small topic in breadcrumb
+    const smallTopicId = yield select(
+      (state) => state.lessonState.current.parentId
+    );
+    const currentLargeTopic = yield call(getTopicByTopicId, smallTopicId);
+    yield put(setLargeCurrentTopic(currentLargeTopic));
   } catch (err) {
     console.log(err);
   }

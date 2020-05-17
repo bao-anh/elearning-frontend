@@ -1,0 +1,46 @@
+.custom-block-panel {
+  margin-bottom: 10px;
+}
+
+.custom-block-header-panel {
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 2px solid var(--root-color);
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.block {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.custom-block-content-panel {
+  position: relative;
+  padding: 10px;
+}
+
+.topic-item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.topic-item-icon {
+  padding: 10px;
+  color: var(--root-color);
+}
+
+.link {
+  color: var(--root-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

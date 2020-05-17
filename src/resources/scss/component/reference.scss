@@ -1,0 +1,39 @@
+.main-block-panel {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.main-block-header-panel {
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 2px solid var(--root-color);
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.reference-item {
+  display: flex;
+}
+
+.reference-item-icon {
+  color: var(--root-color);
+  margin-right: 5px;
+}
+
+.reference-item-content {
+  flex-grow: 1;
+}
+
+.link {
+  color: var(--root-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

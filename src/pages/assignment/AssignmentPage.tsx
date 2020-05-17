@@ -17,7 +17,8 @@ const AssignmentPage: FunctionComponent<{
     const pathname = match.params.pathname;
     if (match.params.pathname) {
       const topicId = getIdByPathName(pathname);
-      fetchSmallTopicByTopicId(topicId);
+      console.log(topicId);
+      // fetchSmallTopicByTopicId(topicId);
     }
     //eslint-disable-next-line
   }, []);

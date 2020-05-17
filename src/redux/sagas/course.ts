@@ -10,7 +10,7 @@ import {
   COURSE_FETCH_BY_COURSE_ID,
 } from '../actions/types';
 
-const getCourseByCategoryId = (categoryId: number) => {
+export const getCourseByCategoryId = (categoryId: number) => {
   return callElearningApi({
     url: `get-course-by-category?categoryId=${categoryId}&offset=0&limit=-1`,
     params: null,
@@ -18,7 +18,7 @@ const getCourseByCategoryId = (categoryId: number) => {
   });
 };
 
-const getCourseByCourseId = (courseId: number) => {
+export const getCourseByCourseId = (courseId: number) => {
   return callElearningApi({
     url: `get-course-by-id?courseId=${courseId}`,
     params: null,
