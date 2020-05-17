@@ -1,0 +1,28 @@
+.main-block-panel {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.main-block-header-panel {
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 2px solid var(--root-color);
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.block {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.main-block-content-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  position: relative;
+}

@@ -1,24 +1,18 @@
 import React, { FunctionComponent, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { convertSecondToMinute } from '../../utils';
-import { Dialog, IconButton, Slide, Tooltip } from '@material-ui/core';
-import {
-  Cancel as CancelIcon,
-  Description as DescriptionIcon,
-  GetApp as GetAppIcon,
-  Assignment as AssignmentIcon,
-} from '@material-ui/icons';
-import { TransitionProps } from '@material-ui/core/transitions';
 import AssignmentDialog from '../../components/AssignmentDialog';
-
+import Reference from '../../components/Reference';
+import Comment from '../../components/Comment';
 import '../../resources/scss/videoDialog.scss';
 import '../../resources/scss/lesson.scss';
 
-const referenceArray = [
-  { id: 1, name: '700 từ vựng Part 1' },
-  { id: 2, name: 'Photo of people (Part 1)' },
-  { id: 3, name: 'Audio Photos of people (Part 1)' },
-];
+import { Dialog, IconButton, Slide, Tooltip } from '@material-ui/core';
+import {
+  Cancel as CancelIcon,
+  Assignment as AssignmentIcon,
+} from '@material-ui/icons';
+import { TransitionProps } from '@material-ui/core/transitions';
 
 const Transition: any = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -32,7 +26,14 @@ const VideoDialog: FunctionComponent<{
   setOpenVideo: Function;
   assignmentState: any;
   lessonState: any;
-}> = ({ isOpenVideo, setOpenVideo, assignmentState, lessonState }) => {
+  referenceState: any;
+}> = ({
+  isOpenVideo,
+  setOpenVideo,
+  assignmentState,
+  lessonState,
+  referenceState,
+}) => {
   const [assignmentArray, setAssignmentArray] = useState([...assignmentState]);
 
   const handleOpenAssignment = (id: any) => {
@@ -115,23 +116,10 @@ const VideoDialog: FunctionComponent<{
               </div>
             ))}
           </div>
-          <div className='video-dialog-left-reference-panel'>
-            <div className='video-dialog-header'>Tài liệu tham khảo</div>
-            {referenceArray.map((reference) => (
-              <div className='reference-item' key={reference.id}>
-                <DescriptionIcon className='reference-item-icon' />
-                <div className='reference-item-content'>
-                  <a href='https://www.google.com/' className='link'>
-                    {reference.name}
-                  </a>
-                </div>
-                <GetAppIcon className='reference-item-icon' />
-              </div>
-            ))}
-          </div>
+          <Reference referenceState={referenceState} />
         </div>
         <div className='video-dialog-right-panel'>
-          Nothing to show right now
+          <Comment />
         </div>
       </div>
     </Dialog>

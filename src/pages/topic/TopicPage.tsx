@@ -26,7 +26,7 @@ const TopicPage: FunctionComponent<{
     <MainWidget className={'about-page'}>
       <Header />
       <FixedContainer>
-        <h1>That is lesson page</h1>
+        <h1>That is topic page</h1>
       </FixedContainer>
       <Footer />
     </MainWidget>

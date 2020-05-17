@@ -1,0 +1,27 @@
+.breadcrumb-container {
+  padding-top: 10px;
+  padding-left: 60px;
+  padding-right: 60px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.breadcrumb-link {
+  text-decoration: none;
+  color: black;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+  color: var(--root-color);
+}
+
+.breadcrumb-current-link {
+  text-decoration: none;
+  color: var(--root-color);
+}
+
+.breadcrumb-current-link:hover {
+  text-decoration: underline;
+  color: var(--root-color);
+}

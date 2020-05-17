@@ -3,6 +3,7 @@ import {
   COURSE_FETCH_BY_CATEGORY_ID,
   COURSE_FETCH_BY_COURSE_ID,
   COURSE_SET_DATA,
+  COURSE_SET_CURRENT_DATA,
   COURSE_FETCH_SUCCESS,
   COURSE_FETCH_ON_PROGRESS,
 } from '../actions/types';
@@ -12,6 +13,7 @@ export interface CourseAction {
   categoryId?: number;
   courseId?: number;
   course?: Array<Course>;
+  currentCourse?: Course;
 }
 
 export function fetchCourseByCategoryId(categoryId: number): CourseAction {
@@ -32,6 +34,13 @@ export function setCourse(course: any): CourseAction {
   return {
     type: COURSE_SET_DATA,
     course,
+  };
+}
+
+export function setCurrentCourse(currentCourse: any): CourseAction {
+  return {
+    type: COURSE_SET_CURRENT_DATA,
+    currentCourse,
   };
 }
 

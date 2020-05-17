@@ -10,7 +10,7 @@ Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
   thì lưu toàn bộ topic nhỏ vào data và lưu topic mình đang truy cập vào current.
 - Nếu mọi người làm, thì pull code mới nhất từ master về, không hiểu đoạn nào thì hỏi mình, sau đó khi push code mới lên thì ping mình vào review, cấm không được push thẳng lên master.
 
-**Bảo Anh**
+**Mai Gia Bảo Anh**
 
 ### Version 1.0
 
@@ -68,3 +68,12 @@ Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
 - Reorganize all state
 - Added fetch_on_progress and fetch_on_success in saga of its own action
 - Todo: make breadcrumbs and current topic, current lesson
+
+### Version 2.1
+
+17/5/2020
+
+- Move component out of its parent to reuse
+- Added breadcrumb
+- Added highlight current topic and current lesson.
+- Todo: add category page, course page, topic page.
