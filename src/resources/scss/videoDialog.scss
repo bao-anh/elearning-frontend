@@ -1,0 +1,68 @@
+.video-dialog-container {
+  width: calc(100% - 100px);
+  height: calc(100% - 100px);
+  margin: 0;
+  z-index: 1;
+}
+
+.MuiDialog-paperWidthSm {
+  max-width: 1200px;
+}
+
+.video-dialog-header {
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 2px solid var(--root-color);
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.video-dialog-header-title {
+  flex-grow: 1;
+}
+
+.video-dialog-close-icon {
+  color: var(--root-color);
+  margin: 0px;
+  padding: 0px !important;
+}
+
+.video-dialog-content-panel {
+  padding: 10px;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+}
+
+.video-dialog-left-panel {
+  overflow-y: auto;
+  flex: 15;
+  margin-right: 10px;
+}
+.video-dialog-right-panel {
+  flex: 10;
+  overflow-y: auto;
+}
+
+.react-player {
+  margin-bottom: 10px;
+}
+
+.video-dialog-left-assignment-panel {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.video-dialog-left-assignment-item-panel {
+  margin-right: 30px;
+}
+
+.video-dialog-left-assignment-icon-panel {
+  border: 1px solid var(--root-color);
+  color: var(--root-color);
+  padding: 8px;
+}

@@ -1,0 +1,36 @@
+@import './mixin.scss';
+
+.home-page {
+    .list-great-apps {
+        .app-info-item {
+            cursor: pointer;
+            > a {
+                padding: 0;
+                height: 100%;
+                .MuiButton-label {
+                    @include makeBox(null);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                    height: 100%;
+                    width: 100%;
+                    box-sizing: border-box;
+                    padding: 15px;
+    
+                    img {
+                        border-radius: 20px;
+                    }
+                }
+            }
+            .title {
+                text-align: center;
+                margin-bottom: 15px;
+                margin-top: 7px;
+            }
+            .rating {
+                margin-top: auto;
+            }
+        }
+    }
+}

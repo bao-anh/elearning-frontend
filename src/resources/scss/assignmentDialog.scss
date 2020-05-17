@@ -1,0 +1,87 @@
+.assignment-dialog-container {
+  width: calc(100% - 100px);
+  height: calc(100% - 100px);
+  margin: 0;
+  z-index: 2;
+}
+
+.MuiDialog-paperWidthSm {
+  max-width: 1200px;
+}
+
+.assigment-dialog-header {
+  font-weight: bold;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 2px solid var(--root-color);
+  position: relative;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.assigment-dialog-header-title {
+  flex-grow: 1;
+}
+
+.assigment-dialog-close-icon {
+  color: var(--root-color);
+  margin: 0px;
+  padding: 0px !important;
+}
+
+.assigment-dialog-content-panel {
+  padding: 10px;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+}
+
+.assignment-dialog-content-left-panel {
+  flex: 10;
+  padding: 10px;
+  display: flex;
+}
+
+.content-left-panel {
+  display: flex;
+  height: 20%;
+  align-items: center;
+}
+
+.clock-panel {
+  width: 30%;
+  display: flex;
+  padding: 10px;
+  margin-right: 10px;
+  align-items: center;
+  border: 1px solid var(--root-color);
+  border-radius: 5px;
+}
+
+.remain-time {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.remain-time-detail {
+  color: var(--root-color);
+  margin: 0;
+}
+.duration-of-assignment {
+  padding: 5px;
+  background-color: #ffeaea;
+  margin-bottom: 2px;
+  border-radius: 5px;
+}
+
+.number-of-question {
+  padding: 5px;
+  background-color: #e3deff;
+  border-radius: 5px;
+}
+
+.assignment-dialog-content-right-panel {
+  flex: 15;
+}
