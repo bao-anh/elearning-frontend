@@ -13,70 +13,101 @@ import {
 
 const TopicSideBar: FunctionComponent<{
   topicState: any;
-  lessonState: any;
+  lessonState?: any;
   path: any;
 }> = ({ topicState, lessonState, path }) => {
-  const renderContent = (topic: any) => {
+  const renderTopicContent = (topic: any) => {
+    return (
+      <div
+        key={topic.id}
+        className='topic-item'
+        style={
+          topicState.currentLargeTopic &&
+          topicState.currentLargeTopic.id === topic.id
+            ? { backgroundColor: '#eeeeee' }
+            : {}
+        }
+      >
+        {topic.type === 1 ? (
+          <React.Fragment>
+            <MenuBookIcon className='topic-item-icon' />
+            <Link
+              to={`/topic/${topic.friendlyUrl}-${topic.id}`}
+              className='link'
+            >
+              {topic.name}
+            </Link>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <AlarmIcon className='topic-item-icon' />
+            <Link
+              to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
+              className='link'
+            >
+              {topic.name}
+            </Link>
+          </React.Fragment>
+        )}
+      </div>
+    );
+  };
+
+  const renderLessonContent = (topic: any) => {
+    return (
+      <div
+        key={topic.id}
+        className='topic-item'
+        style={
+          lessonState.current && lessonState.current.id === topic.id
+            ? { backgroundColor: '#eeeeee' }
+            : {}
+        }
+      >
+        {topic.type === 1 ? (
+          <React.Fragment>
+            <MenuBookIcon className='topic-item-icon' />
+            <Link
+              to={`/lesson/${topic.friendlyUrl}-${topic.id}`}
+              className='link'
+            >
+              {topic.name}
+            </Link>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <AlarmIcon className='topic-item-icon' />
+            <Link
+              to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
+              className='link'
+            >
+              {topic.name}
+            </Link>
+          </React.Fragment>
+        )}
+      </div>
+    );
+  };
+
+  const renderLoading = () => {
     if (path === Routes.LESSON_SCREEN) {
-      return (
-        <div
-          key={topic.id}
-          className='topic-item'
-          style={
-            lessonState.current.id === topic.id
-              ? { backgroundColor: '#eeeeee' }
-              : {}
-          }
-        >
-          {topic.type === 1 ? (
-            <React.Fragment>
-              <MenuBookIcon className='topic-item-icon' />
-              <Link
-                to={`/lesson/${topic.friendlyUrl}-${topic.id}`}
-                className='link'
-              >
-                {topic.name}
-              </Link>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <AlarmIcon className='topic-item-icon' />
-              <Link
-                to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
-                className='link'
-              >
-                {topic.name}
-              </Link>
-            </React.Fragment>
-          )}
-        </div>
+      return topicState.isLoadingSmallTopic ? (
+        <Loading />
+      ) : (
+        sortArrayByPropertyValue(
+          topicState.smallTopic,
+          'orderIndex'
+        ).map((topic: any) => renderLessonContent(topic))
       );
     }
     if (path === Routes.TOPIC_SCREEN) {
-      return (
-        <div key={topic.id} className='topic-item'>
-          {topic.type === 1 ? (
-            <React.Fragment>
-              <MenuBookIcon className='topic-item-icon' />
-              <Link
-                to={`/topic/${topic.friendlyUrl}-${topic.id}`}
-                className='link'
-              >
-                {topic.name}
-              </Link>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <AlarmIcon className='topic-item-icon' />
-              <Link
-                to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
-                className='link'
-              >
-                {topic.name}
-              </Link>
-            </React.Fragment>
-          )}
-        </div>
+      return topicState.isLoadingLargeTopic ? (
+        <Loading />
+      ) : (
+        sortArrayByPropertyValue(
+          topicState.largeTopic,
+          'orderIndex'
+        ).map((topic: any) => renderTopicContent(topic))
       );
     }
   };
@@ -84,16 +115,7 @@ const TopicSideBar: FunctionComponent<{
   return (
     <Paper elevation={1} className='custom-block-panel topic-tree-panel'>
       <div className='custom-block-header-panel'>Bài tập</div>
-      <div className='block custom-block-content-panel'>
-        {topicState.isLoadingSmallTopic ? (
-          <Loading />
-        ) : (
-          sortArrayByPropertyValue(
-            topicState.smallTopic,
-            'orderIndex'
-          ).map((topic: any) => renderContent(topic))
-        )}
-      </div>
+      <div className='block custom-block-content-panel'>{renderLoading()}</div>
     </Paper>
   );
 };

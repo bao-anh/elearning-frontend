@@ -1,0 +1,38 @@
+.main-banner {
+  position: relative;
+}
+
+.main-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: url(https://storage.googleapis.com/comaiphuong-edu-media/images/456987518-1544690156211-artboard12.jpg)
+    no-repeat;
+  background-size: 100%;
+  background-position: center;
+  filter: brightness(0.6);
+  opacity: 0.8;
+}
+
+.banner-content-detail {
+  height: 250px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-content-text {
+  font-size: 40px;
+  font-family: 'Roboto Slab', serif;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: white;
+  padding: 60px;
+}

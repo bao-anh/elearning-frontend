@@ -15,7 +15,7 @@ const fetchAllCategory = () => {
   });
 };
 
-export function* fetch() {
+export function* fetchCategory() {
   try {
     yield put(fetchCategoryOnProgress());
     const response = yield call(fetchAllCategory);
@@ -27,7 +27,7 @@ export function* fetch() {
 }
 
 export function* watchFetch() {
-  yield takeLatest(CATEGORY_FETCH_ALL, fetch);
+  yield takeLatest(CATEGORY_FETCH_ALL, fetchCategory);
 }
 
 export default function* category() {

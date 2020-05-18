@@ -1,33 +1,59 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import * as courseAction from '../../redux/actions/course';
+import * as operationAction from '../../redux/actions/operation';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
-import { MainWidget, FixedContainer } from '../../components/Widgets';
+import { MainWidget } from '../../components/Widgets';
+import { getIdByPathName } from '../../utils';
+import Banner from '../../components/Banner';
+import BreadCrumb from '../../components/BreadCrumb';
+import TopicContent from '../../components/TopicContent';
+import UserInfoSideBar from '../../components/UserInfoSideBar';
+import UtilitySideBar from '../../components/UtilitySideBar';
+import Comment from '../../components/Comment';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
-import { getIdByPathName } from '../../utils';
+
+import { Grid } from '@material-ui/core';
 
 const CoursePage: FunctionComponent<{
-  fetchCourseByCourseId: Function;
+  fetchDataInCoursePage: Function;
   match: any;
-}> = ({ fetchCourseByCourseId, match }) => {
+  courseState: any;
+  topicState: any;
+  lessonState: any;
+}> = ({
+  fetchDataInCoursePage,
+  match,
+  courseState,
+  topicState,
+  lessonState,
+}) => {
   useEffect(() => {
     const pathname = match.params.pathname;
     if (match.params.pathname) {
       const courseId = getIdByPathName(pathname);
-      fetchCourseByCourseId(courseId);
+      fetchDataInCoursePage(courseId);
     }
     //eslint-disable-next-line
   }, []);
 
   return (
-    <MainWidget className={'about-page'}>
+    <MainWidget className={'home-page'}>
       <Header />
-      <FixedContainer>
-        <h1>That is course page</h1>
-      </FixedContainer>
+      <Banner />
+      <BreadCrumb path={match.path} courseState={courseState} />
+      <Grid container className='container'>
+        <Grid xs={9}>
+          <TopicContent path={match.path} topicState={topicState} />
+          <Comment />
+        </Grid>
+        <Grid xs={3}>
+          <UserInfoSideBar topicState={topicState} lessonState={lessonState} />
+          <UtilitySideBar />
+        </Grid>
+      </Grid>
       <Footer />
     </MainWidget>
   );
@@ -35,13 +61,15 @@ const CoursePage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    courseState: state.courseState,
     topicState: state.topicState,
+    lessonState: state.lessonState,
     ...ownProps,
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchCourseByCourseId: (courseId: number) =>
-    dispatch(courseAction.fetchCourseByCourseId(courseId)),
+  fetchDataInCoursePage: (courseId: number) =>
+    dispatch(operationAction.fetchDataInCoursePage(courseId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);
