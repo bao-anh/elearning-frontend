@@ -2,6 +2,7 @@ import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { callElearningApi } from '../../services';
 import {
   setCourse,
+  setCurrentCourse,
   fetchCourseSuccess,
   fetchCourseOnProgress,
 } from '../actions/course';
@@ -41,7 +42,7 @@ export function* fetchCourseByCourseId(action: any) {
   try {
     yield put(fetchCourseOnProgress());
     const response = yield call(getCourseByCourseId, action.courseId);
-    yield put(setCourse(response));
+    yield put(setCurrentCourse(response));
     yield put(fetchCourseSuccess());
   } catch (err) {
     console.log(err);

@@ -11,7 +11,7 @@ export interface CategoryAction {
   category?: Array<Category>;
 }
 
-export function fetchCategory(): CategoryAction {
+export function fetchAllCategory(): CategoryAction {
   return {
     type: CATEGORY_FETCH_ALL,
   };

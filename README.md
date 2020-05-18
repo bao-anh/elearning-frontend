@@ -77,3 +77,11 @@ Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
 - Added breadcrumb
 - Added highlight current topic and current lesson.
 - Todo: add category page, course page, topic page.
+
+### Version 2.2
+
+18/5/2020
+
+- Added category page, course page, topic page.
+- Fix breadcrumb link, hightlight current topic, current lesson.
+- Added banner component.

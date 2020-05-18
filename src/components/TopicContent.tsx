@@ -13,8 +13,8 @@ import {
 } from '@material-ui/icons';
 
 const TopicContent: FunctionComponent<{
-  assignmentState: any;
-  topicState: any;
+  assignmentState?: any;
+  topicState?: any;
   path: any;
 }> = ({ assignmentState, topicState, path }) => {
   const renderContent = () => {
@@ -49,107 +49,126 @@ const TopicContent: FunctionComponent<{
       );
     }
     if (path === Routes.TOPIC_SCREEN) {
-      return sortArrayByPropertyValue(
-        topicState.smallTopic.data,
-        'orderIndex'
-      ).map((topic: any) => (
-        <div className='topic-item-panel' key={topic.id}>
-          <div className='topic-item-left-panel'>
-            <div className='topic-item-number'>
-              <span>{topic.orderIndex + 1}</span>
-            </div>
-          </div>
-          <div className='topic-item-row-info-panel'>
-            <div className='topic-item-content'>
-              {topic.type === 1 ? (
-                <AirplayIcon style={{ padding: '10px' }} />
-              ) : (
-                <AlarmIcon style={{ padding: '10px' }} />
-              )}
-              <div className='name-panel topic-detail-item-content'>
-                <Link
-                  to={`/lesson/${topic.friendlyUrl}-${topic.id}`}
-                  className='name-panel link-panel'
-                >
-                  {topic.name}
-                </Link>
-                {topic.type === 1 ? (
-                  <div className='topic-detail-number-question'>
-                    {`${topic.totalVideo} Bài giảng / ${topic.documentIds.length} Tài liệu / ${topic.totalExercise} Bài tập`}
-                  </div>
-                ) : (
-                  <div className='topic-detail-number-question'>
-                    {`${topic.childrentIds.length} Câu hỏi`}
-                  </div>
-                )}
+      return sortArrayByPropertyValue(topicState.smallTopic, 'orderIndex').map(
+        (topic: any) => (
+          <div className='topic-item-panel' key={topic.id}>
+            <div className='topic-item-left-panel'>
+              <div className='topic-item-number'>
+                <span>{topic.orderIndex + 1}</span>
               </div>
-              <div className='topic-item-progress'>-</div>
+            </div>
+            <div className='topic-item-row-info-panel'>
+              <div className='topic-item-content'>
+                {topic.type === 1 ? (
+                  <AirplayIcon style={{ padding: '10px' }} />
+                ) : (
+                  <AlarmIcon style={{ padding: '10px' }} />
+                )}
+                <div className='name-panel topic-detail-item-content'>
+                  <Link
+                    to={`/lesson/${topic.friendlyUrl}-${topic.id}`}
+                    className='name-panel link-panel'
+                  >
+                    {topic.name}
+                  </Link>
+                  {topic.type === 1 ? (
+                    <div className='topic-detail-number-question'>
+                      {`${topic.totalVideo} Bài giảng / ${topic.documentIds.length} Tài liệu / ${topic.totalExercise} Bài tập`}
+                    </div>
+                  ) : (
+                    <div className='topic-detail-number-question'>
+                      {`${topic.childrentIds.length} Câu hỏi`}
+                    </div>
+                  )}
+                </div>
+                <div className='topic-item-progress'>-</div>
+              </div>
             </div>
           </div>
-        </div>
-      ));
+        )
+      );
     }
     if (path === Routes.COURSE_SCREEN) {
-      return sortArrayByPropertyValue(
-        topicState.largeTopic.data,
-        'orderIndex'
-      ).map((topic: any) => (
-        <div className='topic-item-panel' key={topic.id}>
-          <div className='topic-item-left-panel'>
-            <div className='topic-item-number'>
-              <span>{topic.orderIndex + 1}</span>
+      return sortArrayByPropertyValue(topicState.largeTopic, 'orderIndex').map(
+        (topic: any) => (
+          <div className='topic-item-panel' key={topic.id}>
+            <div className='topic-item-left-panel'>
+              <div className='topic-item-number'>
+                <span>{topic.orderIndex + 1}</span>
+              </div>
+            </div>
+            <div className='topic-item-row-info-panel'>
+              <div className='topic-item-content'>
+                {topic.type === 1 ? (
+                  <AirplayIcon style={{ padding: '10px' }} />
+                ) : (
+                  <AlarmIcon style={{ padding: '10px' }} />
+                )}
+                <div className='name-panel topic-detail-item-content'>
+                  <Link
+                    to={`/topic/${topic.friendlyUrl}-${topic.id}`}
+                    className='name-panel link-panel'
+                  >
+                    {topic.name}
+                  </Link>
+                  {topic.type === 1 ? (
+                    <div className='topic-detail-number-question'>
+                      {`${topic.childrentIds.length} Bài`}
+                    </div>
+                  ) : (
+                    <div className='topic-detail-number-question'>
+                      {`${topic.childrentIds.length} Câu hỏi`}
+                    </div>
+                  )}
+                </div>
+                <div className='topic-item-progress'>-</div>
+              </div>
             </div>
           </div>
-          <div className='topic-item-row-info-panel'>
-            <div className='topic-item-content'>
-              {topic.type === 1 ? (
-                <AirplayIcon style={{ padding: '10px' }} />
-              ) : (
-                <AlarmIcon style={{ padding: '10px' }} />
-              )}
-              <div className='name-panel topic-detail-item-content'>
-                <Link
-                  to={`/topic/${topic.friendlyUrl}-${topic.id}`}
-                  className='name-panel link-panel'
-                >
-                  {topic.name}
-                </Link>
-                {topic.type === 1 ? (
-                  <div className='topic-detail-number-question'>
-                    {`${topic.childrentIds.length} Bài`}
-                  </div>
-                ) : (
-                  <div className='topic-detail-number-question'>
-                    {`${topic.childrentIds.length} Câu hỏi`}
-                  </div>
-                )}
-              </div>
-              <div className='topic-item-progress'>-</div>
-            </div>
+        )
+      );
+    }
+  };
+
+  const renderLoading = () => {
+    if (path === Routes.LESSON_SCREEN) {
+      return assignmentState.isLoading ? <Loading /> : renderHeader();
+    }
+    if (path === Routes.TOPIC_SCREEN) {
+      return topicState.isLoadingSmallTopic ? <Loading /> : renderHeader();
+    }
+    if (path === Routes.COURSE_SCREEN) {
+      return topicState.isLoadingLargeTopic ? <Loading /> : renderHeader();
+    }
+  };
+
+  const renderHeader = () => {
+    return (
+      <React.Fragment>
+        <div className='topic-item-header-panel'>
+          <div className='top-item-header-left-panel'></div>
+          <div className='topic-item-content'>
+            <div className='name-panel'>Tên bài học</div>
+            <div className='topic-item-progress'>Tiến độ học</div>
           </div>
         </div>
-      ));
-    }
+        {renderContent()}
+      </React.Fragment>
+    );
   };
 
   return (
     <Paper elevation={1} className='main-block-panel content-block-panel'>
       <div className='main-block-header-panel'>Nội dung bài học</div>
-      <div className='block main-block-content-panel'>
-        {assignmentState.isLoading ? (
-          <Loading />
-        ) : (
-          <React.Fragment>
-            <div className='topic-item-header-panel'>
-              <div className='top-item-header-left-panel'></div>
-              <div className='topic-item-content'>
-                <div className='name-panel'>Tên bài học</div>
-                <div className='topic-item-progress'>Tiến độ học</div>
-              </div>
-            </div>
-            {renderContent()}
-          </React.Fragment>
-        )}
+      <div
+        className='block main-block-content-panel'
+        style={
+          path === Routes.COURSE_SCREEN || path === Routes.TOPIC_SCREEN
+            ? { maxHeight: '2000px' }
+            : {}
+        }
+      >
+        {renderLoading()}
       </div>
     </Paper>
   );

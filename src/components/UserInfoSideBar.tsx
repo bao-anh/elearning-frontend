@@ -14,7 +14,10 @@ const UserInfoSideBar: FunctionComponent<{
     const currentLesson = lessonState.current;
     if (currentLesson && currentLesson.type === 1) {
       return (
-        <Link to={`/lesson/${currentLesson.friendlyUrl}`} className='link'>
+        <Link
+          to={`/lesson/${currentLesson.friendlyUrl}-${currentLesson.id}`}
+          className='link'
+        >
           {currentLesson.name}
         </Link>
       );
