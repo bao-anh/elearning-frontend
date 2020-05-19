@@ -19,7 +19,7 @@ const initState = {
   error: '',
 };
 
-const authState: Reducer<ReferenceState> = (
+const referenceState: Reducer<ReferenceState> = (
   state: ReferenceState = initState,
   action: ReferenceAction | any
 ): ReferenceState => {
@@ -47,4 +47,4 @@ const authState: Reducer<ReferenceState> = (
   }
 };
 
-export default authState;
+export default referenceState;

@@ -6,6 +6,8 @@ class Config {
   static SECRET_KEY = 'koolsoft-web';
   static BASE_URL = `https://webappapi-dot-micro-enigma-235001.appspot.com`;
   static ELEARNING_URL = 'https://api-dot-ielts-fighters.appspot.com/api';
+  static HEROKU_URL = 'https://elearning-server.herokuapp.com/api/';
+  static LOCALHOST_URL = 'http://localhost:5000/api/';
   static NULL_STRING = '';
 
   static API_GET_CARDS_BY_IDS = '/get-card-by-ids';

@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
 import { getIdByPathName } from '../../utils';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { MainWidget } from '../../components/Widgets';
 import VideoDialog from './VideoDialog';
 import Loading from '../../components/Loading';
 import Reference from '../../components/Reference';
@@ -48,8 +45,7 @@ const LessonPage: FunctionComponent<{
   }, [match]);
 
   return (
-    <MainWidget className={'home-page'}>
-      <Header />
+    <React.Fragment>
       <BreadCrumb
         path={match.path}
         courseState={courseState}
@@ -102,8 +98,7 @@ const LessonPage: FunctionComponent<{
           <UtilitySideBar />
         </Grid>
       </Grid>
-      <Footer />
-    </MainWidget>
+    </React.Fragment>
   );
 };
 

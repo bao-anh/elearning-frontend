@@ -2,9 +2,6 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { MainWidget } from '../../components/Widgets';
 import { getIdByPathName } from '../../utils';
 import BreadCrumb from '../../components/BreadCrumb';
 import TopicContent from '../../components/TopicContent';
@@ -40,8 +37,7 @@ const TopicPage: FunctionComponent<{
   }, [match]);
 
   return (
-    <MainWidget className={'home-page'}>
-      <Header />
+    <React.Fragment>
       <BreadCrumb
         path={match.path}
         courseState={courseState}
@@ -58,8 +54,7 @@ const TopicPage: FunctionComponent<{
           <UtilitySideBar />
         </Grid>
       </Grid>
-      <Footer />
-    </MainWidget>
+    </React.Fragment>
   );
 };
 

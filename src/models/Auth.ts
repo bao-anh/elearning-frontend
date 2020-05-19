@@ -1,15 +1,18 @@
 interface AuthEntity {
-  isAuthenticated: boolean;
   userId: string;
+  email: string;
+  password: string;
 }
 
 export default class Auth implements AuthEntity {
-  public isAuthenticated: boolean;
   public userId: string;
+  public email: string;
+  public password: string;
 
   constructor(props: AuthEntity) {
-    let { isAuthenticated, userId } = props;
-    this.isAuthenticated = isAuthenticated ? isAuthenticated : false;
+    let { userId, email, password } = props;
     this.userId = userId ? userId : '';
+    this.email = email ? email : '';
+    this.password = password ? password : '';
   }
 }

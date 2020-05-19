@@ -43,7 +43,7 @@ const persistConfig = {
     'assignmentState',
     'lessonState',
     'referenceState',
-    'auth',
+    'authState',
   ],
 };
 const pReducer = persistReducer(persistConfig, rootReducer);

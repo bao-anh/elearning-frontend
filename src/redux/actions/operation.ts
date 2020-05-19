@@ -8,6 +8,7 @@ export interface OperationAction {
   type: string;
   topicId?: number;
   courseId?: number;
+  credentials?: any;
 }
 
 export function fetchDataInLessonPage(topicId: any): OperationAction {

@@ -6,5 +6,7 @@ class Routes {
   static LESSON_SCREEN = '/lesson/:pathname';
   static ASSIGNMENT_SCREEN = '/assignment/:pathname';
   static CATEGORY_SCREEN = '/category';
+  static SIGNIN_SCREEN = '/signin';
+  static REGISTER_SCREEN = '/register';
 }
 export default Routes;

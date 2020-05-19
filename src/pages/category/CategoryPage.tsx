@@ -5,9 +5,6 @@ import { AppState } from '../../redux/appstate';
 import * as categoryAction from '../../redux/actions/category';
 import * as courseAction from '../../redux/actions/course';
 import queryString from 'query-string';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { MainWidget } from '../../components/Widgets';
 import BreadCrumb from '../../components/BreadCrumb';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
@@ -49,8 +46,7 @@ const CategoryPage: FunctionComponent<{
   }, [location.search]);
 
   return (
-    <MainWidget className={'home-page'}>
-      <Header />
+    <React.Fragment>
       <BreadCrumb path={match.path} />
       <Grid container className='container'>
         <Grid item xs={3}>
@@ -119,8 +115,7 @@ const CategoryPage: FunctionComponent<{
           </Paper>
         </Grid>
       </Grid>
-      <Footer />
-    </MainWidget>
+    </React.Fragment>
   );
 };
 

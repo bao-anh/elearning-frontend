@@ -2,9 +2,7 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as topicAction from '../../redux/actions/topic';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { MainWidget, FixedContainer } from '../../components/Widgets';
+import { FixedContainer } from '../../components/Widgets';
 import { getIdByPathName } from '../../utils';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
@@ -24,13 +22,11 @@ const AssignmentPage: FunctionComponent<{
   }, []);
 
   return (
-    <MainWidget className={'about-page'}>
-      <Header />
+    <React.Fragment>
       <FixedContainer>
         <h1>That is assigment page</h1>
       </FixedContainer>
-      <Footer />
-    </MainWidget>
+    </React.Fragment>
   );
 };
 
