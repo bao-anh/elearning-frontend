@@ -1,0 +1,57 @@
+.image-container {
+  background: url('../images/scenic-view-of-lake-against-sky-during-sunset-258136.jpg')
+    no-repeat center center fixed;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-size: 100%;
+}
+
+.signin-dialog-container {
+  position: relative;
+  width: 30%;
+  height: 60%;
+  padding: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.register-dialog-container {
+  position: relative;
+  width: 30%;
+  height: 85%;
+  padding: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.signin-header {
+  text-align: center;
+}
+
+.dialog-item {
+  margin-bottom: 10px;
+}
+
+.dialog-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-footer {
+  text-align: center;
+}
+
+.dialog-link {
+  text-decoration: none;
+}

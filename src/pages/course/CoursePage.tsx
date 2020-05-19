@@ -2,9 +2,6 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import { MainWidget } from '../../components/Widgets';
 import { getIdByPathName } from '../../utils';
 import Banner from '../../components/Banner';
 import BreadCrumb from '../../components/BreadCrumb';
@@ -40,8 +37,7 @@ const CoursePage: FunctionComponent<{
   }, []);
 
   return (
-    <MainWidget className={'home-page'}>
-      <Header />
+    <React.Fragment>
       <Banner />
       <BreadCrumb path={match.path} courseState={courseState} />
       <Grid container className='container'>
@@ -54,8 +50,7 @@ const CoursePage: FunctionComponent<{
           <UtilitySideBar />
         </Grid>
       </Grid>
-      <Footer />
-    </MainWidget>
+    </React.Fragment>
   );
 };
 

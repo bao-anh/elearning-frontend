@@ -85,3 +85,15 @@ Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
 - Added category page, course page, topic page.
 - Fix breadcrumb link, hightlight current topic, current lesson.
 - Added banner component.
+
+### Version 2.3
+
+19/5/2020
+
+- Added sign-in and register page
+- Added snackbar
+- Remove redundant file when init-project
+- Added private and public route
+- Use **https://elearning-server.herokuapp.com** as server API
+- Added background and translate icon
+- Added layout component

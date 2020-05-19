@@ -1,5 +1,5 @@
-import { all, fork } from 'redux-saga/effects';
-import { appInfoSaga } from './appInfo';
+import { fork } from 'redux-saga/effects';
+import auth from './auth';
 import course from './course';
 import category from './category';
 import topic from './topic';
@@ -7,10 +7,10 @@ import reference from './reference';
 import operation from './operation';
 
 export default function* rootSaga() {
+  yield fork(auth);
   yield fork(course);
   yield fork(category);
   yield fork(topic);
   yield fork(operation);
   yield fork(reference);
-  yield all([...appInfoSaga]);
 }
