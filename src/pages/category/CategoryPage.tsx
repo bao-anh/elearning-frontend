@@ -1,11 +1,10 @@
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { useEffect, FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import * as categoryAction from '../../redux/actions/category';
-import * as courseAction from '../../redux/actions/course';
-import queryString from 'query-string';
+import * as operationAction from '../../redux/actions/operation';
 import BreadCrumb from '../../components/BreadCrumb';
+import Loading from '../../components/Loading';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 import '../../resources/scss/category.scss';
@@ -17,102 +16,178 @@ import {
   ListItemText,
   Grid,
   Paper,
+  Typography,
 } from '@material-ui/core';
 import {
   ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
+  Person as PersonIcon,
+  ArrowDownward as ArrowDownwardIcon,
 } from '@material-ui/icons';
 
 const CategoryPage: FunctionComponent<{
-  fetchAllCategory: Function;
-  fetchCourseByCategoryId: Function;
-  location: any;
+  fetchDataInCategoryPage: Function;
   match: any;
   categoryState: any;
+  courseState: any;
+  authState: any;
 }> = ({
-  fetchAllCategory,
-  fetchCourseByCategoryId,
-  location,
+  fetchDataInCategoryPage,
   categoryState,
   match,
+  courseState,
+  authState,
 }) => {
   useEffect(() => {
-    if (location.search) {
-      const parsed = queryString.parse(location.search);
-      if (parsed.categoryId) fetchCourseByCategoryId(Number(parsed.categoryId));
-    }
-    fetchAllCategory();
+    fetchDataInCategoryPage(match.params, authState._id);
     //eslint-disable-next-line
-  }, [location.search]);
+  }, [match]);
+
+  const [categoryArray, setCategoryArray] = useState(categoryState.data);
+
+  const handleExpandList = (id: any) => {
+    const newCategoryArray = categoryArray.map((category: any) => {
+      if (id === category._id) {
+        if (category.isOpen) return { ...category, isOpen: !category.isOpen };
+        else return { ...category, isOpen: true };
+      } else return { ...category };
+    });
+    setCategoryArray(newCategoryArray);
+  };
+
+  const renderCategoryItems = (category: any) => {
+    if (category.childrenIds.length) {
+      return (
+        <React.Fragment key={category._id}>
+          <ListItem button onClick={() => handleExpandList(category._id)}>
+            <ListItemText primary={category.name} />
+            {category.isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </ListItem>
+          <Collapse in={category.isOpen ? category.isOpen : false}>
+            <List>
+              {category.childrenIds.map((children: any) => (
+                <Link
+                  key={children._id}
+                  to={`/category/${children._id}`}
+                  className='category-left-side-link'
+                >
+                  <ListItem
+                    className='category-left-side-item'
+                    button
+                    style={
+                      categoryState.current === children._id
+                        ? { backgroundColor: '#e0e0e0' }
+                        : {}
+                    }
+                  >
+                    {children.name}
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
+        </React.Fragment>
+      );
+    } else return null;
+  };
+
+  const renderPriceOfItem = (course: any) => {
+    return authState.courseIds.map((courseId: any) =>
+      courseId === course._id ? (
+        <div className='category-content-already-purchase'>Đã mua</div>
+      ) : course.currentPrice / course.realPrice < 1 ? (
+        <React.Fragment>
+          <div className='category-content-sale'>
+            {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
+            <ArrowDownwardIcon fontSize='inherit' />
+          </div>
+          <div className='category-content-cost'>
+            {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
+          </div>
+        </React.Fragment>
+      ) : (
+        <div className='category-content-cost'>
+          {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
+        </div>
+      )
+    );
+  };
 
   return (
     <React.Fragment>
       <BreadCrumb path={match.path} />
       <Grid container className='container'>
         <Grid item xs={3}>
-          <Paper elevation={1}>
+          <Paper elevation={1} className='category-left-side'>
             <List component='nav' aria-labelledby='nested-list-subheader'>
-              <ListItem button>
-                <ListItemText primary='Tất cả khóa học' />
-              </ListItem>
-              <ListItem button>
-                <ListItemText primary='Khóa học của tôi' />
-              </ListItem>
-              {categoryState.data.map((category: any) =>
-                category.childrentType === 1 ? (
-                  <List key={category.id} className='category-item-list'>
-                    <ListItem button>
-                      <Link
-                        to={`?categoryId=${category.id}`}
-                        className='category-link'
-                      >
-                        {category.name}
-                      </Link>
-                      {category.childrentIds.length ? (
-                        category.id.toString() ===
-                        queryString.parse(location.search).categoryId ? (
-                          <ExpandLessIcon />
-                        ) : (
-                          <ExpandMoreIcon />
-                        )
-                      ) : null}
-                    </ListItem>
-                    <Collapse
-                      in={
-                        category.childrentIds.length &&
-                        category.id.toString() ===
-                          queryString.parse(location.search).categoryId
-                      }
-                      timeout='auto'
-                    >
-                      <List>
-                        {category.childrentIds.length &&
-                          categoryState.data.map((categoryChildren: any) =>
-                            category.childrentIds.includes(
-                              categoryChildren.id
-                            ) ? (
-                              <ListItem key={categoryChildren.id} button>
-                                <Link
-                                  to={`?categoryId=${category.id}`}
-                                  className='category-children-link'
-                                >
-                                  {categoryChildren.name}
-                                </Link>
-                              </ListItem>
-                            ) : null
-                          )}
-                      </List>
-                    </Collapse>
-                  </List>
-                ) : null
+              <Link to='/category/all' className='category-content-link'>
+                <ListItem
+                  button
+                  style={
+                    categoryState.current === 'all'
+                      ? { backgroundColor: '#e0e0e0' }
+                      : {}
+                  }
+                >
+                  <ListItemText primary='Tất cả khóa học' />
+                </ListItem>
+              </Link>
+              <Link to='/category/me' className='category-content-link'>
+                <ListItem
+                  button
+                  style={
+                    categoryState.current === 'me'
+                      ? { backgroundColor: '#e0e0e0' }
+                      : {}
+                  }
+                >
+                  <ListItemText primary='Khóa học của tôi' />
+                </ListItem>
+              </Link>
+              {categoryState.data.length ? (
+                categoryArray.map((category: any) =>
+                  renderCategoryItems(category)
+                )
+              ) : (
+                <Loading />
               )}
             </List>
           </Paper>
         </Grid>
         <Grid item xs={9}>
-          <Paper elevation={1} className='category-content'>
-            test
-          </Paper>
+          {courseState.data.length ? (
+            courseState.data.map((course: any) => (
+              <Paper key={course._id} className='category-content-item'>
+                <Link
+                  to={`/course/${course._id}`}
+                  className='category-content-link'
+                >
+                  <img
+                    src={course.avatar}
+                    alt={course.name}
+                    className='category-content-avatar'
+                  />
+                  <div className='category-content-title'>{course.name}</div>
+                  <div className='category-content-description'>
+                    <Typography variant='subtitle2'>
+                      {course.description}
+                    </Typography>
+                  </div>
+                  <div className='category-content-footer'>
+                    <div className='category-content-member'>
+                      <PersonIcon />
+                      <div className='category-content-member-text'>
+                        {` ${course.memberIds.length} Học viên`}
+                      </div>
+                    </div>
+                    {renderPriceOfItem(course)}
+                  </div>
+                </Link>
+              </Paper>
+            ))
+          ) : (
+            <Loading />
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
@@ -122,13 +197,14 @@ const CategoryPage: FunctionComponent<{
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
     categoryState: state.categoryState,
+    courseState: state.courseState,
+    authState: state.authState,
     ...ownProps,
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchAllCategory: () => dispatch(categoryAction.fetchAllCategory()),
-  fetchCourseByCategoryId: (categoryId: number) =>
-    dispatch(courseAction.fetchCourseByCategoryId(categoryId)),
+  fetchDataInCategoryPage: (params: any, userId: any) =>
+    dispatch(operationAction.fetchDataInCategoryPage(params, userId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

@@ -3,7 +3,7 @@ import auth from './auth';
 import course from './course';
 import category from './category';
 import topic from './topic';
-import reference from './reference';
+import lesson from './lesson';
 import operation from './operation';
 
 export default function* rootSaga() {
@@ -12,5 +12,5 @@ export default function* rootSaga() {
   yield fork(category);
   yield fork(topic);
   yield fork(operation);
-  yield fork(reference);
+  yield fork(lesson);
 }

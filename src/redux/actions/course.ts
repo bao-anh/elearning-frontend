@@ -1,7 +1,8 @@
 import Course from '../../models/Course';
 import {
+  COURSE_FETCH_ALL,
   COURSE_FETCH_BY_CATEGORY_ID,
-  COURSE_FETCH_BY_COURSE_ID,
+  COURSE_FETCH_BY_USER_ID,
   COURSE_SET_DATA,
   COURSE_SET_CURRENT_DATA,
   COURSE_FETCH_SUCCESS,
@@ -14,6 +15,13 @@ export interface CourseAction {
   courseId?: number;
   course?: Array<Course>;
   currentCourse?: Course;
+  userId?: number;
+}
+
+export function fetchAllCourse(): CourseAction {
+  return {
+    type: COURSE_FETCH_ALL,
+  };
 }
 
 export function fetchCourseByCategoryId(categoryId: number): CourseAction {
@@ -23,10 +31,10 @@ export function fetchCourseByCategoryId(categoryId: number): CourseAction {
   };
 }
 
-export function fetchCourseByCourseId(courseId: number): CourseAction {
+export function fetchCourseByUserId(userId: number): CourseAction {
   return {
-    type: COURSE_FETCH_BY_COURSE_ID,
-    courseId,
+    type: COURSE_FETCH_BY_USER_ID,
+    userId,
   };
 }
 

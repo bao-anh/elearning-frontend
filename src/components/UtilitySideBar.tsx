@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { Paper } from '@material-ui/core';
 
@@ -9,7 +9,9 @@ import {
   Note as NoteIcon,
 } from '@material-ui/icons';
 
-const UtilitySideBar = () => {
+const UtilitySideBar: FunctionComponent<{ topicState: any }> = ({
+  topicState,
+}) => {
   return (
     <Paper elevation={1} className='custom-block-panel course-utility-panel'>
       <div className='custom-block-header-panel'>Tiện ích</div>
@@ -22,7 +24,9 @@ const UtilitySideBar = () => {
               style={{ textDecoration: 'none' }}
             >
               {'Tài liệu '}
-              <span className='ultility-quantity'>104</span>
+              <span className='ultility-quantity'>
+                {topicState.largeTopic.documentIds.length}
+              </span>
             </a>
           </div>
         </div>
@@ -34,7 +38,9 @@ const UtilitySideBar = () => {
               style={{ textDecoration: 'none' }}
             >
               {'Thành viên '}
-              <span className='ultility-quantity'>1080</span>
+              <span className='ultility-quantity'>
+                {topicState.largeTopic.memberIds.length}
+              </span>
             </a>
           </div>
         </div>

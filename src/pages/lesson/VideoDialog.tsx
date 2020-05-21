@@ -24,17 +24,11 @@ const Transition: any = React.forwardRef(function Transition(
 const VideoDialog: FunctionComponent<{
   isOpenVideo: any;
   setOpenVideo: Function;
-  assignmentState: any;
   lessonState: any;
-  referenceState: any;
-}> = ({
-  isOpenVideo,
-  setOpenVideo,
-  assignmentState,
-  lessonState,
-  referenceState,
-}) => {
-  const [assignmentArray, setAssignmentArray] = useState([...assignmentState]);
+}> = ({ isOpenVideo, setOpenVideo, lessonState }) => {
+  const [assignmentArray, setAssignmentArray] = useState([
+    ...lessonState.data.assignmentIds,
+  ]);
 
   const handleOpenAssignment = (id: any) => {
     const newAssignmentArray = assignmentArray.map((assignment) => {
@@ -49,7 +43,7 @@ const VideoDialog: FunctionComponent<{
 
   const handleOpenAssignmentWhenTimeCome = (state: any) => {
     assignmentArray.forEach((assignment) => {
-      if (Math.round(state.playedSeconds) === assignment.timeShowUp)
+      if (Math.round(state.playedSeconds) === assignment.timeToShowUp)
         handleOpenAssignment(assignment.id);
     });
   };
@@ -63,7 +57,7 @@ const VideoDialog: FunctionComponent<{
     >
       {assignmentArray.map((assignment) => (
         <AssignmentDialog
-          key={assignment.id}
+          key={assignment._id}
           assignment={assignment}
           handleOpenAssignment={handleOpenAssignment}
         />
@@ -83,14 +77,14 @@ const VideoDialog: FunctionComponent<{
             className='react-player'
             width='100%'
             height='77%'
-            url='https://www.youtube.com/watch?v=Rq5SEhs9lws'
+            url={lessonState.data.videoLink}
             controls={true}
             onProgress={handleOpenAssignmentWhenTimeCome}
           />
           <div className='video-dialog-left-assignment-panel'>
             {assignmentArray.map((assignment) => (
               <div
-                key={assignment.id}
+                key={assignment._id}
                 className='video-dialog-left-assignment-item-panel'
               >
                 <Tooltip
@@ -98,9 +92,8 @@ const VideoDialog: FunctionComponent<{
                     <div style={{ textAlign: 'center' }}>
                       {assignment.name}
                       <br />
-                      {/* {`Thời điểm xuất hiện ${convertSecondToMinute(assignment.timeToShowUp)}`} */}
                       {`Thời điểm xuất hiện ${convertSecondToMinute(
-                        Math.round(Math.random() * 1000)
+                        assignment.timeToShowUp
                       )}`}
                     </div>
                   }
@@ -116,7 +109,7 @@ const VideoDialog: FunctionComponent<{
               </div>
             ))}
           </div>
-          <Reference referenceState={referenceState} />
+          <Reference lessonState={lessonState} />
         </div>
         <div className='video-dialog-right-panel'>
           <Comment />

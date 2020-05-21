@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import { getIdByPathName } from '../../utils';
 import VideoDialog from './VideoDialog';
 import Loading from '../../components/Loading';
 import Reference from '../../components/Reference';
@@ -19,28 +18,20 @@ import { Paper, Grid } from '@material-ui/core';
 const LessonPage: FunctionComponent<{
   fetchDataInLessonPage: Function;
   match: any;
-  assignmentState: any;
   topicState: any;
   lessonState: any;
-  referenceState: any;
   courseState: any;
 }> = ({
   fetchDataInLessonPage,
   match,
-  assignmentState,
   topicState,
   lessonState,
-  referenceState,
   courseState,
 }) => {
   const [isOpenVideo, setOpenVideo] = useState(false);
 
   useEffect(() => {
-    const pathname = match.params.pathname;
-    if (match.params.pathname) {
-      const topicId = getIdByPathName(pathname);
-      fetchDataInLessonPage(topicId);
-    }
+    fetchDataInLessonPage(match.params.id);
     //eslint-disable-next-line
   }, [match]);
 
@@ -56,9 +47,7 @@ const LessonPage: FunctionComponent<{
         <VideoDialog
           isOpenVideo={isOpenVideo}
           setOpenVideo={setOpenVideo}
-          lessonState={lessonState.current}
-          assignmentState={assignmentState.data}
-          referenceState={referenceState}
+          lessonState={lessonState}
         />
         <Grid item xs={9}>
           <Paper
@@ -66,7 +55,7 @@ const LessonPage: FunctionComponent<{
             className='main-block-panel topic-content-find-media-element'
           >
             <div className='main-block-header-panel'>Mô tả</div>
-            {lessonState.isLoading | assignmentState.isLoading ? (
+            {lessonState.isLoading ? (
               <Loading />
             ) : (
               <div className='video-panel'>
@@ -81,21 +70,21 @@ const LessonPage: FunctionComponent<{
             )}
           </Paper>
           <TopicContent
-            assignmentState={assignmentState}
             topicState={topicState}
+            lessonState={lessonState}
             path={match.path}
           />
-          <Reference referenceState={referenceState} />
+          <Reference lessonState={lessonState} />
           <Comment />
         </Grid>
         <Grid item xs={3}>
           <TopicSideBar
             topicState={topicState}
-            lessonState={lessonState}
             path={match.path}
+            currentId={match.params.id}
           />
-          <UserInfoSideBar topicState={topicState} lessonState={lessonState} />
-          <UtilitySideBar />
+          <UserInfoSideBar lessonState={lessonState} />
+          <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>
     </React.Fragment>
@@ -105,16 +94,14 @@ const LessonPage: FunctionComponent<{
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
     lessonState: state.lessonState,
-    assignmentState: state.assignmentState,
     topicState: state.topicState,
-    referenceState: state.referenceState,
     courseState: state.courseState,
     ...ownProps,
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInLessonPage: (topicId: number) =>
-    dispatch(operationAction.fetchDataInLessonPage(topicId)),
+  fetchDataInLessonPage: (lessonId: number) =>
+    dispatch(operationAction.fetchDataInLessonPage(lessonId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonPage);

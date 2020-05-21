@@ -8,22 +8,22 @@ import {
   GetApp as GetAppIcon,
 } from '@material-ui/icons';
 
-const Reference: FunctionComponent<{ referenceState: any }> = ({
-  referenceState,
-}) => {
+const Reference: FunctionComponent<{
+  lessonState: any;
+}> = ({ lessonState }) => {
   return (
     <Paper elevation={1} className='main-block-panel reference-panel'>
       <div className='main-block-header-panel'>Tài liệu tham khảo</div>
       <div className='block main-block-content-panel'>
-        {referenceState.isLoading ? (
+        {lessonState.isLoading ? (
           <Loading />
         ) : (
-          referenceState.data.map((reference: any) => (
-            <div className='reference-item' key={reference.id}>
+          lessonState.data.documentIds.map((reference: any) => (
+            <div className='reference-item' key={reference._id}>
               <DescriptionIcon className='reference-item-icon' />
               <div className='reference-item-content'>
-                <a href={reference.url} className='link' target='blank'>
-                  {reference.title}
+                <a href={reference.link} className='link' target='blank'>
+                  {reference.name}
                 </a>
               </div>
               <GetAppIcon className='reference-item-icon' />

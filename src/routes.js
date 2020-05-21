@@ -1,11 +1,11 @@
 class Routes {
   static HOME_SCREEN = '/';
   static ABOUT_SCREEN = '/about';
-  static COURSE_SCREEN = '/course/:pathname';
-  static TOPIC_SCREEN = '/topic/:pathname';
-  static LESSON_SCREEN = '/lesson/:pathname';
-  static ASSIGNMENT_SCREEN = '/assignment/:pathname';
-  static CATEGORY_SCREEN = '/category';
+  static COURSE_SCREEN = '/course/:id';
+  static TOPIC_SCREEN = '/topic/:id';
+  static LESSON_SCREEN = '/lesson/:id';
+  static ASSIGNMENT_SCREEN = '/assignment/:id';
+  static CATEGORY_SCREEN = '/category/:id';
   static SIGNIN_SCREEN = '/signin';
   static REGISTER_SCREEN = '/register';
 }

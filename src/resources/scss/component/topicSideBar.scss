@@ -15,7 +15,7 @@
 }
 
 .block {
-  max-height: 360px;
+  max-height: 380px;
   overflow-y: auto;
 }
 
@@ -27,7 +27,8 @@
 .topic-item {
   display: flex;
   align-items: center;
-  padding-bottom: 10px;
+  padding-bottom: 0;
+  margin-bottom: 10px;
 }
 
 .topic-item-icon {

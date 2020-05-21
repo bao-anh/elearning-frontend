@@ -1,63 +1,75 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
-import { callElearningApi } from '../../services';
+import { api } from '../../services';
 import {
   setCourse,
-  setCurrentCourse,
   fetchCourseSuccess,
   fetchCourseOnProgress,
 } from '../actions/course';
 import {
+  COURSE_FETCH_ALL,
+  COURSE_FETCH_BY_USER_ID,
   COURSE_FETCH_BY_CATEGORY_ID,
-  COURSE_FETCH_BY_COURSE_ID,
 } from '../actions/types';
 
+export const getAllCourse = () => {
+  return api.get('/courses');
+};
+
 export const getCourseByCategoryId = (categoryId: number) => {
-  return callElearningApi({
-    url: `get-course-by-category?categoryId=${categoryId}&offset=0&limit=-1`,
-    params: null,
-    method: 'post',
-  });
+  return api.get(`/categories/${categoryId}/courses`);
 };
 
-export const getCourseByCourseId = (courseId: number) => {
-  return callElearningApi({
-    url: `get-course-by-id?courseId=${courseId}`,
-    params: null,
-    method: 'post',
-  });
+export const getCourseByUserId = (userId: number) => {
+  return api.get(`/users/${userId}/courses`);
 };
 
-export function* fetchCourseByCategoryId(action: any) {
+export function* fetchAllCourse() {
   try {
     yield put(fetchCourseOnProgress());
-    const response = yield call(getCourseByCategoryId, action.categoryId);
-    yield put(setCourse(response));
+    const response = yield call(getAllCourse);
+    yield put(setCourse(response.data));
     yield put(fetchCourseSuccess());
   } catch (err) {
     console.log(err);
   }
 }
 
-export function* fetchCourseByCourseId(action: any) {
+export function* fetchCourseByCategoryId(action: any) {
   try {
     yield put(fetchCourseOnProgress());
-    const response = yield call(getCourseByCourseId, action.courseId);
-    yield put(setCurrentCourse(response));
+    const response = yield call(getCourseByCategoryId, action.categoryId);
+    yield put(setCourse(response.data.courseIds));
     yield put(fetchCourseSuccess());
   } catch (err) {
     console.log(err);
   }
+}
+
+export function* fetchCourseByUserId(action: any) {
+  try {
+    yield put(fetchCourseOnProgress());
+    const response = yield call(getCourseByUserId, action.userId);
+    yield put(setCourse(response.data.courseIds));
+    yield put(fetchCourseSuccess());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* watchFetchAllCourse() {
+  yield takeLatest(COURSE_FETCH_ALL, fetchAllCourse);
 }
 
 export function* watchFetchCourseByCategoryId() {
   yield takeLatest(COURSE_FETCH_BY_CATEGORY_ID, fetchCourseByCategoryId);
 }
 
-export function* watchFetchCourseByCourseId() {
-  yield takeLatest(COURSE_FETCH_BY_COURSE_ID, fetchCourseByCourseId);
+export function* watchFetchCourseByUserId() {
+  yield takeLatest(COURSE_FETCH_BY_USER_ID, fetchCourseByUserId);
 }
 
 export default function* course() {
+  yield fork(watchFetchAllCourse);
   yield fork(watchFetchCourseByCategoryId);
-  yield fork(watchFetchCourseByCourseId);
+  yield fork(watchFetchCourseByUserId);
 }
