@@ -94,9 +94,11 @@ const CategoryPage: FunctionComponent<{
   const renderPriceOfItem = (course: any) => {
     return authState.courseIds.map((courseId: any) =>
       courseId === course._id ? (
-        <div className='category-content-already-purchase'>Đã mua</div>
+        <div key={courseId} className='category-content-already-purchase'>
+          Đã mua
+        </div>
       ) : course.currentPrice / course.realPrice < 1 ? (
-        <React.Fragment>
+        <React.Fragment key={courseId}>
           <div className='category-content-sale'>
             {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
             <ArrowDownwardIcon fontSize='inherit' />
@@ -106,7 +108,7 @@ const CategoryPage: FunctionComponent<{
           </div>
         </React.Fragment>
       ) : (
-        <div className='category-content-cost'>
+        <div key={courseId} className='category-content-cost'>
           {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
         </div>
       )

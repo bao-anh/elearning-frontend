@@ -11,7 +11,7 @@ const UserInfoSideBar: FunctionComponent<{
 }> = ({ lessonState }) => {
   const renderCurrentLesson = () => {
     const currentLesson = lessonState.data;
-    if (currentLesson.name) {
+    if (currentLesson) {
       return (
         <Link to={`/lesson/${currentLesson._id}`} className='link'>
           {currentLesson.name}
