@@ -44,11 +44,16 @@ const LessonPage: FunctionComponent<{
         lessonState={lessonState}
       />
       <Grid container className='container'>
-        <VideoDialog
-          isOpenVideo={isOpenVideo}
-          setOpenVideo={setOpenVideo}
-          lessonState={lessonState}
-        />
+        {lessonState.isLoading ? (
+          <Loading />
+        ) : (
+          <VideoDialog
+            isOpenVideo={isOpenVideo}
+            setOpenVideo={setOpenVideo}
+            lessonState={lessonState}
+          />
+        )}
+
         <Grid item xs={9}>
           <Paper
             elevation={1}

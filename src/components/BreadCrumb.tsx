@@ -53,7 +53,7 @@ const BreadCrumb: FunctionComponent<{
       }
     }
     if (path === Routes.TOPIC_SCREEN) {
-      if (topicState.largeTopic.name && topicState.smallTopic.name) {
+      if (topicState.largeTopic && topicState.smallTopic) {
         return (
           <Breadcrumbs
             separator='›'
@@ -83,11 +83,7 @@ const BreadCrumb: FunctionComponent<{
       }
     }
     if (path === Routes.LESSON_SCREEN) {
-      if (
-        topicState.largeTopic.name &&
-        topicState.smallTopic.name &&
-        lessonState.data.name
-      ) {
+      if (topicState.largeTopic && topicState.smallTopic && lessonState.data) {
         return (
           <Breadcrumbs
             separator='›'
