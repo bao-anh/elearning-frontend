@@ -1,13 +1,5 @@
 # Todo list
 
-_Serverity_ :
-
-- [1]: Không nghiêm trọng
-- [2]: Ít nghiêm trọng
-- [3]: Bình thường
-- [4]: Cần khắc phục ngay
-- [5]: Cần khắc phục khẩn cấp
-
 - Làm giao diện Admin [3]
 - Làm phần top hot course, top sale course trong Dashboard [2]
 - Sửa lại lỗi quá hạn token [2]
