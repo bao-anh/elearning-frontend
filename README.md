@@ -1,14 +1,21 @@
-# Note
+# Todo list
 
-Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
+_Serverity_ :
 
-- Reducer của mình sẽ tổ chức như sau.
-- Trong category sẽ chứa nhiều course, trong course chứa nhiều topic lớn (các part), trong topic lớn
-  chứa nhiều topic nhỏ (các bài học, bài tập, bài thi) và trong bài tập, bài thi sẽ chứa các câu hỏi.
-- 1 state sẽ có cả mảng data chứa allData và currentData.
-- Ví dụ: chúng ta muốn truy cập tới 1 topic nhỏ, nhưng vẫn muốn lưu các thông tin của topic nhỏ còn lại,
-  thì lưu toàn bộ topic nhỏ vào data và lưu topic mình đang truy cập vào current.
-- Nếu mọi người làm, thì pull code mới nhất từ master về, không hiểu đoạn nào thì hỏi mình, sau đó khi push code mới lên thì ping mình vào review, cấm không được push thẳng lên master.
+- [1]: Không nghiêm trọng
+- [2]: Ít nghiêm trọng
+- [3]: Bình thường
+- [4]: Cần khắc phục ngay
+- [5]: Cần khắc phục khẩn cấp
+
+- Làm giao diện Admin [3]
+- Làm phần top hot course, top sale course trong Dashboard [2]
+- Sửa lại lỗi quá hạn token [2]
+- Validate Signin, Register page [2]
+- Hiện snackbar nếu lỗi ở backend [1]
+- Làm responsive cho app [1]
+- Làm thanh hiển thị thay đổi theo người dùng click chuột [1]
+- Làm chức năng thay đổi ngôn ngữ [1]
 
 **Mai Gia Bảo Anh**
 
@@ -97,3 +104,11 @@ Phần này ghi bằng Tiếng Việt cho mọi người dễ hiểu:
 - Use **https://elearning-server.herokuapp.com** as server API
 - Added background and translate icon
 - Added layout component
+
+### Version 3.0
+
+21/5/2020
+
+- Adjust all page, action, reducer, saga to compatible with backend.
+- Test perfectly and be able to design assignment feature.
+- Change note in README.md to Todo list.

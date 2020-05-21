@@ -26,8 +26,7 @@ const AssignmentDialog: FunctionComponent<{
   assignment: AssignmentInfo;
   handleOpenAssignment: Function;
 }> = ({ assignment, handleOpenAssignment }) => {
-  // const [timeLeft, setTimeLeft] = useState(assignment.duration);
-  const [timeLeft, setTimeLeft] = useState(Math.round(Math.random() * 200));
+  const [timeLeft, setTimeLeft] = useState(assignment.duration);
   useEffect(() => {
     const myTimeOut = setTimeout(() => {
       if (assignment.isOpen === true) {

@@ -3,6 +3,7 @@ import Category from '../../models/Category';
 import { CategoryAction } from '../actions/category';
 import {
   CATEGORY_SET_DATA,
+  CATEGORY_SET_CURRENT,
   CATEGORY_FETCH_ON_PROGRESS,
   CATEGORY_FETCH_SUCCESS,
 } from '../actions/types';
@@ -11,13 +12,14 @@ export interface CategoryState {
   isLoading: boolean;
   data: Array<Category>;
   error: string;
-  current?: Category;
+  current?: any;
 }
 
 const initState = {
   isLoading: false,
   data: [],
   error: '',
+  current: 'all',
 };
 
 const categoryState: Reducer<CategoryState> = (
@@ -29,6 +31,12 @@ const categoryState: Reducer<CategoryState> = (
       return {
         ...state,
         data: action.category,
+      };
+    }
+    case CATEGORY_SET_CURRENT: {
+      return {
+        ...state,
+        current: action.categoryId,
       };
     }
     case CATEGORY_FETCH_SUCCESS: {

@@ -4,29 +4,23 @@ import { TopicAction } from '../actions/topic';
 import {
   TOPIC_SET_LARGE_DATA,
   TOPIC_SET_SMALL_DATA,
-  TOPIC_SET_LARGE_CURRENT,
-  TOPIC_SET_SMALL_CURRENT,
-  TOPIC_FETCH_LARGE_SUCCESS,
   TOPIC_FETCH_LARGE_ON_PROGRESS,
-  TOPIC_FETCH_SMALL_SUCCESS,
+  TOPIC_FETCH_LARGE_SUCCESS,
   TOPIC_FETCH_SMALL_ON_PROGRESS,
+  TOPIC_FETCH_SMALL_SUCCESS,
 } from '../actions/types';
 
 export interface TopicState {
   isLoadingLargeTopic: boolean;
   isLoadingSmallTopic: boolean;
-  // là những topic nằm bên ngoài gần với course, các part
   largeTopic: Array<Topic>;
-  // là những topic nằm trong 1 part nào đó
   smallTopic: Array<Topic>;
-  currentLargeTopic?: Topic;
-  currentSmallTopic?: Topic;
   error: string;
 }
 
 const initState = {
   isLoadingLargeTopic: true,
-  isLoadingSmallTopic: false,
+  isLoadingSmallTopic: true,
   largeTopic: [],
   smallTopic: [],
   error: '',
@@ -71,18 +65,6 @@ const topicState: Reducer<TopicState> = (
       return {
         ...state,
         isLoadingSmallTopic: false,
-      };
-    }
-    case TOPIC_SET_LARGE_CURRENT: {
-      return {
-        ...state,
-        currentLargeTopic: action.currentLargeTopic,
-      };
-    }
-    case TOPIC_SET_SMALL_CURRENT: {
-      return {
-        ...state,
-        currentSmallTopic: action.currentSmallTopic,
       };
     }
     default:

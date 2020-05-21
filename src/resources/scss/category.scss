@@ -4,13 +4,127 @@
   color: black;
 }
 
-.category-children-link {
-  padding-left: 30px;
-  flex-grow: 1;
+.category-content-link {
   text-decoration: none;
   color: black;
 }
 
+.category-left-side-link {
+  text-decoration: none;
+  color: black;
+}
+
+.category-left-side {
+  position: relative;
+}
+
+.category-left-side-item {
+  padding-left: 30px;
+}
+
 .category-content {
+  margin-left: 10px;
+}
+
+.category-content-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  float: left;
+  padding: 10px;
+  width: 29%;
+  margin: 0 0 10px 10px;
+}
+
+.category-content-item:hover {
+  transform: scale(1.2);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.category-content-avatar {
+  width: 100%;
+  height: 150px;
+}
+
+.category-content-title {
+  text-align: center;
+  color: var(--root-color);
+  margin: 10px 0 10px 0;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.category-content-description {
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: #6d6d6d;
+}
+
+.category-content-footer {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.category-content-member {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.category-content-member-text {
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.category-content-already-purchase {
+  padding: 4px;
+  border-radius: 5px;
+  font-size: 0.8em;
+  border: 1px solid var(--root-color);
+}
+
+.category-content-sale {
+  display: flex;
+  color: white;
+  align-items: center;
+  padding: 3px;
+  border-radius: 5px;
+  animation-name: rainbow;
+  animation-iteration-count: infinite;
+  animation-duration: 4s;
+}
+
+@keyframes rainbow {
+  0% {
+    background-color: #f44336;
+  }
+  25% {
+    background-color: #ffeb3b;
+  }
+  50% {
+    background-color: #2196f3;
+  }
+  75% {
+    background-color: #ffeb3b;
+  }
+  100% {
+    background-color: #f44336;
+  }
+}
+
+.category-content-cost {
+  color: var(--root-color);
   margin-left: 10px;
 }

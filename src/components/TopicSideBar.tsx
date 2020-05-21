@@ -8,47 +8,26 @@ import '../resources/scss/component/topicSideBar.scss';
 import { Paper } from '@material-ui/core';
 import {
   MenuBook as MenuBookIcon,
+  Airplay as AirplayIcon,
   Alarm as AlarmIcon,
 } from '@material-ui/icons';
 
 const TopicSideBar: FunctionComponent<{
   topicState: any;
-  lessonState?: any;
+  currentId?: any;
   path: any;
-}> = ({ topicState, lessonState, path }) => {
+}> = ({ topicState, path, currentId }) => {
   const renderTopicContent = (topic: any) => {
     return (
       <div
-        key={topic.id}
+        key={topic._id}
         className='topic-item'
-        style={
-          topicState.currentLargeTopic &&
-          topicState.currentLargeTopic.id === topic.id
-            ? { backgroundColor: '#eeeeee' }
-            : {}
-        }
+        style={currentId === topic._id ? { backgroundColor: '#eeeeee' } : {}}
       >
-        {topic.type === 1 ? (
-          <React.Fragment>
-            <MenuBookIcon className='topic-item-icon' />
-            <Link
-              to={`/topic/${topic.friendlyUrl}-${topic.id}`}
-              className='link'
-            >
-              {topic.name}
-            </Link>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <AlarmIcon className='topic-item-icon' />
-            <Link
-              to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
-              className='link'
-            >
-              {topic.name}
-            </Link>
-          </React.Fragment>
-        )}
+        <AirplayIcon className='topic-item-icon' />
+        <Link to={`/topic/${topic._id}`} className='link'>
+          {topic.name}
+        </Link>
       </div>
     );
   };
@@ -56,31 +35,21 @@ const TopicSideBar: FunctionComponent<{
   const renderLessonContent = (topic: any) => {
     return (
       <div
-        key={topic.id}
+        key={topic._id}
         className='topic-item'
-        style={
-          lessonState.current && lessonState.current.id === topic.id
-            ? { backgroundColor: '#eeeeee' }
-            : {}
-        }
+        style={currentId === topic._id ? { backgroundColor: '#eeeeee' } : {}}
       >
-        {topic.type === 1 ? (
+        {topic.videoLink ? (
           <React.Fragment>
             <MenuBookIcon className='topic-item-icon' />
-            <Link
-              to={`/lesson/${topic.friendlyUrl}-${topic.id}`}
-              className='link'
-            >
+            <Link to={`/lesson/${topic._id}`} className='link'>
               {topic.name}
             </Link>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <AlarmIcon className='topic-item-icon' />
-            <Link
-              to={`/assignment/${topic.friendlyUrl}-${topic.id}`}
-              className='link'
-            >
+            <Link to={`/assignment/${topic._id}`} className='link'>
               {topic.name}
             </Link>
           </React.Fragment>
@@ -95,7 +64,10 @@ const TopicSideBar: FunctionComponent<{
         <Loading />
       ) : (
         sortArrayByPropertyValue(
-          topicState.smallTopic,
+          [
+            ...topicState.smallTopic.assignmentIds,
+            ...topicState.smallTopic.lessonIds,
+          ],
           'orderIndex'
         ).map((topic: any) => renderLessonContent(topic))
       );
@@ -104,17 +76,18 @@ const TopicSideBar: FunctionComponent<{
       return topicState.isLoadingLargeTopic ? (
         <Loading />
       ) : (
-        sortArrayByPropertyValue(
-          topicState.largeTopic,
-          'orderIndex'
-        ).map((topic: any) => renderTopicContent(topic))
+        topicState.largeTopic.topicIds.map((topic: any) =>
+          renderTopicContent(topic)
+        )
       );
     }
   };
 
   return (
     <Paper elevation={1} className='custom-block-panel topic-tree-panel'>
-      <div className='custom-block-header-panel'>Bài tập</div>
+      <div className='custom-block-header-panel'>
+        Nội dung khác cùng danh mục
+      </div>
       <div className='block custom-block-content-panel'>{renderLoading()}</div>
     </Paper>
   );

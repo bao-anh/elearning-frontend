@@ -2,7 +2,6 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import { getIdByPathName } from '../../utils';
 import BreadCrumb from '../../components/BreadCrumb';
 import TopicContent from '../../components/TopicContent';
 import TopicSideBar from '../../components/TopicSideBar';
@@ -28,11 +27,7 @@ const TopicPage: FunctionComponent<{
   lessonState,
 }) => {
   useEffect(() => {
-    const pathname = match.params.pathname;
-    if (match.params.pathname) {
-      const topicId = getIdByPathName(pathname);
-      fetchDataInTopicPage(topicId);
-    }
+    fetchDataInTopicPage(match.params.id);
     //eslint-disable-next-line
   }, [match]);
 
@@ -49,9 +44,13 @@ const TopicPage: FunctionComponent<{
           <Comment />
         </Grid>
         <Grid item xs={3}>
-          <TopicSideBar path={match.path} topicState={topicState} />
-          <UserInfoSideBar topicState={topicState} lessonState={lessonState} />
-          <UtilitySideBar />
+          <TopicSideBar
+            path={match.path}
+            currentId={match.params.id}
+            topicState={topicState}
+          />
+          <UserInfoSideBar lessonState={lessonState} />
+          <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>
     </React.Fragment>

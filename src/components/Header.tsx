@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '100%',
       [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '250px',
       },
     },
     searchIcon: {
@@ -158,20 +158,21 @@ const Header: FunctionComponent<{
           <Typography className={classes.titleNoFlexGrow} variant='h6' noWrap>
             E-LEARNING
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+          <div className={classes.grow}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder='Tìm kiếm khóa học...'
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </div>
-            <InputBase
-              placeholder='Tìm kiếm khóa học...'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
           </div>
-          <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label='translate' color='inherit'>
               <GTranslateIcon />
@@ -210,7 +211,7 @@ const Header: FunctionComponent<{
   };
 
   return (
-    <div className={classes.grow}>
+    <div>
       <AppBar position='static' className={classes.appBar}>
         <Toolbar>{renderHeader()}</Toolbar>
       </AppBar>

@@ -11,7 +11,6 @@ import {
 export interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
-  userId: string;
   email: string;
   name: string;
 }
@@ -19,7 +18,6 @@ export interface AuthState {
 const initState = {
   isAuthenticated: false,
   isLoading: false,
-  userId: '',
   email: '',
   name: '',
 };

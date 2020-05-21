@@ -7,17 +7,13 @@ import '../resources/scss/component/userInfoSideBar.scss';
 import { Paper, Grid, Avatar } from '@material-ui/core';
 
 const UserInfoSideBar: FunctionComponent<{
-  topicState: any;
   lessonState: any;
-}> = ({ topicState, lessonState }) => {
+}> = ({ lessonState }) => {
   const renderCurrentLesson = () => {
-    const currentLesson = lessonState.current;
-    if (currentLesson && currentLesson.type === 1) {
+    const currentLesson = lessonState.data;
+    if (currentLesson.name) {
       return (
-        <Link
-          to={`/lesson/${currentLesson.friendlyUrl}-${currentLesson.id}`}
-          className='link'
-        >
+        <Link to={`/lesson/${currentLesson._id}`} className='link'>
           {currentLesson.name}
         </Link>
       );

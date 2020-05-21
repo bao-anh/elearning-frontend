@@ -5,7 +5,6 @@ import {
   LESSON_SET_DATA,
   LESSON_FETCH_ON_PROGRESS,
   LESSON_FETCH_SUCCESS,
-  LESSON_SET_CURRENT,
 } from '../actions/types';
 
 export interface LessonState {
@@ -42,12 +41,6 @@ const lessonState: Reducer<LessonState> = (
       return {
         ...state,
         isLoading: true,
-      };
-    }
-    case LESSON_SET_CURRENT: {
-      return {
-        ...state,
-        current: action.currentLesson,
       };
     }
     default:

@@ -2,7 +2,6 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import { getIdByPathName } from '../../utils';
 import Banner from '../../components/Banner';
 import BreadCrumb from '../../components/BreadCrumb';
 import TopicContent from '../../components/TopicContent';
@@ -28,26 +27,22 @@ const CoursePage: FunctionComponent<{
   lessonState,
 }) => {
   useEffect(() => {
-    const pathname = match.params.pathname;
-    if (match.params.pathname) {
-      const courseId = getIdByPathName(pathname);
-      fetchDataInCoursePage(courseId);
-    }
+    fetchDataInCoursePage(match.params.id);
     //eslint-disable-next-line
-  }, []);
+  }, [match]);
 
   return (
     <React.Fragment>
       <Banner />
       <BreadCrumb path={match.path} courseState={courseState} />
       <Grid container className='container'>
-        <Grid xs={9}>
+        <Grid item xs={9}>
           <TopicContent path={match.path} topicState={topicState} />
           <Comment />
         </Grid>
-        <Grid xs={3}>
-          <UserInfoSideBar topicState={topicState} lessonState={lessonState} />
-          <UtilitySideBar />
+        <Grid item xs={3}>
+          <UserInfoSideBar lessonState={lessonState} />
+          <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>
     </React.Fragment>

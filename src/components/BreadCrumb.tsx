@@ -22,7 +22,7 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/' className='breadcrumb-link'>
             Trang chủ
           </Link>
-          <Link to='/category' className='breadcrumb-current-link'>
+          <Link to='/category/all' className='breadcrumb-current-link'>
             Tất cả các khóa học
           </Link>
         </Breadcrumbs>
@@ -39,11 +39,11 @@ const BreadCrumb: FunctionComponent<{
             <Link to='/' className='breadcrumb-link'>
               Trang chủ
             </Link>
-            <Link to='/category' className='breadcrumb-link'>
+            <Link to='/category/all' className='breadcrumb-link'>
               Tất cả các khóa học
             </Link>
             <Link
-              to={`/course/${courseState.current.friendlyUrl}-${courseState.current.id}`}
+              to={`/course/${courseState.current._id}`}
               className='breadcrumb-current-link'
             >
               {courseState.current.name}
@@ -53,7 +53,7 @@ const BreadCrumb: FunctionComponent<{
       }
     }
     if (path === Routes.TOPIC_SCREEN) {
-      if (courseState.current && topicState.currentLargeTopic) {
+      if (topicState.largeTopic.name && topicState.smallTopic.name) {
         return (
           <Breadcrumbs
             separator='›'
@@ -63,20 +63,20 @@ const BreadCrumb: FunctionComponent<{
             <Link to='/' className='breadcrumb-link'>
               Trang chủ
             </Link>
-            <Link to='/category' className='breadcrumb-link'>
+            <Link to='/category/all' className='breadcrumb-link'>
               Tất cả các khóa học
             </Link>
             <Link
-              to={`/course/${courseState.current.friendlyUrl}-${courseState.current.id}`}
+              to={`/course/${topicState.largeTopic._id}`}
               className='breadcrumb-link'
             >
-              {courseState.current.name}
+              {topicState.largeTopic.name}
             </Link>
             <Link
-              to={`/topic/${topicState.currentLargeTopic.friendlyUrl}-${topicState.currentLargeTopic.id}`}
+              to={`/topic/${topicState.smallTopic._id}`}
               className='breadcrumb-current-link'
             >
-              {topicState.currentLargeTopic.name}
+              {topicState.smallTopic.name}
             </Link>
           </Breadcrumbs>
         );
@@ -84,9 +84,9 @@ const BreadCrumb: FunctionComponent<{
     }
     if (path === Routes.LESSON_SCREEN) {
       if (
-        courseState.current &&
-        lessonState.current &&
-        topicState.currentLargeTopic
+        topicState.largeTopic.name &&
+        topicState.smallTopic.name &&
+        lessonState.data.name
       ) {
         return (
           <Breadcrumbs
@@ -97,26 +97,26 @@ const BreadCrumb: FunctionComponent<{
             <Link to='/' className='breadcrumb-link'>
               Trang chủ
             </Link>
-            <Link to='/category' className='breadcrumb-link'>
+            <Link to='/category/all' className='breadcrumb-link'>
               Tất cả các khóa học
             </Link>
             <Link
-              to={`/course/${courseState.current.friendlyUrl}-${courseState.current.id}`}
+              to={`/course/${topicState.largeTopic._id}`}
               className='breadcrumb-link'
             >
-              {courseState.current.name}
+              {topicState.largeTopic.name}
             </Link>
             <Link
-              to={`/topic/${topicState.currentLargeTopic.friendlyUrl}-${topicState.currentLargeTopic.id}`}
+              to={`/topic/${topicState.smallTopic._id}`}
               className='breadcrumb-link'
             >
-              {topicState.currentLargeTopic.name}
+              {topicState.smallTopic.name}
             </Link>
             <Link
-              to={`/lesson/${lessonState.current.friendlyUrl}-${lessonState.current.id}`}
+              to={`/lesson/${lessonState.data._id}`}
               className='breadcrumb-current-link'
             >
-              {lessonState.current.name}
+              {lessonState.data.name}
             </Link>
           </Breadcrumbs>
         );

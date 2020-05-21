@@ -1,16 +1,14 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import * as topicAction from '../../redux/actions/topic';
 import { FixedContainer } from '../../components/Widgets';
 import { getIdByPathName } from '../../utils';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 
 const AssignmentPage: FunctionComponent<{
-  fetchSmallTopicByTopicId: Function;
   match: any;
-}> = ({ fetchSmallTopicByTopicId, match }) => {
+}> = ({ match }) => {
   useEffect(() => {
     const pathname = match.params.pathname;
     if (match.params.pathname) {
@@ -36,9 +34,6 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
     ...ownProps,
   };
 };
-const mapDispatchToProps = (dispatch: any) => ({
-  fetchSmallTopicByTopicId: (topicId: number) =>
-    dispatch(topicAction.fetchSmallTopicByTopicId(topicId)),
-});
+const mapDispatchToProps = (dispatch: any) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentPage);
