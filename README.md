@@ -104,3 +104,10 @@
 - Adjust all page, action, reducer, saga to compatible with backend.
 - Test perfectly and be able to design assignment feature.
 - Change note in README.md to Todo list.
+
+### Version 3.1
+
+23/5/2020
+
+- Added test mechanic.
+- Fix some bug of loading page.

@@ -32,7 +32,7 @@ const VideoDialog: FunctionComponent<{
 
   const handleOpenAssignment = (id: any) => {
     const newAssignmentArray = assignmentArray.map((assignment) => {
-      if (id === assignment.id) {
+      if (id === assignment._id) {
         if (assignment.isOpen)
           return { ...assignment, isOpen: !assignment.isOpen };
         else return { ...assignment, isOpen: true };
@@ -55,13 +55,15 @@ const VideoDialog: FunctionComponent<{
       TransitionComponent={Transition}
       classes={{ paper: 'video-dialog-container' }}
     >
-      {assignmentArray.map((assignment) => (
-        <AssignmentDialog
-          key={assignment._id}
-          assignment={assignment}
-          handleOpenAssignment={handleOpenAssignment}
-        />
-      ))}
+      {assignmentArray.map((assignment: any) =>
+        assignment.isOpen ? (
+          <AssignmentDialog
+            key={assignment._id}
+            assignment={assignment}
+            handleOpenAssignment={handleOpenAssignment}
+          />
+        ) : null
+      )}
       <div className='video-dialog-header'>
         <div className='video-dialog-header-title'>Bài tập</div>
         <IconButton
@@ -82,7 +84,7 @@ const VideoDialog: FunctionComponent<{
             onProgress={handleOpenAssignmentWhenTimeCome}
           />
           <div className='video-dialog-left-assignment-panel'>
-            {assignmentArray.map((assignment) => (
+            {assignmentArray.map((assignment: any) => (
               <div
                 key={assignment._id}
                 className='video-dialog-left-assignment-item-panel'
@@ -101,7 +103,7 @@ const VideoDialog: FunctionComponent<{
                 >
                   <IconButton
                     className='video-dialog-left-assignment-icon-panel'
-                    onClick={() => handleOpenAssignment(assignment.id)}
+                    onClick={() => handleOpenAssignment(assignment._id)}
                   >
                     <AssignmentIcon />
                   </IconButton>

@@ -71,20 +71,30 @@ const TopicContent: FunctionComponent<{
                 <AlarmIcon style={{ padding: '10px' }} />
               )}
               <div className='name-panel topic-detail-item-content'>
-                <Link
-                  to={`/lesson/${topic._id}`}
-                  className='name-panel link-panel'
-                >
-                  {topic.name}
-                </Link>
                 {topic.videoLink ? (
-                  <div className='topic-detail-number-question'>
-                    {`1 Bài giảng / ${topic.documentIds.length} Tài liệu / ${topic.assignmentIds.length} Bài tập`}
-                  </div>
+                  <React.Fragment>
+                    <Link
+                      to={`/lesson/${topic._id}`}
+                      className='name-panel link-panel'
+                    >
+                      {topic.name}
+                    </Link>
+                    <div className='topic-detail-number-question'>
+                      {`1 Bài giảng / ${topic.documentIds.length} Tài liệu / ${topic.assignmentIds.length} Bài tập`}
+                    </div>
+                  </React.Fragment>
                 ) : (
-                  <div className='topic-detail-number-question'>
-                    {`${topic.questionIds.length} Câu hỏi`}
-                  </div>
+                  <React.Fragment>
+                    <Link
+                      to={`/assignment/${topic._id}`}
+                      className='name-panel link-panel'
+                    >
+                      {topic.name}
+                    </Link>
+                    <div className='topic-detail-number-question'>
+                      {`${topic.questionIds.length} Câu hỏi`}
+                    </div>
+                  </React.Fragment>
                 )}
               </div>
               <div className='topic-item-progress'>-</div>

@@ -7,10 +7,11 @@ import { Breadcrumbs } from '@material-ui/core';
 
 const BreadCrumb: FunctionComponent<{
   courseState?: any;
-  lessonState?: any;
   topicState?: any;
+  lessonState?: any;
+  assignmentState?: any;
   path: any;
-}> = ({ courseState, lessonState, topicState, path }) => {
+}> = ({ courseState, lessonState, topicState, path, assignmentState }) => {
   const renderContent = () => {
     if (path === Routes.CATEGORY_SCREEN) {
       return (
@@ -29,7 +30,7 @@ const BreadCrumb: FunctionComponent<{
       );
     }
     if (path === Routes.COURSE_SCREEN) {
-      if (courseState.current) {
+      if (topicState.largeTopic) {
         return (
           <Breadcrumbs
             separator='›'
@@ -43,10 +44,10 @@ const BreadCrumb: FunctionComponent<{
               Tất cả các khóa học
             </Link>
             <Link
-              to={`/course/${courseState.current._id}`}
+              to={`/course/${topicState.largeTopic._id}`}
               className='breadcrumb-current-link'
             >
-              {courseState.current.name}
+              {topicState.largeTopic.name}
             </Link>
           </Breadcrumbs>
         );
@@ -113,6 +114,46 @@ const BreadCrumb: FunctionComponent<{
               className='breadcrumb-current-link'
             >
               {lessonState.data.name}
+            </Link>
+          </Breadcrumbs>
+        );
+      }
+    }
+    if (path === Routes.ASSIGNMENT_SCREEN) {
+      if (
+        topicState.largeTopic &&
+        topicState.smallTopic &&
+        assignmentState.data
+      ) {
+        return (
+          <Breadcrumbs
+            separator='›'
+            aria-label='breadcrumb'
+            className='breadcrumb-container'
+          >
+            <Link to='/' className='breadcrumb-link'>
+              Trang chủ
+            </Link>
+            <Link to='/category/all' className='breadcrumb-link'>
+              Tất cả các khóa học
+            </Link>
+            <Link
+              to={`/course/${topicState.largeTopic._id}`}
+              className='breadcrumb-link'
+            >
+              {topicState.largeTopic.name}
+            </Link>
+            <Link
+              to={`/topic/${topicState.smallTopic._id}`}
+              className='breadcrumb-link'
+            >
+              {topicState.smallTopic.name}
+            </Link>
+            <Link
+              to={`/assignment/${assignmentState.data._id}`}
+              className='breadcrumb-current-link'
+            >
+              {assignmentState.data.name}
             </Link>
           </Breadcrumbs>
         );

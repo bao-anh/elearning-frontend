@@ -59,7 +59,7 @@ const TopicSideBar: FunctionComponent<{
   };
 
   const renderLoading = () => {
-    if (path === Routes.LESSON_SCREEN) {
+    if (path === Routes.LESSON_SCREEN || path === Routes.ASSIGNMENT_SCREEN) {
       return topicState.isLoadingSmallTopic ? (
         <Loading />
       ) : (

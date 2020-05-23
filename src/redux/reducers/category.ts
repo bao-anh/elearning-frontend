@@ -16,7 +16,7 @@ export interface CategoryState {
 }
 
 const initState = {
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: '',
   current: 'all',

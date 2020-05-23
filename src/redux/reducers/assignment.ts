@@ -3,6 +3,7 @@ import Topic from '../../models/Topic';
 import { LessonAction } from '../actions/lesson';
 import {
   ASSIGNMENT_SET_DATA,
+  ASSIGNMENT_SET_PARTICIPANT_DATA,
   ASSIGNMENT_FETCH_ON_PROGRESS,
   ASSIGNMENT_FETCH_SUCCESS,
 } from '../actions/types';
@@ -14,7 +15,7 @@ export interface AssignmentState {
 }
 
 const initState = {
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: '',
 };
@@ -28,6 +29,12 @@ const assignmentState: Reducer<AssignmentState> = (
       return {
         ...state,
         data: action.assignment,
+      };
+    }
+    case ASSIGNMENT_SET_PARTICIPANT_DATA: {
+      return {
+        ...state,
+        data: action.data,
       };
     }
     case ASSIGNMENT_FETCH_ON_PROGRESS: {

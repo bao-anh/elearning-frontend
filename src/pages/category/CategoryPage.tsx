@@ -146,12 +146,12 @@ const CategoryPage: FunctionComponent<{
                   <ListItemText primary='Khóa học của tôi' />
                 </ListItem>
               </Link>
-              {categoryState.data.length ? (
+              {categoryState.isLoading ? (
+                <Loading />
+              ) : (
                 categoryArray.map((category: any) =>
                   renderCategoryItems(category)
                 )
-              ) : (
-                <Loading />
               )}
             </List>
           </Paper>
