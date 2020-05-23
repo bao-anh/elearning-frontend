@@ -1,6 +1,7 @@
 .video-dialog-container {
-  width: calc(100% - 100px);
-  height: calc(100% - 100px);
+  position: relative;
+  width: 100%;
+  height: 100%;
   margin: 0;
   z-index: 1;
 }

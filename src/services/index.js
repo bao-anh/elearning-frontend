@@ -11,7 +11,8 @@ export const getToken = () => {
 };
 
 export const removeToken = () => {
-  return window.localStorage.removeItem('token');
+  const token = getToken();
+  if (token) return window.localStorage.removeItem('token');
 };
 
 export const api = axios.create({

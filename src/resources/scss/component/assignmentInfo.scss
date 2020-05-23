@@ -1,0 +1,21 @@
+.assignment-info-item {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  justify-content: center;
+  align-items: center;
+}
+
+.assignment-info-title {
+  text-align: right;
+  padding-right: 5px;
+  font-weight: bold;
+  width: 50%;
+}
+
+.assignment-info-data {
+  text-align: left;
+  padding-left: 5px;
+  flex: 10;
+  width: 50%;
+}

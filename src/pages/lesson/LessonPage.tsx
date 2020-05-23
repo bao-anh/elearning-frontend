@@ -60,19 +60,16 @@ const LessonPage: FunctionComponent<{
             className='main-block-panel topic-content-find-media-element'
           >
             <div className='main-block-header-panel'>Mô tả</div>
-            {lessonState.isLoading ? (
-              <Loading />
-            ) : (
-              <div className='video-panel'>
-                <img
-                  className='video-panel-img'
-                  alt='video img'
-                  src='https://storage.googleapis.com/comaiphuong-edu-media/images/images_default_videojs.jpg'
-                  src-video-js='https://ngonngu.vncdn.vn/output/toeic450/part1/part1bai1304499552.mp4/1/2/1119/304499552.m3u8'
-                  onClick={() => setOpenVideo(true)}
-                />
-              </div>
-            )}
+            <div className='video-panel'>
+              <img
+                className='video-panel-img'
+                alt='video img'
+                src='https://storage.googleapis.com/comaiphuong-edu-media/images/images_default_videojs.jpg'
+                src-video-js='https://ngonngu.vncdn.vn/output/toeic450/part1/part1bai1304499552.mp4/1/2/1119/304499552.m3u8'
+                onClick={() => setOpenVideo(true)}
+              />
+            </div>
+            }
           </Paper>
           <TopicContent
             topicState={topicState}

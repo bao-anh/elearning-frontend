@@ -3,6 +3,8 @@ import {
   OPERATION_FETCH_DATA_IN_COURSE_PAGE,
   OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
+  OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
+  OPERATION_SUBMIT_ASSIGNMENT,
 } from '../actions/types';
 
 export interface OperationAction {
@@ -13,6 +15,10 @@ export interface OperationAction {
   credentials?: any;
   params?: any;
   userId?: number;
+  assignmentId?: number;
+  userAnswer?: any;
+  score?: any;
+  onSuccess?: any;
 }
 
 export function fetchDataInCategoryPage(
@@ -44,5 +50,27 @@ export function fetchDataInLessonPage(lessonId: any): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_LESSON_PAGE,
     lessonId,
+  };
+}
+
+export function fetchDataInAssignmentPage(assignmentId: any): OperationAction {
+  return {
+    type: OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
+    assignmentId,
+  };
+}
+
+export function submitAssignment(
+  assignmentId: any,
+  userAnswer: any,
+  score: any,
+  onSuccess: any
+) {
+  return {
+    type: OPERATION_SUBMIT_ASSIGNMENT,
+    assignmentId,
+    userAnswer,
+    score,
+    onSuccess,
   };
 }

@@ -34,7 +34,11 @@ const CoursePage: FunctionComponent<{
   return (
     <React.Fragment>
       <Banner />
-      <BreadCrumb path={match.path} courseState={courseState} />
+      <BreadCrumb
+        path={match.path}
+        courseState={courseState}
+        topicState={topicState}
+      />
       <Grid container className='container'>
         <Grid item xs={9}>
           <TopicContent path={match.path} topicState={topicState} />

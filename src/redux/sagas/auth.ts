@@ -1,5 +1,5 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
-import { api, setToken } from '../../services';
+import { api, setToken, removeToken } from '../../services';
 import {
   setUserInfo,
   fetchUserSuccess,
@@ -28,6 +28,7 @@ export function* login(action: any) {
   try {
     yield put(fetchUserOnProgress());
     const response = yield call(onLogin, action.credentials);
+    yield removeToken();
     yield setToken(response.data.token);
     const userInfo = yield call(getUserInfo);
     yield put(setUserInfo(userInfo.data));
