@@ -91,10 +91,28 @@ const AssignmentDialog: FunctionComponent<{
       if (question.correctAnswer === Number(userAnswer[index])) count++;
     });
     const score = 100 * (count / assignment.questionIds.length);
-    submitAssignment(assigmentState.data._id, userAnswer, score, () => {
-      setIsFetchApiSuccess(true);
-      setIsOverLay(false);
-    });
+
+    let percentComplete =
+      score / assignment.passPercent > 1
+        ? 100
+        : (score / assignment.passPercent) * 100;
+
+    if (assignment.progressIds.length) {
+      if (percentComplete <= assignment.progressIds[0].percentComplete) {
+        percentComplete = 0;
+      } else percentComplete -= assignment.progressIds[0].percentComplete;
+    }
+
+    submitAssignment(
+      assigmentState.data,
+      percentComplete,
+      userAnswer,
+      score,
+      () => {
+        setIsFetchApiSuccess(true);
+        setIsOverLay(false);
+      }
+    );
   };
 
   const handleCloseDialog = () => {
@@ -267,14 +285,16 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => ({
   submitAssignment: (
-    assignmentId: any,
+    assigment: any,
+    accumulatePercentComplete: any,
     userAnswer: any,
     score: any,
     onSuccess: any
   ) =>
     dispatch(
       operationAction.submitAssignment(
-        assignmentId,
+        assigment,
+        accumulatePercentComplete,
         userAnswer,
         score,
         onSuccess

@@ -69,7 +69,6 @@ const LessonPage: FunctionComponent<{
                 onClick={() => setOpenVideo(true)}
               />
             </div>
-            }
           </Paper>
           <TopicContent
             topicState={topicState}

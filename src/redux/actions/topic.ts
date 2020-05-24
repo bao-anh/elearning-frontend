@@ -15,6 +15,7 @@ export interface TopicAction {
   topicId?: any;
   largeTopic?: any;
   smallTopic?: any;
+  userId?: number;
 }
 
 export function fetchTopicByCourseId(courseId: number): TopicAction {

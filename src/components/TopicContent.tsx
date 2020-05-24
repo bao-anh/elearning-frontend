@@ -5,7 +5,7 @@ import Routes from '../routes';
 import { sortArrayByPropertyValue } from '../utils';
 import '../resources/scss/component/topicContent.scss';
 
-import { Paper } from '@material-ui/core';
+import { Paper, CircularProgress } from '@material-ui/core';
 import {
   Assignment as AssignmentIcon,
   Alarm as AlarmIcon,
@@ -42,7 +42,9 @@ const TopicContent: FunctionComponent<{
                     {`${assignment.questionIds.length} Câu hỏi`}
                   </div>
                 </div>
-                <div className='topic-item-progress'>-</div>
+                <div className='topic-item-progress'>
+                  {renderProgress(assignment)}
+                </div>
               </div>
             </div>
           </div>
@@ -97,7 +99,7 @@ const TopicContent: FunctionComponent<{
                   </React.Fragment>
                 )}
               </div>
-              <div className='topic-item-progress'>-</div>
+              <div className='topic-item-progress'>{renderProgress(topic)}</div>
             </div>
           </div>
         </div>
@@ -125,12 +127,28 @@ const TopicContent: FunctionComponent<{
                   {`${topic.lessonIds.length} Bài học`}
                 </div>
               </div>
-              <div className='topic-item-progress'>-</div>
+              <div className='topic-item-progress'>{renderProgress(topic)}</div>
             </div>
           </div>
         </div>
       ));
     }
+  };
+
+  const renderProgress = (element: any) => {
+    if (element.progressIds.length) {
+      return (
+        <div style={{ position: 'relative' }}>
+          <span className='topic-item-progress-content'>
+            {Math.round(element.progressIds[0].percentComplete)}%
+          </span>
+          <CircularProgress
+            variant='static'
+            value={Math.round(element.progressIds[0].percentComplete)}
+          />
+        </div>
+      );
+    } else return <span>-</span>;
   };
 
   const renderLoading = () => {

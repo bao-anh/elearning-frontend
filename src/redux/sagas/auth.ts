@@ -30,8 +30,7 @@ export function* login(action: any) {
     const response = yield call(onLogin, action.credentials);
     yield removeToken();
     yield setToken(response.data.token);
-    const userInfo = yield call(getUserInfo);
-    yield put(setUserInfo(userInfo.data));
+    yield put(setUserInfo(response.data.user));
     yield put(setAuthenticate(true));
     yield put(fetchUserSuccess());
   } catch (err) {
@@ -45,8 +44,7 @@ export function* register(action: any) {
     yield put(fetchUserOnProgress());
     const response = yield call(onRegister, action.credentials);
     yield setToken(response.data.token);
-    const userInfo = yield call(getUserInfo);
-    yield put(setUserInfo(userInfo.data));
+    yield put(setUserInfo(response.data.user));
     yield put(setAuthenticate(true));
     yield put(fetchUserSuccess());
   } catch (err) {

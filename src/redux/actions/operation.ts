@@ -19,6 +19,8 @@ export interface OperationAction {
   userAnswer?: any;
   score?: any;
   onSuccess?: any;
+  assignment?: any;
+  percentComplete?: any;
 }
 
 export function fetchDataInCategoryPage(
@@ -61,14 +63,16 @@ export function fetchDataInAssignmentPage(assignmentId: any): OperationAction {
 }
 
 export function submitAssignment(
-  assignmentId: any,
+  assignment: any,
+  percentComplete: any,
   userAnswer: any,
   score: any,
   onSuccess: any
 ) {
   return {
     type: OPERATION_SUBMIT_ASSIGNMENT,
-    assignmentId,
+    assignment,
+    percentComplete,
     userAnswer,
     score,
     onSuccess,

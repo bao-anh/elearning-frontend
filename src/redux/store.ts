@@ -36,11 +36,11 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2,
   transform: [encryptor],
   whitelist: [
-    'courseState',
-    'categoryState',
-    'topicState',
-    'assignmentState',
-    'lessonState',
+    // 'courseState',
+    // 'categoryState',
+    // 'topicState',
+    // 'assignmentState',
+    // 'lessonState',
     'authState',
   ],
 };

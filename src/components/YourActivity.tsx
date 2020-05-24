@@ -39,13 +39,19 @@ const columns: Column[] = [
 
 const YourActivity: FunctionComponent<{
   assignmentState: any;
-}> = ({ assignmentState }) => {
+  authState: any;
+}> = ({ assignmentState, authState }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openResult, handleOpenResult] = useState(-1);
 
   const { participantIds, questionIds } = assignmentState.data;
+
+  const yourParticipantIds = participantIds.filter((participant: any) => {
+    if (authState._id === participant.userId._id) return true;
+    else return false;
+  });
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -77,7 +83,7 @@ const YourActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score')
-      return `${(participant.score / 100) * questionIds.length}/${
+      return `${Math.round((participant.score / 100) * questionIds.length)}/${
         questionIds.length
       }`;
   };
@@ -107,7 +113,7 @@ const YourActivity: FunctionComponent<{
             </TableRow>
           </TableHead>
           <TableBody>
-            {participantIds
+            {yourParticipantIds
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((participant: any, index: number) => {
                 return (
@@ -137,7 +143,7 @@ const YourActivity: FunctionComponent<{
       <TablePagination
         rowsPerPageOptions={[5, 10, 20]}
         component='div'
-        count={participantIds.length}
+        count={yourParticipantIds.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
