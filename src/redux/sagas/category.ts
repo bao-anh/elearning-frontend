@@ -8,7 +8,7 @@ import {
 import { CATEGORY_FETCH_ALL } from '../actions/types';
 
 const getAllCategory = () => {
-  return api.get('/categories/get-all-with-course');
+  return api.get(`/categories/get-all-with-course/`);
 };
 
 export function* fetchAllCategory() {

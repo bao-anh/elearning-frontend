@@ -64,7 +64,7 @@ const CurrentActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score')
-      return `${(participant.score / 100) * questionIds.length}/${
+      return `${Math.round((participant.score / 100) * questionIds.length)}/${
         questionIds.length
       }`;
   };

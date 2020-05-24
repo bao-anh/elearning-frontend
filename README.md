@@ -111,3 +111,10 @@
 
 - Added test mechanic.
 - Fix some bug of loading page.
+
+### Version 3.2
+
+- Added progress
+- Fix authenticate bug
+- Fix bug when change user
+- Clear redux persist store, only remain authState

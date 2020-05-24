@@ -92,13 +92,46 @@ const CategoryPage: FunctionComponent<{
   };
 
   const renderPriceOfItem = (course: any) => {
-    return authState.courseIds.map((courseId: any) =>
-      courseId === course._id ? (
-        <div key={courseId} className='category-content-already-purchase'>
-          Đã mua
-        </div>
-      ) : course.currentPrice / course.realPrice < 1 ? (
-        <React.Fragment key={courseId}>
+    if (authState.courseIds.length) {
+      return authState.courseIds.map((userCourse: any) =>
+        userCourse._id === course._id ? (
+          <React.Fragment key={userCourse._id}>
+            {userCourse.progressIds.length ? (
+              <span style={{ marginRight: '10px' }}>
+                {`${
+                  course.progressIds[0]
+                    ? Math.round(course.progressIds[0].percentComplete * 10) /
+                      10
+                    : 0
+                } %`}
+              </span>
+            ) : null}
+            <div
+              key={userCourse._id}
+              className='category-content-already-purchase'
+            >
+              Đã mua
+            </div>
+          </React.Fragment>
+        ) : course.currentPrice / course.realPrice < 1 ? (
+          <React.Fragment key={userCourse._id}>
+            <div className='category-content-sale'>
+              {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
+              <ArrowDownwardIcon fontSize='inherit' />
+            </div>
+            <div className='category-content-cost'>
+              {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
+            </div>
+          </React.Fragment>
+        ) : (
+          <div key={userCourse._id} className='category-content-cost'>
+            {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
+          </div>
+        )
+      );
+    } else {
+      return course.currentPrice / course.realPrice < 1 ? (
+        <React.Fragment key={course._id}>
           <div className='category-content-sale'>
             {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
             <ArrowDownwardIcon fontSize='inherit' />
@@ -108,11 +141,11 @@ const CategoryPage: FunctionComponent<{
           </div>
         </React.Fragment>
       ) : (
-        <div key={courseId} className='category-content-cost'>
+        <div key={course._id} className='category-content-cost'>
           {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
         </div>
-      )
-    );
+      );
+    }
   };
 
   return (
@@ -121,39 +154,39 @@ const CategoryPage: FunctionComponent<{
       <Grid container className='container'>
         <Grid item xs={3}>
           <Paper elevation={1} className='category-left-side'>
-            <List component='nav' aria-labelledby='nested-list-subheader'>
-              <Link to='/category/all' className='category-content-link'>
-                <ListItem
-                  button
-                  style={
-                    categoryState.current === 'all'
-                      ? { backgroundColor: '#e0e0e0' }
-                      : {}
-                  }
-                >
-                  <ListItemText primary='Tất cả khóa học' />
-                </ListItem>
-              </Link>
-              <Link to='/category/me' className='category-content-link'>
-                <ListItem
-                  button
-                  style={
-                    categoryState.current === 'me'
-                      ? { backgroundColor: '#e0e0e0' }
-                      : {}
-                  }
-                >
-                  <ListItemText primary='Khóa học của tôi' />
-                </ListItem>
-              </Link>
-              {categoryState.isLoading ? (
-                <Loading />
-              ) : (
-                categoryArray.map((category: any) =>
+            {categoryState.isLoading ? (
+              <Loading />
+            ) : (
+              <List component='nav' aria-labelledby='nested-list-subheader'>
+                <Link to='/category/all' className='category-content-link'>
+                  <ListItem
+                    button
+                    style={
+                      categoryState.current === 'all'
+                        ? { backgroundColor: '#e0e0e0' }
+                        : {}
+                    }
+                  >
+                    <ListItemText primary='Tất cả khóa học' />
+                  </ListItem>
+                </Link>
+                <Link to='/category/me' className='category-content-link'>
+                  <ListItem
+                    button
+                    style={
+                      categoryState.current === 'me'
+                        ? { backgroundColor: '#e0e0e0' }
+                        : {}
+                    }
+                  >
+                    <ListItemText primary='Khóa học của tôi' />
+                  </ListItem>
+                </Link>
+                {categoryArray.map((category: any) =>
                   renderCategoryItems(category)
-                )
-              )}
-            </List>
+                )}
+              </List>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={9}>

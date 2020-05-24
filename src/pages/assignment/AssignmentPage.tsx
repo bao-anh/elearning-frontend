@@ -25,6 +25,7 @@ const AssignmentPage: FunctionComponent<{
   courseState: any;
   topicState: any;
   lessonState: any;
+  authState: any;
 }> = ({
   fetchDataInAssignmentPage,
   match,
@@ -32,6 +33,7 @@ const AssignmentPage: FunctionComponent<{
   topicState,
   lessonState,
   courseState,
+  authState,
 }) => {
   useEffect(() => {
     fetchDataInAssignmentPage(match.params.id);
@@ -61,17 +63,17 @@ const AssignmentPage: FunctionComponent<{
             {assignmentState.isLoading ? (
               <Loading />
             ) : (
-              <AssignmentInfo
-                assignmentState={assignmentState}
-                setOpenAssignment={setOpenAssignment}
-              />
+              <AssignmentInfo setOpenAssignment={setOpenAssignment} />
             )}
           </HeaderPanel>
           <HeaderPanel title='Các bài làm gần đây của bạn'>
             {assignmentState.isLoading ? (
               <Loading />
             ) : (
-              <YourActivity assignmentState={assignmentState} />
+              <YourActivity
+                assignmentState={assignmentState}
+                authState={authState}
+              />
             )}
           </HeaderPanel>
           <HeaderPanel title='Các bài làm gần đây của mọi người'>
@@ -106,6 +108,7 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
     courseState: state.courseState,
     topicState: state.topicState,
     lessonState: state.lessonState,
+    authState: state.authState,
     ...ownProps,
   };
 };

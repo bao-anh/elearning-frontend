@@ -36,6 +36,7 @@ import { getLessonByLessonId } from './lesson';
 import { getTopicByTopicId } from './topic';
 import { getAssignmentByAssignmentId } from './assignment';
 import { getParticipantSubmitAssignment } from './participant';
+import { createOrUpdateProgressChain } from './progress';
 
 export function* fetchDataInCategoryPage(action: any) {
   try {
@@ -100,6 +101,7 @@ export function* fetchDataInAssignmentPage(action: any) {
       getAssignmentByAssignmentId,
       action.assignmentId
     );
+
     yield put(setAssignment(response.data));
     yield put(fetchAssignmentSuccess());
 
@@ -113,17 +115,38 @@ export function* fetchDataInAssignmentPage(action: any) {
 export function* submitAssignment(action: any) {
   try {
     const userInfo = yield select((state) => state.authState);
+
     const payload = {
       userId: userInfo._id,
-      assignmentId: action.assignmentId,
+      assignmentId: action.assignment._id,
       userAnswer: action.userAnswer,
       score: action.score,
     };
     yield call(getParticipantSubmitAssignment, payload);
+
+    if (action.percentComplete > 0) {
+      const progressPayload = {
+        userId: userInfo._id,
+        percentComplete: action.percentComplete,
+        lessonId: action.assignment.lessonId || null,
+        assignmentId: action.assignment._id,
+        topicId: action.assignment.topicId,
+        courseId: action.assignment.courseId,
+      };
+      yield createOrUpdateProgressChain(progressPayload);
+    }
+
+    if (action.lessonId) {
+      const lesson = yield call(getLessonByLessonId, action.lessonId);
+      console.log(lesson.data);
+      yield put(setLesson(lesson.data));
+    }
+
     const assignment = yield call(
       getAssignmentByAssignmentId,
-      action.assignmentId
+      action.assignment._id
     );
+
     yield put(setAssignment(assignment.data));
     action.onSuccess();
   } catch (err) {
