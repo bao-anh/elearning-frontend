@@ -1,13 +1,12 @@
 # Todo list
 
 - Làm giao diện Admin [3]
-- Làm phần top hot course, top sale course trong Dashboard [2]
-- Sửa lại lỗi quá hạn token [2]
 - Validate Signin, Register page [2]
 - Hiện snackbar nếu lỗi ở backend [1]
-- Làm responsive cho app [1]
-- Làm thanh hiển thị thay đổi theo người dùng click chuột [1]
-- Làm chức năng thay đổi ngôn ngữ [1]
+- Làm page theo dõi tiến độ học tập [3]
+- Làm document page, member page [3]
+- Làm 404 page [3]
+- Làm chức năng không cho phép người dùng khi chưa mua khóa học [4]
 
 **Mai Gia Bảo Anh**
 
@@ -113,6 +112,8 @@
 - Fix some bug of loading page.
 
 ### Version 3.2
+
+24/5/2020
 
 - Added progress
 - Fix authenticate bug
