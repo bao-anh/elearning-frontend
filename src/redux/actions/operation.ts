@@ -4,6 +4,7 @@ import {
   OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
+  OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
   OPERATION_PURCHASE_COURSE,
 } from '../actions/types';
@@ -61,6 +62,13 @@ export function fetchDataInAssignmentPage(assignmentId: any): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
     assignmentId,
+  };
+}
+
+export function fetchDataInUtilityPage(courseId: any): OperationAction {
+  return {
+    type: OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
+    courseId,
   };
 }
 

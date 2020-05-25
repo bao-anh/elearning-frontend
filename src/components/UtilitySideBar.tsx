@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 
 import { Paper } from '@material-ui/core';
@@ -22,29 +23,29 @@ const UtilitySideBar: FunctionComponent<{ topicState: any }> = ({
             <div className='ultility-content-panel'>
               <AssignmentIcon className='ultility-content-item' />
               <div className='ultility-content-item'>
-                <a
-                  href='https://www.google.com/'
+                <Link
+                  to={`/utility/${topicState.largeTopic._id}`}
                   style={{ textDecoration: 'none' }}
                 >
                   {'Tài liệu '}
                   <span className='ultility-quantity'>
                     {topicState.largeTopic.documentIds.length}
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
             <div className='ultility-content-panel'>
               <GroupIcon className='ultility-content-item' />
               <div className='ultility-content-item'>
-                <a
-                  href='https://www.google.com/'
+                <Link
+                  to={`/utility/${topicState.largeTopic._id}`}
                   style={{ textDecoration: 'none' }}
                 >
                   {'Thành viên '}
                   <span className='ultility-quantity'>
                     {topicState.largeTopic.memberIds.length}
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
           </React.Fragment>

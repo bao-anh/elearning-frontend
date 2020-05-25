@@ -25,6 +25,10 @@ export const getCourseByUserId = (userId: number) => {
   return api.get(`/users/${userId}/courses`);
 };
 
+export const getCourseByCourseId = (courseId: number) => {
+  return api.get(`/courses/${courseId}`);
+};
+
 export const updateMemberInCourseByCourseId = (courseId: number) => {
   return api.put(`/courses/${courseId}/user`);
 };

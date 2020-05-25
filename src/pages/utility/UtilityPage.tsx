@@ -1,36 +1,27 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import * as operationAction from '../../redux/actions/operation';
 import Banner from '../../components/Banner';
 import BreadCrumb from '../../components/BreadCrumb';
 import PurchaseWarningDialog from '../../components/PurchaseWarningDialog';
-import TopicContent from '../../components/TopicContent';
-import UserInfoSideBar from '../../components/UserInfoSideBar';
 import UtilitySideBar from '../../components/UtilitySideBar';
-import Comment from '../../components/Comment';
-import '../../resources/scss/about.scss';
-import '../../resources/scss/main.scss';
+import UserInfoSideBar from '../../components/UserInfoSideBar';
+import HeaderPanel from '../../components/HeaderPanel';
+import Loading from '../../components/Loading';
+import MemberTable from '../../components/MemberTable';
+import ReferenceTable from '../../components/ReferenceTable';
+import * as operationAction from '../../redux/actions/operation';
 
 import { Grid } from '@material-ui/core';
 
-const CoursePage: FunctionComponent<{
-  fetchDataInCoursePage: Function;
+const UtilityPage: FunctionComponent<{
+  fetchDataInUtilityPage: Function;
   match: any;
-  courseState: any;
   topicState: any;
-  lessonState: any;
   authState: any;
-}> = ({
-  fetchDataInCoursePage,
-  match,
-  courseState,
-  topicState,
-  lessonState,
-  authState,
-}) => {
+}> = ({ match, fetchDataInUtilityPage, topicState, authState }) => {
   useEffect(() => {
-    fetchDataInCoursePage(match.params.id);
+    fetchDataInUtilityPage(match.params.id);
     //eslint-disable-next-line
   }, [match]);
 
@@ -45,8 +36,20 @@ const CoursePage: FunctionComponent<{
       />
       <Grid container className='container'>
         <Grid item xs={9}>
-          <TopicContent path={match.path} topicState={topicState} />
-          <Comment />
+          <HeaderPanel title='Danh sách thành viên'>
+            {topicState.isLoadingLargeTopic ? (
+              <Loading />
+            ) : (
+              <MemberTable topicState={topicState} />
+            )}
+          </HeaderPanel>
+          <HeaderPanel title='Danh sách tài liệu'>
+            {topicState.isLoadingLargeTopic ? (
+              <Loading />
+            ) : (
+              <ReferenceTable topicState={topicState} />
+            )}
+          </HeaderPanel>
         </Grid>
         <Grid item xs={3}>
           <UserInfoSideBar authState={authState} topicState={topicState} />
@@ -59,16 +62,14 @@ const CoursePage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
-    courseState: state.courseState,
     topicState: state.topicState,
-    lessonState: state.lessonState,
     authState: state.authState,
     ...ownProps,
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInCoursePage: (courseId: number) =>
-    dispatch(operationAction.fetchDataInCoursePage(courseId)),
+  fetchDataInUtilityPage: (courseId: number) =>
+    dispatch(operationAction.fetchDataInUtilityPage(courseId)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);
+export default connect(mapStateToProps, mapDispatchToProps)(UtilityPage);

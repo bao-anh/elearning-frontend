@@ -8,6 +8,7 @@ import TopicPage from './pages/topic/TopicPage';
 import AssignmentPage from './pages/assignment/AssignmentPage';
 import SignInPage from './pages/auth/SignInPage';
 import RegisterPage from './pages/auth/RegisterPage';
+import UtilityPage from './pages/utility/UtilityPage';
 import Routes from './routes';
 import Layout from './components/Layout';
 import PrivateRoute from './PrivateRoute';
@@ -53,6 +54,11 @@ function App() {
             exact
             path={Routes.ASSIGNMENT_SCREEN}
             component={AssignmentPage}
+          />
+          <PrivateRoute
+            exact
+            path={Routes.UTILITY_SCREEN}
+            component={UtilityPage}
           />
         </Switch>
       </Layout>
