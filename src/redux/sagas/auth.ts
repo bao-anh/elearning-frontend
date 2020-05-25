@@ -24,6 +24,10 @@ const getUserInfo = () => {
   return api.get('auth');
 };
 
+export const updateCourseIds = (courseId: any) => {
+  return api.put('users/courses', { courseId });
+};
+
 export function* login(action: any) {
   try {
     yield put(fetchUserOnProgress());

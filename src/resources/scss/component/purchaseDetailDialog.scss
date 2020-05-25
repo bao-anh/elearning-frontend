@@ -1,0 +1,55 @@
+.purchase-dialog {
+  width: 80%;
+  margin: 0;
+  background-color: #f7f7f3;
+}
+
+.purchase-dialog-container {
+  background-color: #f7f7f3;
+}
+
+.purchase-dialog-content {
+  display: flex;
+  padding: 10px 10px 0 10px;
+}
+
+.right-content-title {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.purchase-dialog-left-content {
+  flex: 10;
+}
+
+.purchase-dialog-right-content {
+  flex: 10;
+  padding-left: 10px;
+}
+
+.purchase-dialog-flex {
+  text-align: center;
+  align-items: center;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.purchase-dialog-text {
+  color: black;
+}
+
+.purchase-dialog-button {
+  display: flex;
+  margin: 10px 10px 5px 10px;
+}
+
+.purchase-dialog-description-text {
+  margin-top: 10px;
+  overflow: hidden !important;
+  text-align: left;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  color: #6d6d6d;
+}

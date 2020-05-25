@@ -105,6 +105,7 @@ const AssignmentDialog: FunctionComponent<{
 
     submitAssignment(
       assigmentState.data,
+      assignment,
       percentComplete,
       userAnswer,
       score,
@@ -285,7 +286,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => ({
   submitAssignment: (
-    assigment: any,
+    assigmentState: any,
+    assignment: any,
     accumulatePercentComplete: any,
     userAnswer: any,
     score: any,
@@ -293,7 +295,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   ) =>
     dispatch(
       operationAction.submitAssignment(
-        assigment,
+        assigmentState,
+        assignment,
         accumulatePercentComplete,
         userAnswer,
         score,

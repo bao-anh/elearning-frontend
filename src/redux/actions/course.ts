@@ -7,6 +7,7 @@ import {
   COURSE_SET_CURRENT_DATA,
   COURSE_FETCH_SUCCESS,
   COURSE_FETCH_ON_PROGRESS,
+  COURSE_UPDATE_DATA,
 } from '../actions/types';
 
 export interface CourseAction {
@@ -16,6 +17,7 @@ export interface CourseAction {
   course?: Array<Course>;
   currentCourse?: Course;
   userId?: number;
+  payload?: any;
 }
 
 export function fetchAllCourse(): CourseAction {
@@ -49,6 +51,13 @@ export function setCurrentCourse(currentCourse: any): CourseAction {
   return {
     type: COURSE_SET_CURRENT_DATA,
     currentCourse,
+  };
+}
+
+export function updateCourse(courseId: any): CourseAction {
+  return {
+    type: COURSE_UPDATE_DATA,
+    courseId,
   };
 }
 

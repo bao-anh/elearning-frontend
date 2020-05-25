@@ -7,6 +7,7 @@ import Loading from '../../components/Loading';
 import AssignmentInfo from '../../components/AssignmentInfo';
 import Comment from '../../components/Comment';
 import TopicSideBar from '../../components/TopicSideBar';
+import PurchaseWarningDialog from '../../components/PurchaseWarningDialog';
 import UserInfoSideBar from '../../components/UserInfoSideBar';
 import UtilitySideBar from '../../components/UtilitySideBar';
 import BreadCrumb from '../../components/BreadCrumb';
@@ -48,6 +49,11 @@ const AssignmentPage: FunctionComponent<{
         path={match.path}
         courseState={courseState}
         topicState={topicState}
+        assignmentState={assignmentState}
+      />
+      <PurchaseWarningDialog
+        match={match}
+        authState={authState}
         assignmentState={assignmentState}
       />
       <Grid container className='container'>
@@ -94,7 +100,7 @@ const AssignmentPage: FunctionComponent<{
             currentId={match.params.id}
             topicState={topicState}
           />
-          <UserInfoSideBar lessonState={lessonState} />
+          <UserInfoSideBar authState={authState} topicState={topicState} />
           <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>

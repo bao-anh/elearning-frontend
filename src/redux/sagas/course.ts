@@ -1,11 +1,13 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
 import {
+  fetchAllCourse as fetchAllCourseAction,
   setCourse,
   fetchCourseSuccess,
   fetchCourseOnProgress,
 } from '../actions/course';
 import {
+  COURSE_UPDATE_DATA,
   COURSE_FETCH_ALL,
   COURSE_FETCH_BY_USER_ID,
   COURSE_FETCH_BY_CATEGORY_ID,
@@ -21,6 +23,10 @@ export const getCourseByCategoryId = (categoryId: number) => {
 
 export const getCourseByUserId = (userId: number) => {
   return api.get(`/users/${userId}/courses`);
+};
+
+export const updateMemberInCourseByCourseId = (courseId: number) => {
+  return api.put(`/courses/${courseId}/user`);
 };
 
 export function* fetchAllCourse() {
@@ -56,6 +62,15 @@ export function* fetchCourseByUserId(action: any) {
   }
 }
 
+export function* updateCourse(action: any) {
+  try {
+    yield call(updateMemberInCourseByCourseId, action.courseId);
+    yield put(fetchAllCourseAction());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* watchFetchAllCourse() {
   yield takeLatest(COURSE_FETCH_ALL, fetchAllCourse);
 }
@@ -68,8 +83,13 @@ export function* watchFetchCourseByUserId() {
   yield takeLatest(COURSE_FETCH_BY_USER_ID, fetchCourseByUserId);
 }
 
+export function* watchUpdateCourse() {
+  yield takeLatest(COURSE_UPDATE_DATA, updateCourse);
+}
+
 export default function* course() {
   yield fork(watchFetchAllCourse);
   yield fork(watchFetchCourseByCategoryId);
   yield fork(watchFetchCourseByUserId);
+  yield fork(watchUpdateCourse);
 }

@@ -6,8 +6,6 @@ import { Paper } from '@material-ui/core';
 import {
   Assignment as AssignmentIcon,
   Group as GroupIcon,
-  EventNote as EventNoteIcon,
-  Note as NoteIcon,
 } from '@material-ui/icons';
 
 const UtilitySideBar: FunctionComponent<{ topicState: any }> = ({
@@ -46,29 +44,6 @@ const UtilitySideBar: FunctionComponent<{ topicState: any }> = ({
                   <span className='ultility-quantity'>
                     {topicState.largeTopic.memberIds.length}
                   </span>
-                </a>
-              </div>
-            </div>
-            <div className='ultility-content-panel'>
-              <EventNoteIcon className='ultility-content-item' />
-              <div className='ultility-content-item'>
-                <a
-                  href='https://www.google.com/'
-                  style={{ textDecoration: 'none' }}
-                >
-                  {'Lịch học '}
-                  <span className='ultility-quantity'>0</span>
-                </a>
-              </div>
-            </div>
-            <div className='ultility-content-panel'>
-              <NoteIcon className='ultility-content-item' />
-              <div className='ultility-content-item'>
-                <a
-                  href='https://www.google.com/'
-                  style={{ textDecoration: 'none' }}
-                >
-                  {'Ghi chú '}
                 </a>
               </div>
             </div>

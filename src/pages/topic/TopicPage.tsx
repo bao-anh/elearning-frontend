@@ -2,6 +2,7 @@ import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
+import PurchaseWarningDialog from '../../components/PurchaseWarningDialog';
 import BreadCrumb from '../../components/BreadCrumb';
 import TopicContent from '../../components/TopicContent';
 import TopicSideBar from '../../components/TopicSideBar';
@@ -19,12 +20,14 @@ const TopicPage: FunctionComponent<{
   courseState: any;
   topicState: any;
   lessonState: any;
+  authState: any;
 }> = ({
   fetchDataInTopicPage,
   match,
   courseState,
   topicState,
   lessonState,
+  authState,
 }) => {
   useEffect(() => {
     fetchDataInTopicPage(match.params.id);
@@ -38,6 +41,11 @@ const TopicPage: FunctionComponent<{
         courseState={courseState}
         topicState={topicState}
       />
+      <PurchaseWarningDialog
+        match={match}
+        authState={authState}
+        topicState={topicState}
+      />
       <Grid container className='container'>
         <Grid item xs={9}>
           <TopicContent path={match.path} topicState={topicState} />
@@ -49,7 +57,7 @@ const TopicPage: FunctionComponent<{
             currentId={match.params.id}
             topicState={topicState}
           />
-          <UserInfoSideBar lessonState={lessonState} />
+          <UserInfoSideBar authState={authState} topicState={topicState} />
           <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>
@@ -62,6 +70,7 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
     courseState: state.courseState,
     topicState: state.topicState,
     lessonState: state.lessonState,
+    authState: state.authState,
     ...ownProps,
   };
 };

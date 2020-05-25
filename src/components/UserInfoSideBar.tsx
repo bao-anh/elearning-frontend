@@ -1,46 +1,47 @@
 import React, { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
 import UserImage from '../resources/images/user.png';
+import Loading from './Loading';
 
 import '../resources/scss/component/userInfoSideBar.scss';
 
 import { Paper, Grid, Avatar } from '@material-ui/core';
 
 const UserInfoSideBar: FunctionComponent<{
-  lessonState: any;
-}> = ({ lessonState }) => {
-  const renderCurrentLesson = () => {
-    const currentLesson = lessonState.data;
-    if (currentLesson) {
-      return (
-        <Link to={`/lesson/${currentLesson._id}`} className='link'>
-          {currentLesson.name}
-        </Link>
-      );
-    } else return 'Bạn chưa học bài nào';
-  };
-
+  authState: any;
+  topicState: any;
+}> = ({ authState, topicState }) => {
   return (
     <Paper elevation={1} className='custom-block-panel user-info-panel'>
       <div className='custom-block-header-panel'>Thông tin cá nhân</div>
       <div className='custom-block-content-panel'>
-        <Grid container spacing={1} className='user-info-title-panel'>
-          <Grid item xs={3}>
-            <Avatar
-              alt='user default image'
-              src={UserImage}
-              style={{ width: '100%', height: 'auto' }}
-            />
-          </Grid>
-          <Grid item xs={9}>
-            <div style={{ fontWeight: 'bold' }}> Mai Gia Bao Anh </div>
-            <div style={{ fontStyle: 'italic' }}>anh.mgb150078@gmail.com</div>
-          </Grid>
-        </Grid>
-        <div className='user-info-content-panel'>Điểm kinh nghiệm: 600</div>
-        <div className='user-info-content-panel'>
-          Bài học gần đây: {renderCurrentLesson()}
-        </div>
+        {topicState.isLoadingLargeTopic ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <Grid container spacing={1} className='user-info-title-panel'>
+              <Grid item xs={3}>
+                <Avatar
+                  alt='user default image'
+                  src={UserImage}
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </Grid>
+              <Grid item xs={9}>
+                <div style={{ fontWeight: 'bold' }}>{authState.name}</div>
+                <div style={{ fontStyle: 'italic' }}>{authState.email}</div>
+              </Grid>
+            </Grid>
+            <div className='user-info-content-panel'>
+              {`Tiến độ hoàn thành khóa học: ${
+                topicState.largeTopic.progressIds.length
+                  ? Math.round(
+                      topicState.largeTopic.progressIds[0].percentComplete * 10
+                    ) / 10
+                  : 0
+              } %`}
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </Paper>
   );

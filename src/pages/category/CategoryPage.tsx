@@ -5,6 +5,7 @@ import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
 import BreadCrumb from '../../components/BreadCrumb';
 import Loading from '../../components/Loading';
+import PurchaseDetailDialog from '../../components/PurchaseDetailDialog';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 import '../../resources/scss/category.scss';
@@ -27,14 +28,18 @@ import {
 
 const CategoryPage: FunctionComponent<{
   fetchDataInCategoryPage: Function;
+  purchaseCourse: Function;
   match: any;
+  history: any;
   categoryState: any;
   courseState: any;
   authState: any;
 }> = ({
   fetchDataInCategoryPage,
+  purchaseCourse,
   categoryState,
   match,
+  history,
   courseState,
   authState,
 }) => {
@@ -44,6 +49,10 @@ const CategoryPage: FunctionComponent<{
   }, [match]);
 
   const [categoryArray, setCategoryArray] = useState(categoryState.data);
+  const [isOpenPurchaseDetailCourse, setIsOpenPurchaseDetailCourse] = useState(
+    false
+  );
+  const [forcusCourse, setForcusCourse] = useState(null);
 
   const handleExpandList = (id: any) => {
     const newCategoryArray = categoryArray.map((category: any) => {
@@ -93,11 +102,16 @@ const CategoryPage: FunctionComponent<{
 
   const renderPriceOfItem = (course: any) => {
     if (authState.courseIds.length) {
-      return authState.courseIds.map((userCourse: any) =>
-        userCourse._id === course._id ? (
-          <React.Fragment key={userCourse._id}>
-            {userCourse.progressIds.length ? (
-              <span style={{ marginRight: '10px' }}>
+      const isPurchased =
+        authState.courseIds.filter(
+          (userCourse: any) => userCourse._id === course._id
+        ).length > 0;
+
+      return isPurchased ? (
+        <React.Fragment>
+          {authState.courseIds.map((userCourse: any) =>
+            userCourse._id === course._id ? (
+              <span key={userCourse._id} style={{ marginRight: '10px' }}>
                 {`${
                   course.progressIds[0]
                     ? Math.round(course.progressIds[0].percentComplete * 10) /
@@ -105,29 +119,24 @@ const CategoryPage: FunctionComponent<{
                     : 0
                 } %`}
               </span>
-            ) : null}
-            <div
-              key={userCourse._id}
-              className='category-content-already-purchase'
-            >
-              Đã mua
-            </div>
-          </React.Fragment>
-        ) : course.currentPrice / course.realPrice < 1 ? (
-          <React.Fragment key={userCourse._id}>
-            <div className='category-content-sale'>
-              {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
-              <ArrowDownwardIcon fontSize='inherit' />
-            </div>
-            <div className='category-content-cost'>
-              {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
-            </div>
-          </React.Fragment>
-        ) : (
-          <div key={userCourse._id} className='category-content-cost'>
+            ) : null
+          )}
+          <div className='category-content-already-purchase'>Đã mua</div>
+        </React.Fragment>
+      ) : course.currentPrice / course.realPrice < 1 ? (
+        <React.Fragment>
+          <div className='category-content-sale'>
+            {`${100 - (course.currentPrice / course.realPrice) * 100}%`}
+            <ArrowDownwardIcon fontSize='inherit' />
+          </div>
+          <div className='category-content-cost'>
             {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
           </div>
-        )
+        </React.Fragment>
+      ) : (
+        <div className='category-content-cost'>
+          {course.currentPrice ? `${course.currentPrice}đ` : 'FREE'}
+        </div>
       );
     } else {
       return course.currentPrice / course.realPrice < 1 ? (
@@ -148,9 +157,27 @@ const CategoryPage: FunctionComponent<{
     }
   };
 
+  const handleClickOnCourse = (course: any) => {
+    const isPurchased = authState.courseIds.filter(
+      (userCourse: any) => userCourse._id === course._id
+    ).length;
+
+    if (!authState.courseIds.length) setIsOpenPurchaseDetailCourse(true);
+    else if (!isPurchased) setIsOpenPurchaseDetailCourse(true);
+    else history.push(`/course/${course._id}`);
+  };
+
   return (
     <React.Fragment>
       <BreadCrumb path={match.path} />
+      {forcusCourse ? (
+        <PurchaseDetailDialog
+          course={forcusCourse}
+          purchaseCourse={purchaseCourse}
+          isOpenPurchaseDetailCourse={isOpenPurchaseDetailCourse}
+          setIsOpenPurchaseDetailCourse={setIsOpenPurchaseDetailCourse}
+        />
+      ) : null}
       <Grid container className='container'>
         <Grid item xs={3}>
           <Paper elevation={1} className='category-left-side'>
@@ -192,33 +219,38 @@ const CategoryPage: FunctionComponent<{
         <Grid item xs={9}>
           {courseState.data.length ? (
             courseState.data.map((course: any) => (
-              <Paper key={course._id} className='category-content-item'>
-                <Link
-                  to={`/course/${course._id}`}
-                  className='category-content-link'
+              <React.Fragment key={course._id}>
+                <Paper
+                  className='category-content-item'
+                  onClick={() => {
+                    setForcusCourse(course);
+                    handleClickOnCourse(course);
+                  }}
                 >
-                  <img
-                    src={course.avatar}
-                    alt={course.name}
-                    className='category-content-avatar'
-                  />
-                  <div className='category-content-title'>{course.name}</div>
-                  <div className='category-content-description'>
-                    <Typography variant='subtitle2'>
-                      {course.description}
-                    </Typography>
-                  </div>
-                  <div className='category-content-footer'>
-                    <div className='category-content-member'>
-                      <PersonIcon />
-                      <div className='category-content-member-text'>
-                        {` ${course.memberIds.length} Học viên`}
-                      </div>
+                  <div className='category-content-link'>
+                    <img
+                      src={course.avatar}
+                      alt={course.name}
+                      className='category-content-avatar'
+                    />
+                    <div className='category-content-title'>{course.name}</div>
+                    <div className='category-content-description'>
+                      <Typography variant='subtitle2'>
+                        {course.description}
+                      </Typography>
                     </div>
-                    {renderPriceOfItem(course)}
+                    <div className='category-content-footer'>
+                      <div className='category-content-member'>
+                        <PersonIcon />
+                        <div className='category-content-member-text'>
+                          {` ${course.memberIds.length} Học viên`}
+                        </div>
+                      </div>
+                      {renderPriceOfItem(course)}
+                    </div>
                   </div>
-                </Link>
-              </Paper>
+                </Paper>
+              </React.Fragment>
             ))
           ) : (
             <Loading />
@@ -240,6 +272,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchDataInCategoryPage: (params: any, userId: any) =>
     dispatch(operationAction.fetchDataInCategoryPage(params, userId)),
+  purchaseCourse: (courseId: any, onSuccess: any) =>
+    dispatch(operationAction.purchaseCourse(courseId, onSuccess)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

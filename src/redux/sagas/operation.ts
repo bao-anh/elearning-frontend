@@ -18,10 +18,12 @@ import {
   setAssignment,
 } from '../actions/assignment';
 import {
+  updateCourse,
   fetchAllCourse,
   fetchCourseByUserId,
   fetchCourseByCategoryId,
 } from '../actions/course';
+import { setUserInfo, fetchUserInfo } from '../actions/auth';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
 import {
   OPERATION_FETCH_DATA_IN_LESSON_PAGE,
@@ -30,6 +32,7 @@ import {
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
+  OPERATION_PURCHASE_COURSE,
 } from '../actions/types';
 
 import { getLessonByLessonId } from './lesson';
@@ -37,11 +40,12 @@ import { getTopicByTopicId } from './topic';
 import { getAssignmentByAssignmentId } from './assignment';
 import { getParticipantSubmitAssignment } from './participant';
 import { createOrUpdateProgressChain } from './progress';
+import { updateCourseIds } from './auth';
 
 export function* fetchDataInCategoryPage(action: any) {
   try {
+    yield put(fetchAllCategory());
     if (action.params.id === 'all') {
-      yield put(fetchAllCategory());
       yield put(setCurrentCategory(action.params.id));
       yield put(fetchAllCourse());
     } else if (action.params.id === 'me') {
@@ -118,7 +122,7 @@ export function* submitAssignment(action: any) {
 
     const payload = {
       userId: userInfo._id,
-      assignmentId: action.assignment._id,
+      assignmentId: action.assignment._id || action.assignmentState._id,
       userAnswer: action.userAnswer,
       score: action.score,
     };
@@ -129,15 +133,19 @@ export function* submitAssignment(action: any) {
         userId: userInfo._id,
         percentComplete: action.percentComplete,
         lessonId: action.assignment.lessonId || null,
-        assignmentId: action.assignment._id,
-        topicId: action.assignment.topicId,
-        courseId: action.assignment.courseId,
+        assignmentId: action.assignment._id || action.assignmentState._id,
+        topicId: action.assignmentState.topicId,
+        courseId: action.assignmentState.courseId,
       };
+      console.log(progressPayload);
       yield createOrUpdateProgressChain(progressPayload);
     }
 
-    if (action.lessonId) {
-      const lesson = yield call(getLessonByLessonId, action.lessonId);
+    if (action.assignment.lessonId) {
+      const lesson = yield call(
+        getLessonByLessonId,
+        action.assignment.lessonId
+      );
       console.log(lesson.data);
       yield put(setLesson(lesson.data));
     }
@@ -148,6 +156,17 @@ export function* submitAssignment(action: any) {
     );
 
     yield put(setAssignment(assignment.data));
+    action.onSuccess();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* purchaseCourse(action: any) {
+  try {
+    yield call(updateCourseIds, action.courseId);
+    yield put(updateCourse(action.courseId));
+    yield put(fetchUserInfo());
     action.onSuccess();
   } catch (err) {
     console.log(err);
@@ -184,6 +203,10 @@ export function* watchSubmitAssignment() {
   yield takeLatest(OPERATION_SUBMIT_ASSIGNMENT, submitAssignment);
 }
 
+export function* watchPurchaseCourse() {
+  yield takeLatest(OPERATION_PURCHASE_COURSE, purchaseCourse);
+}
+
 export default function* operation() {
   yield fork(watchFetchDataInLessonPage);
   yield fork(watchFetchDataInCoursePage);
@@ -191,4 +214,5 @@ export default function* operation() {
   yield fork(watchFetchDataInCategoryPage);
   yield fork(watchFetchDataInAssignmentPage);
   yield fork(watchSubmitAssignment);
+  yield fork(watchPurchaseCourse);
 }
