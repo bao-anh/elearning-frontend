@@ -29,7 +29,7 @@ const BreadCrumb: FunctionComponent<{
         </Breadcrumbs>
       );
     }
-    if (path === Routes.COURSE_SCREEN) {
+    if (path === Routes.COURSE_SCREEN || path === Routes.UTILITY_SCREEN) {
       if (topicState.largeTopic) {
         return (
           <Breadcrumbs

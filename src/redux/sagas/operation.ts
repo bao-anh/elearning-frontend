@@ -1,11 +1,13 @@
 import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
 import {
   setSmallTopic,
+  setLargeTopic,
   fetchTopicByCourseId,
   fetchTopicByTopicId,
   fetchSmallTopicOnProgress,
   fetchSmallTopicSuccess,
   fetchLargeTopicOnProgress,
+  fetchLargeTopicSuccess,
 } from '../actions/topic';
 import {
   setLesson,
@@ -23,12 +25,13 @@ import {
   fetchCourseByUserId,
   fetchCourseByCategoryId,
 } from '../actions/course';
-import { setUserInfo, fetchUserInfo } from '../actions/auth';
+import { fetchUserInfo } from '../actions/auth';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
 import {
   OPERATION_FETCH_DATA_IN_LESSON_PAGE,
   OPERATION_FETCH_DATA_IN_COURSE_PAGE,
   OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
+  OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
@@ -37,6 +40,7 @@ import {
 
 import { getLessonByLessonId } from './lesson';
 import { getTopicByTopicId } from './topic';
+import { getCourseByCourseId } from './course';
 import { getAssignmentByAssignmentId } from './assignment';
 import { getParticipantSubmitAssignment } from './participant';
 import { createOrUpdateProgressChain } from './progress';
@@ -111,6 +115,17 @@ export function* fetchDataInAssignmentPage(action: any) {
 
     yield put(fetchTopicByTopicId(response.data.topicId));
     yield put(fetchTopicByCourseId(response.data.courseId));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* fetchDataInUtilityPage(action: any) {
+  try {
+    yield put(fetchLargeTopicOnProgress());
+    const response = yield call(getCourseByCourseId, action.courseId);
+    yield put(setLargeTopic(response.data));
+    yield put(fetchLargeTopicSuccess());
   } catch (err) {
     console.log(err);
   }
@@ -199,6 +214,13 @@ export function* watchFetchDataInAssignmentPage() {
   );
 }
 
+export function* watchFetchDataInUtilityPage() {
+  yield takeLatest(
+    OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
+    fetchDataInUtilityPage
+  );
+}
+
 export function* watchSubmitAssignment() {
   yield takeLatest(OPERATION_SUBMIT_ASSIGNMENT, submitAssignment);
 }
@@ -213,6 +235,7 @@ export default function* operation() {
   yield fork(watchFetchDataInTopicPage);
   yield fork(watchFetchDataInCategoryPage);
   yield fork(watchFetchDataInAssignmentPage);
+  yield fork(watchFetchDataInUtilityPage);
   yield fork(watchSubmitAssignment);
   yield fork(watchPurchaseCourse);
 }

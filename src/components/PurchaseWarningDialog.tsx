@@ -37,7 +37,10 @@ const PurchaseDialog: FunctionComponent<{
 
   const handleOpenDialog = () => {
     if (!authState.courseIds.length) return true;
-    else if (match.path === Routes.COURSE_SCREEN) {
+    else if (
+      match.path === Routes.COURSE_SCREEN ||
+      match.path === Routes.UTILITY_SCREEN
+    ) {
       if (!topicState.isLoadingLargeTopic) {
         return !isPurchased(topicState.largeTopic._id);
       }
