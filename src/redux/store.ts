@@ -37,7 +37,7 @@ const persistConfig = {
   transform: [encryptor],
   whitelist: [
     // 'courseState',
-    // 'categoryState',
+    'categoryState',
     // 'topicState',
     // 'assignmentState',
     // 'lessonState',

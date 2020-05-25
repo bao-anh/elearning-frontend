@@ -44,7 +44,7 @@ const VideoDialog: FunctionComponent<{
   const handleOpenAssignmentWhenTimeCome = (state: any) => {
     assignmentArray.forEach((assignment) => {
       if (Math.round(state.playedSeconds) === assignment.timeToShowUp)
-        handleOpenAssignment(assignment.id);
+        handleOpenAssignment(assignment._id);
     });
   };
 

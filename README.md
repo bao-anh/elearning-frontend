@@ -119,3 +119,11 @@
 - Fix authenticate bug
 - Fix bug when change user
 - Clear redux persist store, only remain authState
+
+### Version 3.3
+
+25/5/2020
+
+- Added purchase course mechanic
+- Prevent user to access course, which isn't purchased
+- Fix some bug in category page.

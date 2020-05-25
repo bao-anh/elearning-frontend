@@ -1,14 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import '../resources/scss/component/banner.scss';
 
-const Banner: FunctionComponent<{}> = () => {
+const Banner: FunctionComponent<{ topicState: any }> = ({ topicState }) => {
   return (
     <div className='main-banner'>
-      <div className='banner-content-detail'>
-        <div className='banner-content-text'>
-          <h1>Khóa học toiec 450-650</h1>
+      {topicState.isLoadingLargeTopic ? null : (
+        <div className='banner-content-detail'>
+          <div className='banner-content-text'>
+            <h1>{topicState.largeTopic.name}</h1>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

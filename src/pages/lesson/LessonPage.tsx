@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
+import PurchaseWarningDialog from '../../components/PurchaseWarningDialog';
 import VideoDialog from './VideoDialog';
 import Loading from '../../components/Loading';
 import Reference from '../../components/Reference';
@@ -21,12 +22,14 @@ const LessonPage: FunctionComponent<{
   topicState: any;
   lessonState: any;
   courseState: any;
+  authState: any;
 }> = ({
   fetchDataInLessonPage,
   match,
   topicState,
   lessonState,
   courseState,
+  authState,
 }) => {
   const [isOpenVideo, setOpenVideo] = useState(false);
 
@@ -41,6 +44,11 @@ const LessonPage: FunctionComponent<{
         path={match.path}
         courseState={courseState}
         topicState={topicState}
+        lessonState={lessonState}
+      />
+      <PurchaseWarningDialog
+        match={match}
+        authState={authState}
         lessonState={lessonState}
       />
       <Grid container className='container'>
@@ -84,7 +92,7 @@ const LessonPage: FunctionComponent<{
             path={match.path}
             currentId={match.params.id}
           />
-          <UserInfoSideBar lessonState={lessonState} />
+          <UserInfoSideBar authState={authState} topicState={topicState} />
           <UtilitySideBar topicState={topicState} />
         </Grid>
       </Grid>
@@ -97,6 +105,7 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
     lessonState: state.lessonState,
     topicState: state.topicState,
     courseState: state.courseState,
+    authState: state.authState,
     ...ownProps,
   };
 };

@@ -5,6 +5,7 @@ import {
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
+  OPERATION_PURCHASE_COURSE,
 } from '../actions/types';
 
 export interface OperationAction {
@@ -21,6 +22,7 @@ export interface OperationAction {
   onSuccess?: any;
   assignment?: any;
   percentComplete?: any;
+  assignmentState?: any;
 }
 
 export function fetchDataInCategoryPage(
@@ -63,6 +65,7 @@ export function fetchDataInAssignmentPage(assignmentId: any): OperationAction {
 }
 
 export function submitAssignment(
+  assignmentState: any,
   assignment: any,
   percentComplete: any,
   userAnswer: any,
@@ -71,10 +74,19 @@ export function submitAssignment(
 ) {
   return {
     type: OPERATION_SUBMIT_ASSIGNMENT,
+    assignmentState,
     assignment,
     percentComplete,
     userAnswer,
     score,
+    onSuccess,
+  };
+}
+
+export function purchaseCourse(courseId: any, onSuccess: any) {
+  return {
+    type: OPERATION_PURCHASE_COURSE,
+    courseId,
     onSuccess,
   };
 }
