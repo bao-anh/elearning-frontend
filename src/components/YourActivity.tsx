@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import Moment from 'react-moment';
 import AssignmentDialogResult from './AssignmentDialogResult';
+import { getQuestionOrder, renderNumberOfQuestion } from '../utils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -83,15 +84,18 @@ const YourActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score')
-      return `${Math.round((participant.score / 100) * questionIds.length)}/${
-        questionIds.length
-      }`;
+      return `${Math.round(
+        (participant.score / 100) * renderNumberOfQuestion(questionIds)
+      )}/${renderNumberOfQuestion(questionIds)}`;
   };
 
   return (
     <Paper className={classes.root}>
       {openResult !== -1 ? (
         <AssignmentDialogResult
+          questionOrderArray={getQuestionOrder(
+            assignmentState.data.questionIds
+          )}
           assignment={assignmentState.data}
           openResult={openResult}
           handleOpenResult={handleOpenResult}

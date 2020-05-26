@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../redux/appstate';
-import { convertSecondToMinute } from '../utils';
+import { convertSecondToMinute, renderNumberOfQuestion } from '../utils';
 import '../resources/scss/component/assignmentInfo.scss';
 
 import { Button, CircularProgress } from '@material-ui/core';
@@ -19,7 +19,7 @@ const AssignmentInfo: FunctionComponent<{
     {
       id: 2,
       title: 'Số câu hỏi',
-      data: assignmentState.data.questionIds.length,
+      data: renderNumberOfQuestion(assignmentState.data.questionIds),
     },
     {
       id: 3,

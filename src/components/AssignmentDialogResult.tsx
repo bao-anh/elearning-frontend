@@ -10,6 +10,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Divider,
 } from '@material-ui/core';
 import { Cancel as CancelIcon } from '@material-ui/icons';
 import { TransitionProps } from '@material-ui/core/transitions';
@@ -25,7 +26,8 @@ const AssignmentDialogResult: FunctionComponent<{
   assignment: any;
   openResult: number;
   handleOpenResult: Function;
-}> = ({ assignment, handleOpenResult, openResult }) => {
+  questionOrderArray: any;
+}> = ({ assignment, handleOpenResult, openResult, questionOrderArray }) => {
   const [userAnswer, setUserAnswer] = useState(
     assignment.participantIds[openResult].userAnswer
   );
@@ -63,25 +65,9 @@ const AssignmentDialogResult: FunctionComponent<{
           {assignment.questionIds.map((question: any, index: number) => (
             <div key={index} className='assignment-user-answer-container'>
               <div className='assignment-dialog-overlay' />
-              <div className='assignment-user-answer-label'>{index + 1}</div>
-              <RadioGroup
-                aria-label='gender'
-                name={index.toString()}
-                value={
-                  userAnswer[index] !== null ? Number(userAnswer[index]) : null
-                }
-                classes={{ root: 'assignment-user-answer-list' }}
-              >
-                {radioButtonLabel.map((label: string, index: number) => (
-                  <FormControlLabel
-                    key={index}
-                    style={handleRenderStyle(question, index)}
-                    value={index}
-                    control={<Radio />}
-                    label={label}
-                  />
-                ))}
-              </RadioGroup>
+              {question.childrenIds && question.childrenIds.length
+                ? renderHaveChildAnswer(question, index)
+                : renderDoesntHaveChildAnswer(question, index)}
             </div>
           ))}
         </div>
@@ -89,30 +75,53 @@ const AssignmentDialogResult: FunctionComponent<{
     );
   };
 
-  const renderRightPanel = () => {
-    return assignment.questionIds.map((question: any, index: number) => (
-      <Paper key={index} elevation={1} className='assignment-question-item'>
-        <div className='assignment-item assignment-question-item-title'>
-          {`Câu ${index + 1}`}
+  const renderHaveChildAnswer = (question: any, parentIndex: number) => {
+    const firstIndex =
+      questionOrderArray[parentIndex] - question.childrenIds.length;
+    return question.childrenIds.map((children: any, childrenIndex: number) => (
+      <div key={childrenIndex} className='assignment-user-answer-children'>
+        <div className='assignment-user-answer-label'>
+          {firstIndex + childrenIndex + 1}
         </div>
-        <audio
-          controls
-          className='assignment-item assignment-question-item-audio'
-        >
-          <source src={question.soundLink} type='audio/ogg' />
-        </audio>
-        <img
-          src={question.imageLink}
-          alt='imageLink'
-          className='assignment-item assignment-question-item-audio'
-        />
         <RadioGroup
           aria-label='gender'
-          name={index.toString()}
-          value={userAnswer[index] !== null ? Number(userAnswer[index]) : null}
-          className='assignment-dialog-right-radio-group'
+          name={(firstIndex + childrenIndex).toString()}
+          value={
+            userAnswer[firstIndex + childrenIndex] !== null
+              ? Number(userAnswer[firstIndex + childrenIndex])
+              : null
+          }
+          classes={{ root: 'assignment-user-answer-list' }}
         >
-          <div className='assignment-dialog-overlay' />
+          {radioButtonLabel.map((label: string, index: number) => (
+            <FormControlLabel
+              key={index}
+              style={handleRenderStyle(children, index)}
+              value={index}
+              control={<Radio />}
+              label={label}
+            />
+          ))}
+        </RadioGroup>
+      </div>
+    ));
+  };
+
+  const renderDoesntHaveChildAnswer = (question: any, parentIndex: number) => {
+    const firstIndex = questionOrderArray[parentIndex];
+    return (
+      <div className='assignment-user-answer-doesnt-have-children'>
+        <div className='assignment-user-answer-label'>{firstIndex + 1}</div>
+        <RadioGroup
+          aria-label='gender'
+          name={firstIndex.toString()}
+          value={
+            userAnswer[firstIndex] !== null
+              ? Number(userAnswer[firstIndex])
+              : null
+          }
+          classes={{ root: 'assignment-user-answer-list' }}
+        >
           {radioButtonLabel.map((label: string, index: number) => (
             <FormControlLabel
               key={index}
@@ -123,8 +132,113 @@ const AssignmentDialogResult: FunctionComponent<{
             />
           ))}
         </RadioGroup>
-        <div dangerouslySetInnerHTML={{ __html: question.content }} />
+      </div>
+    );
+  };
+
+  const renderRightPanel = () => {
+    return assignment.questionIds.map((question: any, index: number) => (
+      <Paper key={index} elevation={1} className='assignment-question-item'>
+        {question.childrenIds && question.childrenIds.length
+          ? renderHaveChildQuestion(question, index)
+          : renderDoesntHaveChildQuestion(question, index)}
       </Paper>
+    ));
+  };
+
+  const renderHaveChildQuestion = (question: any, parentIndex: number) => {
+    const firstIndex =
+      questionOrderArray[parentIndex] - question.childrenIds.length;
+    return (
+      <React.Fragment>
+        <div className='assignment-item assignment-question-item-title'>
+          {`Câu ${firstIndex + 1} - ${questionOrderArray[parentIndex]}`}
+        </div>
+        {question.soundLink && question.soundLink !== '' ? (
+          <audio
+            controls
+            className='assignment-item assignment-question-item-audio'
+          >
+            <source src={question.soundLink} type='audio/ogg' />
+          </audio>
+        ) : null}
+        {question.script && question.script !== '' ? (
+          <div>{question.script}</div>
+        ) : null}
+        {question.childrenIds.map((children: any, childrenIndex: number) => (
+          <React.Fragment key={childrenIndex}>
+            <div className='assignment-question-item-title'>{`Câu ${
+              firstIndex + childrenIndex + 1
+            }`}</div>
+            <div className='assignment-question-item-title'>
+              {children.script}
+            </div>
+            <RadioGroup
+              aria-label='gender'
+              name={(firstIndex + childrenIndex).toString()}
+              value={
+                userAnswer[firstIndex + childrenIndex] !== null
+                  ? Number(userAnswer[firstIndex + childrenIndex])
+                  : null
+              }
+              className='assignment-dialog-right-radio-group'
+            >
+              <div className='assignment-dialog-overlay' />
+              {children.answerArray.map((label: string, index: number) => (
+                <FormControlLabel
+                  key={index}
+                  style={handleRenderStyle(children, index)}
+                  value={index}
+                  control={<Radio />}
+                  label={label}
+                />
+              ))}
+            </RadioGroup>
+            {childrenIndex !== question.childrenIds.length - 1 ? (
+              <React.Fragment>
+                <br />
+                <Divider />
+                <br />
+              </React.Fragment>
+            ) : null}
+          </React.Fragment>
+        ))}
+      </React.Fragment>
+    );
+  };
+
+  const renderDoesntHaveChildQuestion = (
+    question: any,
+    parentIndex: number
+  ) => {
+    const firstIndex =
+      questionOrderArray[parentIndex] - question.childrenIds.length;
+    return question.childrenIds.map((children: any, childrenIndex: number) => (
+      <div key={childrenIndex} className='assignment-user-answer-children'>
+        <div className='assignment-user-answer-label'>
+          {firstIndex + childrenIndex + 1}
+        </div>
+        <RadioGroup
+          aria-label='gender'
+          name={(firstIndex + childrenIndex).toString()}
+          value={
+            userAnswer[firstIndex + childrenIndex] !== null
+              ? Number(userAnswer[firstIndex + childrenIndex])
+              : null
+          }
+          classes={{ root: 'assignment-user-answer-list' }}
+        >
+          {radioButtonLabel.map((label: string, index: number) => (
+            <FormControlLabel
+              key={index}
+              style={handleRenderStyle(children, index)}
+              value={index}
+              control={<Radio />}
+              label={label}
+            />
+          ))}
+        </RadioGroup>
+      </div>
     ));
   };
 

@@ -131,3 +131,10 @@
 25/2/2020
 
 - Added utility page
+
+### Version 3.5
+
+26/2/2020
+
+- Added all data in TOEIC 450-600+ course
+- Adjust assignment dialog to compatible with new data in question model

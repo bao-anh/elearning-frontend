@@ -71,6 +71,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-audio-player": "^0.11.0"
+    "@types/react-audio-player": "^0.11.0",
+    "@types/react-gravatar": "^2.6.8"
   }
 }

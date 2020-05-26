@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { convertSecondToMinute } from '../../utils';
+import { convertSecondToMinute, getQuestionOrder } from '../../utils';
 import AssignmentDialog from '../../components/AssignmentDialog';
 import Reference from '../../components/Reference';
 import Comment from '../../components/Comment';
@@ -58,6 +58,7 @@ const VideoDialog: FunctionComponent<{
       {assignmentArray.map((assignment: any) =>
         assignment.isOpen ? (
           <AssignmentDialog
+            questionOrderArray={getQuestionOrder(assignment.questionIds)}
             key={assignment._id}
             assignment={assignment}
             handleOpenAssignment={handleOpenAssignment}

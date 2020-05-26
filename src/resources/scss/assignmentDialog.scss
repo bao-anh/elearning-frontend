@@ -142,8 +142,20 @@
   width: 95%;
 }
 
-.assignment-user-answer-container {
+.assignment-user-answer-doesnt-have-children {
+  display: flex;
+  align-items: center;
+}
+
+.assignment-user-answer-have-children {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.assignment-user-answer-children {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -161,7 +173,7 @@
   height: 100%;
   position: absolute;
   z-index: 2;
-  opacity: 0.3;
+  opacity: 0.1;
   background-color: #eee;
 }
 
