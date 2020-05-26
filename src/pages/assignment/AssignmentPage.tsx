@@ -2,6 +2,7 @@ import React, { useEffect, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
+import { getQuestionOrder } from '../../utils';
 import HeaderPanel from '../../components/HeaderPanel';
 import Loading from '../../components/Loading';
 import AssignmentInfo from '../../components/AssignmentInfo';
@@ -59,6 +60,9 @@ const AssignmentPage: FunctionComponent<{
       <Grid container className='container'>
         {assignmentState.isLoading ? null : (
           <AssignmentDialog
+            questionOrderArray={getQuestionOrder(
+              assignmentState.data.questionIds
+            )}
             assignment={{ ...assignmentState.data, isOpen: openAssignment }}
             path={match.path}
             handleOpenAssignment={setOpenAssignment}

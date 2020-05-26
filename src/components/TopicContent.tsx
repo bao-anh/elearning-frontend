@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from './Loading';
 import Routes from '../routes';
-import { sortArrayByPropertyValue } from '../utils';
+import { sortArrayByPropertyValue, renderNumberOfQuestion } from '../utils';
 import '../resources/scss/component/topicContent.scss';
 
 import { Paper, CircularProgress } from '@material-ui/core';
@@ -39,7 +39,9 @@ const TopicContent: FunctionComponent<{
                     {assignment.name}
                   </Link>
                   <div className='topic-detail-number-question'>
-                    {`${assignment.questionIds.length} Câu hỏi`}
+                    {`${renderNumberOfQuestion(
+                      assignment.questionIds
+                    )} Câu hỏi`}
                   </div>
                 </div>
                 <div className='topic-item-progress'>
@@ -94,7 +96,7 @@ const TopicContent: FunctionComponent<{
                       {topic.name}
                     </Link>
                     <div className='topic-detail-number-question'>
-                      {`${topic.questionIds.length} Câu hỏi`}
+                      {`${renderNumberOfQuestion(topic.questionIds)} Câu hỏi`}
                     </div>
                   </React.Fragment>
                 )}
