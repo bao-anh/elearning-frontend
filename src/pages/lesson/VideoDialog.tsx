@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { convertSecondToMinute, getQuestionOrder } from '../../utils';
-import AssignmentDialog from '../../components/AssignmentDialog';
-import Reference from '../../components/Reference';
-import Comment from '../../components/Comment';
+import AssignmentDialog from '../../components/common/AssignmentDialog';
+import Reference from '../../components/course/Reference';
+import Comment from '../../components/course/Comment';
 import '../../resources/scss/videoDialog.scss';
 import '../../resources/scss/lesson.scss';
 

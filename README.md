@@ -130,11 +130,18 @@
 
 25/2/2020
 
-- Added utility page
+- Added utility page.
 
 ### Version 3.5
 
 26/2/2020
 
-- Added all data in TOEIC 450-600+ course
-- Adjust assignment dialog to compatible with new data in question model
+- Added all data in TOEIC 450-600+ course.
+- Adjust assignment dialog to compatible with new data in question model.
+
+### Version 4.0
+
+27/2/2020
+
+- Added create new target score in TOEIC page.
+- Relocate file and folder.

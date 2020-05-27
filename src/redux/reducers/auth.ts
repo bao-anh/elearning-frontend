@@ -46,10 +46,7 @@ const authState: Reducer<AuthState> = (
       };
     }
     case AUTH_LOGOUT: {
-      return {
-        ...state,
-        isAuthenticated: false,
-      };
+      return initState;
     }
     case AUTH_SET_AUTHENTICATE: {
       return {

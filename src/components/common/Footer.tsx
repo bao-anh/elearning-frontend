@@ -1,6 +1,6 @@
 import { Grid, Link } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-import Logo from '../resources/images/logo.svg';
+import Logo from '../../resources/images/logo.svg';
 import { FixedContainer } from './Widgets';
 
 const Footer: FunctionComponent<{}> = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../resources/scss/component/comment.scss';
+import '../../resources/scss/component/comment.scss';
 
 import { Paper } from '@material-ui/core';
 

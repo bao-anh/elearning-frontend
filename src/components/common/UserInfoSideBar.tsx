@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
-import UserImage from '../resources/images/user.png';
+import UserImage from '../../resources/images/user.png';
 import Loading from './Loading';
 
-import '../resources/scss/component/userInfoSideBar.scss';
+import '../../resources/scss/component/userInfoSideBar.scss';
 
 import { Paper, Grid, Avatar } from '@material-ui/core';
 

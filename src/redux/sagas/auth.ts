@@ -48,6 +48,7 @@ export function* register(action: any) {
     yield put(fetchUserOnProgress());
     const response = yield call(onRegister, action.credentials);
     yield setToken(response.data.token);
+    console.log(response);
     yield put(setUserInfo(response.data.user));
     yield put(setAuthenticate(true));
     yield put(fetchUserSuccess());

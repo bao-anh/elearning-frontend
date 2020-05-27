@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppState } from '../../redux/appstate';
-import { MainWidget, FixedContainer } from '../../components/Widgets';
+import { MainWidget, FixedContainer } from '../../components/common/Widgets';
 import '../../resources/scss/home.scss';
 import '../../resources/scss/main.scss';
 
@@ -13,11 +13,21 @@ const HomePage: FunctionComponent<{ authState: any }> = ({ authState }) => {
     <MainWidget className={'home-page'}>
       <FixedContainer>
         <h1>Home page</h1>
-        <Link to='/category/all' style={{ textDecoration: 'none' }}>
-          <Button color='primary' variant='contained'>
-            Go to category page
-          </Button>
-        </Link>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Link
+            to='/category/all'
+            style={{ textDecoration: 'none', marginBottom: '10px' }}
+          >
+            <Button color='primary' variant='contained'>
+              Go to category page
+            </Button>
+          </Link>
+          <Link to='/toeic' style={{ textDecoration: 'none' }}>
+            <Button color='primary' variant='contained'>
+              Go to toeic page
+            </Button>
+          </Link>
+        </div>
       </FixedContainer>
     </MainWidget>
   );

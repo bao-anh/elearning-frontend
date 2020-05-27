@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { sortArrayByPropertyValue } from '../utils';
-import Loading from './Loading';
-import Routes from '../routes';
-import '../resources/scss/component/topicSideBar.scss';
+import { sortArrayByPropertyValue } from '../../utils';
+import Loading from '../common/Loading';
+import Routes from '../../routes';
+import '../../resources/scss/component/topicSideBar.scss';
 
 import { Paper } from '@material-ui/core';
 import {

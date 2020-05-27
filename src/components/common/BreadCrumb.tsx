@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import Routes from '../routes';
-import '../resources/scss/component/breadcrumb.scss';
+import Routes from '../../routes';
+import '../../resources/scss/component/breadcrumb.scss';
 
 import { Breadcrumbs } from '@material-ui/core';
 
@@ -13,6 +13,22 @@ const BreadCrumb: FunctionComponent<{
   path: any;
 }> = ({ courseState, lessonState, topicState, path, assignmentState }) => {
   const renderContent = () => {
+    if (path === Routes.TOEIC_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/toeic' className='breadcrumb-current-link'>
+            Luyện thi TOEIC
+          </Link>
+        </Breadcrumbs>
+      );
+    }
     if (path === Routes.CATEGORY_SCREEN) {
       return (
         <Breadcrumbs

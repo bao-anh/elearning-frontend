@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppState } from '../../redux/appstate';
 import * as authAction from '../../redux/actions/auth';
-import SnackBar from '../../components/SnackBar';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/auth.scss';
 
 import { Paper, TextField, Button, CircularProgress } from '@material-ui/core';

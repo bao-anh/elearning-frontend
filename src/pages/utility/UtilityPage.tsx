@@ -1,15 +1,15 @@
 import React, { useEffect, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import Banner from '../../components/Banner';
-import BreadCrumb from '../../components/BreadCrumb';
-import PurchaseWarningDialog from '../../components/PurchaseWarningDialog';
-import UtilitySideBar from '../../components/UtilitySideBar';
-import UserInfoSideBar from '../../components/UserInfoSideBar';
-import HeaderPanel from '../../components/HeaderPanel';
-import Loading from '../../components/Loading';
-import MemberTable from '../../components/MemberTable';
-import ReferenceTable from '../../components/ReferenceTable';
+import Banner from '../../components/course/Banner';
+import BreadCrumb from '../../components/common/BreadCrumb';
+import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog';
+import UtilitySideBar from '../../components/course/UtilitySideBar';
+import UserInfoSideBar from '../../components/common/UserInfoSideBar';
+import HeaderPanel from '../../components/common/HeaderPanel';
+import Loading from '../../components/common/Loading';
+import MemberTable from '../../components/course/MemberTable';
+import ReferenceTable from '../../components/course/ReferenceTable';
 import * as operationAction from '../../redux/actions/operation';
 
 import { Grid } from '@material-ui/core';

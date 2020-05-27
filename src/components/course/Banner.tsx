@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import '../resources/scss/component/banner.scss';
+import '../../resources/scss/component/banner.scss';
 
 const Banner: FunctionComponent<{ topicState: any }> = ({ topicState }) => {
   return (

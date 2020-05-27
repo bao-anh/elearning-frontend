@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import '../resources/scss/component/referenceTable.scss';
+import '../../resources/scss/component/referenceTable.scss';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {

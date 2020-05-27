@@ -4,6 +4,7 @@ import { TopicState } from './reducers/topic';
 import { LessonState } from './reducers/lesson';
 import { AssignmentState } from './reducers/assignment';
 import { AuthState } from './reducers/auth';
+import { ToeicState } from './reducers/toeic';
 
 export interface AppState {
   authState: AuthState;
@@ -12,4 +13,5 @@ export interface AppState {
   topicState: TopicState;
   lessonState: LessonState;
   assignmentState: AssignmentState;
+  toeicState: ToeicState;
 }
