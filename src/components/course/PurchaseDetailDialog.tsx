@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import '../resources/scss/component/purchaseDetailDialog.scss';
+import '../../resources/scss/component/purchaseDetailDialog.scss';
 
 import {
   Button,

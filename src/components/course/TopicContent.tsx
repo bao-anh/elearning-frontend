@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import Loading from './Loading';
-import Routes from '../routes';
-import { sortArrayByPropertyValue, renderNumberOfQuestion } from '../utils';
-import '../resources/scss/component/topicContent.scss';
+import Loading from '../common/Loading';
+import Routes from '../../routes';
+import { sortArrayByPropertyValue, renderNumberOfQuestion } from '../../utils';
+import '../../resources/scss/component/topicContent.scss';
 
 import { Paper, CircularProgress } from '@material-ui/core';
 import {

@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
-import { AppState } from '../redux/appstate';
-import { convertSecondToMinute, renderNumberOfQuestion } from '../utils';
-import '../resources/scss/component/assignmentInfo.scss';
+import { AppState } from '../../redux/appstate';
+import { convertSecondToMinute, renderNumberOfQuestion } from '../../utils';
+import '../../resources/scss/component/assignmentInfo.scss';
 
 import { Button, CircularProgress } from '@material-ui/core';
 

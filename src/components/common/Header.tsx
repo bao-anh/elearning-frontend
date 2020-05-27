@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import { connect } from 'react-redux';
-import { AppState } from '../redux/appstate';
+import { AppState } from '../../redux/appstate';
 import { withRouter } from 'react-router-dom';
-import { removeToken } from '../services';
-import Routes from '../routes';
-import * as authAction from '../redux/actions/auth';
+import { removeToken } from '../../services';
+import Routes from '../../routes';
+import * as authAction from '../../redux/actions/auth';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Menu from '@material-ui/core/Menu';
@@ -22,7 +22,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import GTranslateIcon from '@material-ui/icons/GTranslate';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from '@material-ui/core';
-import Logo from '../resources/images/logo.svg';
+import Logo from '../../resources/images/logo.svg';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

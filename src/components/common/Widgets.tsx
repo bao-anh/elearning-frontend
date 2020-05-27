@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-import Image from './Image';
 
 const FixedContainer = (props: any) => {
   return (
@@ -122,7 +121,6 @@ const TitleBlock: FunctionComponent<{
 }> = ({ title = '', description = '', image = '' }) => {
   return (
     <div className='title-block'>
-      {image ? <Image src={image} /> : ''}
       <h2 className='title'>{title}</h2>
       {description ? <p className='description'>{description}</p> : ''}
     </div>

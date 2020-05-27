@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import Loading from './Loading';
-import '../resources/scss/component/reference.scss';
+import Loading from '../common/Loading';
+import '../../resources/scss/component/reference.scss';
 
 import { Paper } from '@material-ui/core';
 import {

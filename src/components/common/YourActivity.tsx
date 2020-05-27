@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import Moment from 'react-moment';
 import AssignmentDialogResult from './AssignmentDialogResult';
-import { getQuestionOrder, renderNumberOfQuestion } from '../utils';
+import { getQuestionOrder, renderNumberOfQuestion } from '../../utils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {

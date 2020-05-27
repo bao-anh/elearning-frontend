@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import * as operationAction from '../redux/actions/operation';
-import { AppState } from '../redux/appstate';
-import { convertSecondToMinute, renderNumberOfQuestion } from '../utils';
-import Routes from '../routes';
-import HourGlass from '../resources/images/hourglasstrans.gif';
+import * as operationAction from '../../redux/actions/operation';
+import { AppState } from '../../redux/appstate';
+import { convertSecondToMinute, renderNumberOfQuestion } from '../../utils';
+import Routes from '../../routes';
+import HourGlass from '../../resources/images/hourglasstrans.gif';
 import Loading from './Loading';
-import '../resources/scss/assignmentDialog.scss';
+import '../../resources/scss/assignmentDialog.scss';
 
 import {
   Dialog,

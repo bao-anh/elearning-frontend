@@ -1,5 +1,17 @@
 import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
 import {
+  OPERATION_FETCH_DATA_IN_LESSON_PAGE,
+  OPERATION_FETCH_DATA_IN_COURSE_PAGE,
+  OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
+  OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
+  OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
+  OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
+  OPERATION_SUBMIT_ASSIGNMENT,
+  OPERATION_PURCHASE_COURSE,
+  OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
+} from '../actions/types';
+
+import {
   setSmallTopic,
   setLargeTopic,
   fetchTopicByCourseId,
@@ -25,18 +37,9 @@ import {
   fetchCourseByUserId,
   fetchCourseByCategoryId,
 } from '../actions/course';
+import { fetchToeicByUserId } from '../actions/toeic';
 import { fetchUserInfo } from '../actions/auth';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
-import {
-  OPERATION_FETCH_DATA_IN_LESSON_PAGE,
-  OPERATION_FETCH_DATA_IN_COURSE_PAGE,
-  OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
-  OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
-  OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
-  OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
-  OPERATION_SUBMIT_ASSIGNMENT,
-  OPERATION_PURCHASE_COURSE,
-} from '../actions/types';
 
 import { getLessonByLessonId } from './lesson';
 import { getTopicByTopicId } from './topic';
@@ -126,6 +129,14 @@ export function* fetchDataInUtilityPage(action: any) {
     const response = yield call(getCourseByCourseId, action.courseId);
     yield put(setLargeTopic(response.data));
     yield put(fetchLargeTopicSuccess());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* fetchDataInToeicPage() {
+  try {
+    yield put(fetchToeicByUserId());
   } catch (err) {
     console.log(err);
   }
@@ -221,6 +232,10 @@ export function* watchFetchDataInUtilityPage() {
   );
 }
 
+export function* watchFetchDataInToeicPage() {
+  yield takeLatest(OPERATION_FETCH_DATA_IN_TOEIC_PAGE, fetchDataInToeicPage);
+}
+
 export function* watchSubmitAssignment() {
   yield takeLatest(OPERATION_SUBMIT_ASSIGNMENT, submitAssignment);
 }
@@ -236,6 +251,7 @@ export default function* operation() {
   yield fork(watchFetchDataInCategoryPage);
   yield fork(watchFetchDataInAssignmentPage);
   yield fork(watchFetchDataInUtilityPage);
+  yield fork(watchFetchDataInToeicPage);
   yield fork(watchSubmitAssignment);
   yield fork(watchPurchaseCourse);
 }

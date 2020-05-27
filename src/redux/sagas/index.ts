@@ -5,6 +5,7 @@ import category from './category';
 import topic from './topic';
 import lesson from './lesson';
 import assignment from './assignment';
+import toeic from './toeic';
 import operation from './operation';
 
 export default function* rootSaga() {
@@ -15,4 +16,5 @@ export default function* rootSaga() {
   yield fork(operation);
   yield fork(lesson);
   yield fork(assignment);
+  yield fork(toeic);
 }

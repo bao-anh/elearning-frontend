@@ -9,5 +9,6 @@ class Routes {
   static UTILITY_SCREEN = '/utility/:id';
   static SIGNIN_SCREEN = '/signin';
   static REGISTER_SCREEN = '/register';
+  static TOEIC_SCREEN = '/toeic';
 }
 export default Routes;

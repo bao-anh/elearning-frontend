@@ -9,8 +9,10 @@ import AssignmentPage from './pages/assignment/AssignmentPage';
 import SignInPage from './pages/auth/SignInPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import UtilityPage from './pages/utility/UtilityPage';
+import NotFoundPage from './pages/404/NotFoundPage';
+import ToeicPage from './pages/toeic/ToeicPage';
 import Routes from './routes';
-import Layout from './components/Layout';
+import Layout from './components/common/Layout';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -60,6 +62,12 @@ function App() {
             path={Routes.UTILITY_SCREEN}
             component={UtilityPage}
           />
+          <PrivateRoute
+            exact
+            path={Routes.TOEIC_SCREEN}
+            component={ToeicPage}
+          />
+          <PrivateRoute path='*' component={NotFoundPage} />
         </Switch>
       </Layout>
     </Router>

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
-import { convertSecondToMinute } from '../utils';
-import '../resources/scss/assignmentDialog.scss';
+import { convertSecondToMinute } from '../../utils';
+import '../../resources/scss/assignmentDialog.scss';
 
 import {
   Dialog,

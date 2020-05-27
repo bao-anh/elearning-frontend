@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-import Loading from '../components/Loading';
+import Loading from '../common/Loading';
 
 import { Paper } from '@material-ui/core';
 
