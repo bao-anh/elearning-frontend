@@ -37,6 +37,7 @@ import {
   fetchCourseByUserId,
   fetchCourseByCategoryId,
 } from '../actions/course';
+import { fetchScale } from '../actions/scale';
 import { fetchToeicByUserId } from '../actions/toeic';
 import { fetchUserInfo } from '../actions/auth';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
@@ -137,6 +138,7 @@ export function* fetchDataInUtilityPage(action: any) {
 export function* fetchDataInToeicPage() {
   try {
     yield put(fetchToeicByUserId());
+    yield put(fetchScale());
   } catch (err) {
     console.log(err);
   }

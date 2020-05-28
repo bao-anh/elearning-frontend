@@ -41,6 +41,7 @@ const persistConfig = {
     // 'topicState',
     // 'assignmentState',
     // 'lessonState',
+    'scaleState',
     'authState',
   ],
 };

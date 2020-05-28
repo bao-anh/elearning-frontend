@@ -293,6 +293,9 @@ const AssignmentDialog: FunctionComponent<{
         {question.script && question.script !== '' ? (
           <div dangerouslySetInnerHTML={{ __html: question.script }} />
         ) : null}
+        {isFetchApiSuccess ? (
+          <div dangerouslySetInnerHTML={{ __html: question.content }} />
+        ) : null}
         {question.childrenIds.map((children: any, childrenIndex: number) => (
           <React.Fragment key={childrenIndex}>
             <div className='assignment-question-item-title'>{`Câu ${
@@ -361,6 +364,12 @@ const AssignmentDialog: FunctionComponent<{
             className='assignment-item assignment-question-item-audio'
           />
         ) : null}
+        {question.script && question.script !== '' ? (
+          <div dangerouslySetInnerHTML={{ __html: question.script }} />
+        ) : null}
+        {isFetchApiSuccess ? (
+          <div dangerouslySetInnerHTML={{ __html: question.content }} />
+        ) : null}
         <RadioGroup
           aria-label='gender'
           name={firstIndex.toString()}
@@ -373,19 +382,26 @@ const AssignmentDialog: FunctionComponent<{
           className='assignment-dialog-right-radio-group'
         >
           {isSubmit ? <div className='assignment-dialog-overlay' /> : null}
-          {radioButtonLabel.map((label: string, index: number) => (
-            <FormControlLabel
-              key={index}
-              style={handleChangeStyle(question, index)}
-              value={index}
-              control={<Radio />}
-              label={label}
-            />
-          ))}
+          {question.answerArray && question.answerArray.length
+            ? question.answerArray.map((label: string, index: number) => (
+                <FormControlLabel
+                  key={index}
+                  style={handleChangeStyle(question, index)}
+                  value={index}
+                  control={<Radio />}
+                  label={label}
+                />
+              ))
+            : radioButtonLabel.map((label: string, index: number) => (
+                <FormControlLabel
+                  key={index}
+                  style={handleChangeStyle(question, index)}
+                  value={index}
+                  control={<Radio />}
+                  label={label}
+                />
+              ))}
         </RadioGroup>
-        {isFetchApiSuccess ? (
-          <div dangerouslySetInnerHTML={{ __html: question.content }} />
-        ) : null}
       </React.Fragment>
     );
   };
