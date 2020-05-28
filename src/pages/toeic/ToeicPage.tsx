@@ -14,13 +14,17 @@ import { Grid } from '@material-ui/core';
 const ToeicPage: FunctionComponent<{
   fetchDataInToeicPage: Function;
   submitToeicScore: Function;
+  updateToeicScore: Function;
   authState: any;
   toeicState: any;
+  scaleState: any;
   match: any;
 }> = ({
   fetchDataInToeicPage,
   submitToeicScore,
+  updateToeicScore,
   authState,
+  scaleState,
   toeicState,
   match,
 }) => {
@@ -36,15 +40,30 @@ const ToeicPage: FunctionComponent<{
       <BreadCrumb path={match.path} />
       <Grid container className='container'>
         <Grid item xs={9}>
-          <HeaderPanel title='Tiến độ luyện tập'>
+          <HeaderPanel
+            title='Tiến độ luyện tập'
+            style={{ margin: '0 10px 0 10px' }}
+          >
             <ProgressPanel
               authState={authState}
+              toeicState={toeicState}
               submitToeicScore={submitToeicScore}
+              updateToeicScore={updateToeicScore}
             />
           </HeaderPanel>
           {authState.toeicId ? (
-            <HeaderPanel title='Các phần luyện tập'>
-              {toeicState.isLoading ? <Loading /> : <ToeicContent />}
+            <HeaderPanel
+              title='Luyện tập theo từng phần'
+              style={{ margin: '0 10px 0 10px' }}
+            >
+              {toeicState.isLoading ? (
+                <Loading />
+              ) : (
+                <ToeicContent
+                  toeicState={toeicState}
+                  scaleState={scaleState.data}
+                />
+              )}
             </HeaderPanel>
           ) : null}
         </Grid>
@@ -60,6 +79,7 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
     authState: state.authState,
     toeicState: state.toeicState,
+    scaleState: state.scaleState,
     ...ownProps,
   };
 };
@@ -67,6 +87,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   fetchDataInToeicPage: () => dispatch(operationAction.fetchDataInToeicPage()),
   submitToeicScore: (currentScore: any, targetScore: any) =>
     dispatch(toeicAction.submitToeicScore(currentScore, targetScore)),
+  updateToeicScore: (targetScore: any) =>
+    dispatch(toeicAction.updateToeicScore(targetScore)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToeicPage);

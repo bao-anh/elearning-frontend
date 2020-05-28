@@ -1,6 +1,10 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
-import { TOEIC_FETCH_BY_USER_ID, TOEIC_SUBMIT_SCORE } from '../actions/types';
+import {
+  TOEIC_FETCH_BY_USER_ID,
+  TOEIC_SUBMIT_SCORE,
+  TOEIC_UPDATE_SCORE,
+} from '../actions/types';
 
 import {
   setToeic,
@@ -35,13 +39,22 @@ export function* fetchToeicByUserId() {
 export function* submitToeicScore(action: any) {
   try {
     yield put(fetchToeicOnProgress());
-    if (action.currentScore) {
-      yield call(postToeicScore, action.currentScore, action.targetScore);
-      yield put(fetchUserInfo());
-      const response = yield call(getToeicByUserId);
-      yield put(setToeic(response.data));
-    } else {
-    }
+    yield call(postToeicScore, action.currentScore, action.targetScore);
+    yield put(fetchUserInfo());
+    const response = yield call(getToeicByUserId);
+    yield put(setToeic(response.data));
+    yield put(fetchToeicSuccess());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* updateToeicScore(action: any) {
+  try {
+    yield put(fetchToeicOnProgress());
+    yield call(putToeicScore, action.targetScore);
+    const response = yield call(getToeicByUserId);
+    yield put(setToeic(response.data));
     yield put(fetchToeicSuccess());
   } catch (err) {
     console.log(err);
@@ -52,11 +65,16 @@ export function* watchFetchToeicByUserId() {
   yield takeLatest(TOEIC_FETCH_BY_USER_ID, fetchToeicByUserId);
 }
 
-export function* watchsubmitToeicScore() {
+export function* watchSubmitToeicScore() {
   yield takeLatest(TOEIC_SUBMIT_SCORE, submitToeicScore);
+}
+
+export function* watchUpdateToeicScore() {
+  yield takeLatest(TOEIC_UPDATE_SCORE, updateToeicScore);
 }
 
 export default function* toeic() {
   yield fork(watchFetchToeicByUserId);
-  yield fork(watchsubmitToeicScore);
+  yield fork(watchSubmitToeicScore);
+  yield fork(watchUpdateToeicScore);
 }

@@ -4,6 +4,7 @@ import {
   TOEIC_FETCH_ON_PROGRESS,
   TOEIC_FETCH_SUCCESS,
   TOEIC_SUBMIT_SCORE,
+  TOEIC_UPDATE_SCORE,
 } from '../actions/types';
 
 export interface ToeicAction {
@@ -46,5 +47,12 @@ export function submitToeicScore(
     type: TOEIC_SUBMIT_SCORE,
     targetScore,
     currentScore,
+  };
+}
+
+export function updateToeicScore(targetScore: number): ToeicAction {
+  return {
+    type: TOEIC_UPDATE_SCORE,
+    targetScore,
   };
 }

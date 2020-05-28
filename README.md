@@ -145,3 +145,11 @@
 
 - Added create new target score in TOEIC page.
 - Relocate file and folder.
+
+### Version 4.1
+
+28/2/2020
+
+- Added full layout for toeic page.
+- Added update TOEIC target score
+- Fix bug not display script and content when question doesnt have children.
