@@ -153,3 +153,8 @@
 - Added full layout for toeic page.
 - Added update TOEIC target score
 - Fix bug not display script and content when question doesnt have children.
+
+### Version 4.2
+
+- Added test single part and short test mechanic.
+- Progress updated when complete a test.

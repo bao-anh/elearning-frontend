@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 import Moment from 'react-moment';
 import AssignmentDialogResult from './AssignmentDialogResult';
 import { getQuestionOrder, renderNumberOfQuestion } from '../../utils';
+import Routes from '../../routes';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -41,13 +42,14 @@ const columns: Column[] = [
 const YourActivity: FunctionComponent<{
   assignmentState: any;
   authState: any;
-}> = ({ assignmentState, authState }) => {
+  path?: any;
+}> = ({ assignmentState, authState, path }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openResult, handleOpenResult] = useState(-1);
 
-  const { participantIds, questionIds } = assignmentState.data;
+  const { participantIds, questionIds } = assignmentState;
 
   const yourParticipantIds = participantIds.filter((participant: any) => {
     if (authState._id === participant.userId._id) return true;
@@ -84,23 +86,52 @@ const YourActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score')
-      return `${Math.round(
-        (participant.score / 100) * renderNumberOfQuestion(questionIds)
-      )}/${renderNumberOfQuestion(questionIds)}`;
+      if (path === Routes.TEST_SCREEN) {
+        return `${Math.round(
+          (participant.score / 100) *
+            renderNumberOfQuestion(participantIds[index].testId.questionIds)
+        )}/${renderNumberOfQuestion(participantIds[index].testId.questionIds)}`;
+      } else
+        return `${Math.round(
+          (participant.score / 100) * renderNumberOfQuestion(questionIds)
+        )}/${renderNumberOfQuestion(questionIds)}`;
+  };
+
+  const renderAssignmentDialogResult = () => {
+    if (openResult !== -1) {
+      if (path === Routes.TEST_SCREEN) {
+        return (
+          <AssignmentDialogResult
+            name={assignmentState.name}
+            duration={assignmentState.duration}
+            questionOrderArray={getQuestionOrder(
+              participantIds[openResult].testId.questionIds
+            )}
+            openResult={openResult}
+            handleOpenResult={handleOpenResult}
+            questionIds={participantIds[openResult].testId.questionIds}
+            participantIds={participantIds}
+          />
+        );
+      } else {
+        return (
+          <AssignmentDialogResult
+            name={assignmentState.name}
+            duration={assignmentState.duration}
+            questionOrderArray={getQuestionOrder(questionIds)}
+            openResult={openResult}
+            handleOpenResult={handleOpenResult}
+            questionIds={questionIds}
+            participantIds={participantIds}
+          />
+        );
+      }
+    } else return null;
   };
 
   return (
     <Paper className={classes.root}>
-      {openResult !== -1 ? (
-        <AssignmentDialogResult
-          questionOrderArray={getQuestionOrder(
-            assignmentState.data.questionIds
-          )}
-          assignment={assignmentState.data}
-          openResult={openResult}
-          handleOpenResult={handleOpenResult}
-        />
-      ) : null}
+      {renderAssignmentDialogResult()}
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>

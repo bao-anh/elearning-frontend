@@ -6,7 +6,9 @@ import {
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
   OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
   OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
+  OPERATION_FETCH_DATA_IN_TEST_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
+  OPERATION_SUBMIT_TEST,
   OPERATION_PURCHASE_COURSE,
 } from '../actions/types';
 
@@ -25,6 +27,8 @@ export interface OperationAction {
   assignment?: any;
   percentComplete?: any;
   assignmentState?: any;
+  testType?: any;
+  numberOfQuestionIds?: any;
 }
 
 export function fetchDataInCategoryPage(
@@ -79,6 +83,13 @@ export function fetchDataInToeicPage(): OperationAction {
   };
 }
 
+export function fetchDataInTestPage(testType: any): OperationAction {
+  return {
+    type: OPERATION_FETCH_DATA_IN_TEST_PAGE,
+    testType,
+  };
+}
+
 export function submitAssignment(
   assignmentState: any,
   assignment: any,
@@ -95,6 +106,27 @@ export function submitAssignment(
     userAnswer,
     score,
     onSuccess,
+  };
+}
+
+export function submitTest(
+  assignment: any,
+  percentComplete: any,
+  userAnswer: any,
+  testType: any,
+  score: any,
+  onSuccess: any,
+  numberOfQuestionIds?: any
+) {
+  return {
+    type: OPERATION_SUBMIT_TEST,
+    assignment,
+    percentComplete,
+    userAnswer,
+    testType,
+    score,
+    onSuccess,
+    numberOfQuestionIds,
   };
 }
 

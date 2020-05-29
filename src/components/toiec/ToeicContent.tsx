@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import '../../resources/scss/toeic/toeicContent.scss';
+import { Link } from 'react-router-dom';
 import Part1Image from '../../resources/images/part1.png';
 import Part2Image from '../../resources/images/part2.png';
 import Part3Image from '../../resources/images/part3.png';
@@ -73,14 +74,14 @@ const ToeicContent: FunctionComponent<{ toeicState: any; scaleState: any }> = ({
           (targetProgressListeing - minProgressListeing)) *
           100
       );
-      return progress > 100 ? 100 : progress;
+      return progress > 100 ? 100 : progress < 0 ? 0 : progress;
     } else {
       const progress = Math.round(
         ((part.progressIds[0].percentComplete - minProgressReading) /
           (targetProgressReading - minProgressListeing)) *
           100
       );
-      return progress > 100 ? 100 : progress;
+      return progress > 100 ? 100 : progress < 0 ? 0 : progress;
     }
   };
 
@@ -136,7 +137,9 @@ const ToeicContent: FunctionComponent<{ toeicState: any; scaleState: any }> = ({
             color='primary'
             className='progress-panel-button'
           >
-            Luyện
+            <Link to={`/test/${part.partNumber}`} className='button-link'>
+              Luyện
+            </Link>
           </Button>
         </div>
       ))}

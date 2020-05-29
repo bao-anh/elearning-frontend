@@ -64,7 +64,7 @@ const AssignmentPage: FunctionComponent<{
               assignmentState.data.questionIds
             )}
             assignment={{ ...assignmentState.data, isOpen: openAssignment }}
-            path={match.path}
+            match={match}
             handleOpenAssignment={setOpenAssignment}
           />
         )}
@@ -81,7 +81,7 @@ const AssignmentPage: FunctionComponent<{
               <Loading />
             ) : (
               <YourActivity
-                assignmentState={assignmentState}
+                assignmentState={assignmentState.data}
                 authState={authState}
               />
             )}

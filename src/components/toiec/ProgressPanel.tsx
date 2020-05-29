@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useState } from 'react';
-import '../../resources/scss/toeic/progressPanel.scss';
+import { Link } from 'react-router-dom';
 import Loading from '../common/Loading';
 import ProgressImage from '../../resources/images/progress.png';
+import '../../resources/scss/toeic/progressPanel.scss';
 
 import {
   Typography,
@@ -50,7 +51,7 @@ const ProgressPanel: FunctionComponent<{
     if (
       toeicScore.targetScore === '' ||
       Number(toeicScore.targetScore) < 0 ||
-      toeicScore.currentScore > toeicScore.targetScore
+      toeicState.data.currentScore > toeicScore.targetScore
     ) {
       setIsError(true);
     } else {
@@ -141,6 +142,10 @@ const ProgressPanel: FunctionComponent<{
         ? 100
         : Math.round(
             ((currentScore - minScore) / (targetScore - minScore)) * 100
+          ) < 0
+        ? 0
+        : Math.round(
+            ((currentScore - minScore) / (targetScore - minScore)) * 100
           );
 
     return (
@@ -176,10 +181,17 @@ const ProgressPanel: FunctionComponent<{
               style={{ marginBottom: '10px' }}
               fullWidth
             >
-              Luyện đề rút gọn
+              <Link
+                to='/test/short-test'
+                style={{ textDecoration: 'none', color: '#3f51b5' }}
+              >
+                Luyện đề rút gọn
+              </Link>
             </Button>
             <Button variant='contained' color='primary' fullWidth>
-              Luyện đề hoàn chỉnh
+              <Link to='test/full-test' className='button-link'>
+                Luyện đề hoàn chỉnh
+              </Link>
             </Button>
           </div>
         </div>

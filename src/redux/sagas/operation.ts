@@ -6,9 +6,11 @@ import {
   OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
   OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
   OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
-  OPERATION_SUBMIT_ASSIGNMENT,
-  OPERATION_PURCHASE_COURSE,
   OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
+  OPERATION_FETCH_DATA_IN_TEST_PAGE,
+  OPERATION_SUBMIT_ASSIGNMENT,
+  OPERATION_SUBMIT_TEST,
+  OPERATION_PURCHASE_COURSE,
 } from '../actions/types';
 
 import {
@@ -37,6 +39,7 @@ import {
   fetchCourseByUserId,
   fetchCourseByCategoryId,
 } from '../actions/course';
+import { fetchTest, setTest } from '../actions/test';
 import { fetchScale } from '../actions/scale';
 import { fetchToeicByUserId } from '../actions/toeic';
 import { fetchUserInfo } from '../actions/auth';
@@ -48,6 +51,7 @@ import { getCourseByCourseId } from './course';
 import { getAssignmentByAssignmentId } from './assignment';
 import { getParticipantSubmitAssignment } from './participant';
 import { createOrUpdateProgressChain } from './progress';
+import { postTest, postTestByType } from './test';
 import { updateCourseIds } from './auth';
 
 export function* fetchDataInCategoryPage(action: any) {
@@ -144,6 +148,14 @@ export function* fetchDataInToeicPage() {
   }
 }
 
+export function* fetchDataInTestPage(action: any) {
+  try {
+    yield put(fetchTest(action.testType));
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* submitAssignment(action: any) {
   try {
     const userInfo = yield select((state) => state.authState);
@@ -184,6 +196,47 @@ export function* submitAssignment(action: any) {
     );
 
     yield put(setAssignment(assignment.data));
+    action.onSuccess();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export function* submitTest(action: any) {
+  try {
+    const payload = {
+      testType: action.testType,
+      assignment: action.assignment,
+      score: action.score,
+      percentComplete: action.percentComplete,
+      userAnswer: action.userAnswer,
+      numberOfQuestionIds: action.numberOfQuestionIds,
+    };
+    yield call(postTest, payload);
+    const response = yield call(postTestByType, action.testType);
+    // Fetch lại dữ liệu
+    const oldQuestionIds = yield select(
+      (state) => state.testState.data.questionIds
+    );
+    let testStateData = {};
+    if (!isNaN(Number(action.testType))) {
+      testStateData = {
+        ...testStateData,
+        name: `Part ${Number(action.testType)}`,
+        questionIds: oldQuestionIds,
+        participantIds: response.data.participantIds,
+        duration: 600,
+      };
+    } else if (action.testType === 'short-test') {
+      testStateData = {
+        ...testStateData,
+        name: `Bài thi rút gọn`,
+        questionIds: oldQuestionIds,
+        participantIds: response.data.participantIds,
+        duration: 1200,
+      };
+    }
+    yield put(setTest(testStateData));
     action.onSuccess();
   } catch (err) {
     console.log(err);
@@ -238,8 +291,16 @@ export function* watchFetchDataInToeicPage() {
   yield takeLatest(OPERATION_FETCH_DATA_IN_TOEIC_PAGE, fetchDataInToeicPage);
 }
 
+export function* watchFetchDataInTestPage() {
+  yield takeLatest(OPERATION_FETCH_DATA_IN_TEST_PAGE, fetchDataInTestPage);
+}
+
 export function* watchSubmitAssignment() {
   yield takeLatest(OPERATION_SUBMIT_ASSIGNMENT, submitAssignment);
+}
+
+export function* watchSubmitTest() {
+  yield takeLatest(OPERATION_SUBMIT_TEST, submitTest);
 }
 
 export function* watchPurchaseCourse() {
@@ -254,6 +315,8 @@ export default function* operation() {
   yield fork(watchFetchDataInAssignmentPage);
   yield fork(watchFetchDataInUtilityPage);
   yield fork(watchFetchDataInToeicPage);
+  yield fork(watchFetchDataInTestPage);
   yield fork(watchSubmitAssignment);
+  yield fork(watchSubmitTest);
   yield fork(watchPurchaseCourse);
 }

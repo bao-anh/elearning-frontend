@@ -16,16 +16,28 @@ export function sortArrayByPropertyValue(arr, property) {
 
 export function getQuestionOrder(arr) {
   const questionOrderArray = [];
+  // Phải cho tham số này vào
+  let isSingleQuestionPrevious = false;
   arr.forEach((element, index) => {
     if (element.childrenIds && element.childrenIds.length) {
       if (index === 0) questionOrderArray.push(element.childrenIds.length);
-      else
+      else if (isSingleQuestionPrevious) {
+        questionOrderArray.push(
+          element.childrenIds.length + questionOrderArray[index - 1] + 1
+        );
+        isSingleQuestionPrevious = false;
+      } else {
+        isSingleQuestionPrevious = false;
         questionOrderArray.push(
           element.childrenIds.length + questionOrderArray[index - 1]
         );
+      }
     } else {
       if (index === 0) questionOrderArray.push(0);
-      else questionOrderArray.push(questionOrderArray[index - 1] + 1);
+      else if (isSingleQuestionPrevious === false) {
+        questionOrderArray.push(questionOrderArray[index - 1]);
+      } else questionOrderArray.push(questionOrderArray[index - 1] + 1);
+      isSingleQuestionPrevious = true;
     }
   });
   return questionOrderArray;

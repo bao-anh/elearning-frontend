@@ -32,15 +32,17 @@ const Transition: any = React.forwardRef(function Transition(
 const AssignmentDialog: FunctionComponent<{
   assignment: any;
   handleOpenAssignment: Function;
-  path?: any;
+  match?: any;
   submitAssignment?: any;
+  submitTest?: any;
   assigmentState?: any;
   questionOrderArray: any;
 }> = ({
   assignment,
   handleOpenAssignment,
-  path,
+  match,
   submitAssignment,
+  submitTest,
   assigmentState,
   questionOrderArray,
 }) => {
@@ -85,7 +87,7 @@ const AssignmentDialog: FunctionComponent<{
   const handleSubmit = () => {
     setIsSubmit(true);
     setIsOverLay(true);
-    handleConvertPoint();
+    handleSendPayload();
   };
 
   const handleConvertPoint = () => {
@@ -108,31 +110,129 @@ const AssignmentDialog: FunctionComponent<{
       )
         count++;
     });
-    const score =
-      100 * (count / renderNumberOfQuestion(assignment.questionIds));
 
-    let percentComplete =
-      score / assignment.passPercent > 1
-        ? 100
-        : (score / assignment.passPercent) * 100;
+    return 100 * (count / renderNumberOfQuestion(assignment.questionIds));
+  };
 
-    if (assignment.progressIds.length) {
-      if (percentComplete <= assignment.progressIds[0].percentComplete) {
-        percentComplete = 0;
-      } else percentComplete -= assignment.progressIds[0].percentComplete;
-    }
+  const handleConvertPointInComplexTest = () => {
+    let countIds = [0, 0, 0, 0, 0, 0, 0];
+    let numberOfQuestionIds = [0, 0, 0, 0, 0, 0, 0];
+    let progressIds = [0, 0, 0, 0, 0, 0, 0];
+    let questionIds: any = [];
 
-    submitAssignment(
-      assigmentState.data,
-      assignment,
-      percentComplete,
-      userAnswer,
-      score,
-      () => {
-        setIsFetchApiSuccess(true);
-        setIsOverLay(false);
+    assignment.questionIds.forEach((question: any, index: number) => {
+      if (question.childrenIds && question.childrenIds.length) {
+        const firstIndex =
+          questionOrderArray[index] - question.childrenIds.length;
+
+        if (question.part === 7.1 || question.part === 7.2) {
+          numberOfQuestionIds[6] += question.childrenIds.length;
+        } else {
+          numberOfQuestionIds[question.part - 1] += question.childrenIds.length;
+        }
+
+        question.childrenIds.forEach((children: any, childrenIndex: number) => {
+          if (
+            children.correctAnswer ===
+            Number(userAnswer[firstIndex + childrenIndex])
+          )
+            if (question.part === 7.1 || question.part === 7.2) {
+              countIds[6]++;
+            } else {
+              countIds[question.part - 1]++;
+            }
+        });
+      } else {
+        numberOfQuestionIds[question.part - 1]++;
+        if (
+          question.correctAnswer ===
+          Number(userAnswer[questionOrderArray[index]])
+        )
+          countIds[question.part - 1]++;
       }
-    );
+      questionIds = [...questionIds, question._id];
+    });
+
+    let count = 0;
+
+    progressIds.forEach((progress: any, index: any) => {
+      count += countIds[index];
+      progressIds[index] = Math.round(
+        (100 * countIds[index]) / numberOfQuestionIds[index]
+      );
+    });
+
+    console.log(progressIds);
+
+    return {
+      questionIds,
+      progressIds,
+      score: 100 * (count / renderNumberOfQuestion(assignment.questionIds)),
+      numberOfQuestionIds,
+    };
+  };
+
+  const handleSendPayload = () => {
+    if (match.path === Routes.ASSIGNMENT_SCREEN) {
+      const score = handleConvertPoint();
+      let percentComplete =
+        score / assignment.passPercent > 1
+          ? 100
+          : (score / assignment.passPercent) * 100;
+
+      if (assignment.progressIds.length) {
+        if (percentComplete <= assignment.progressIds[0].percentComplete) {
+          percentComplete = 0;
+        } else percentComplete -= assignment.progressIds[0].percentComplete;
+      }
+      submitAssignment(
+        assigmentState.data,
+        assignment,
+        percentComplete,
+        userAnswer,
+        score,
+        () => {
+          setIsFetchApiSuccess(true);
+          setIsOverLay(false);
+        }
+      );
+    } else if (match.path === Routes.TEST_SCREEN) {
+      if (match.params.part === 'short-test') {
+        const result = handleConvertPointInComplexTest();
+        // Phải làm như thế này để tránh lỗi payload quá lớn khi đưa vào backend
+        const newAssignment = {
+          name: assignment.name,
+          questionIds: result.questionIds,
+          duration: assignment.duration,
+        };
+
+        submitTest(
+          newAssignment,
+          result.progressIds,
+          userAnswer,
+          result.score,
+          match.params.part,
+          () => {
+            setIsFetchApiSuccess(true);
+            setIsOverLay(false);
+          },
+          result.numberOfQuestionIds
+        );
+      } else {
+        const score = handleConvertPoint();
+        submitTest(
+          assignment,
+          Math.round(score),
+          userAnswer,
+          score,
+          match.params.part,
+          () => {
+            setIsFetchApiSuccess(true);
+            setIsOverLay(false);
+          }
+        );
+      }
+    } else console.error('Something wrong when submit answer');
   };
 
   const handleCloseDialog = () => {
@@ -156,7 +256,7 @@ const AssignmentDialog: FunctionComponent<{
           <div className='number-of-question'>
             <div className='assignment-info-title'>Số câu hỏi</div>
             <div className='assignment-info-data'>
-              {assignment.questionIds.length}
+              {renderNumberOfQuestion(assignment.questionIds)}
             </div>
           </div>
         </div>
@@ -414,13 +514,13 @@ const AssignmentDialog: FunctionComponent<{
       classes={{ paper: 'assignment-dialog-container' }}
     >
       {isOverLay ? (
-        <div className='assignment-dialog-overlay'>
+        <div className='assignment-dialog-overlay' style={{ opacity: '0.5' }}>
           <Loading />
         </div>
       ) : null}
       <div className='assigment-dialog-header'>
         <div className='assigment-dialog-header-title'>{assignment.name}</div>
-        {path === Routes.LESSON_SCREEN ? (
+        {match.path === Routes.LESSON_SCREEN ? (
           <IconButton
             className='assigment-dialog-close-icon'
             onClick={() => {
@@ -474,6 +574,26 @@ const mapDispatchToProps = (dispatch: any) => ({
         userAnswer,
         score,
         onSuccess
+      )
+    ),
+  submitTest: (
+    assignment: any,
+    percentComplete: any,
+    userAnswer: any,
+    score: any,
+    testType: any,
+    onSuccess: any,
+    numberOfQuestionIds?: any
+  ) =>
+    dispatch(
+      operationAction.submitTest(
+        assignment,
+        percentComplete,
+        userAnswer,
+        testType,
+        score,
+        onSuccess,
+        numberOfQuestionIds
       )
     ),
 });
