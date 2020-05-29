@@ -128,27 +128,27 @@
 
 ### Version 3.4
 
-25/2/2020
+25/5/2020
 
 - Added utility page.
 
 ### Version 3.5
 
-26/2/2020
+26/5/2020
 
 - Added all data in TOEIC 450-600+ course.
 - Adjust assignment dialog to compatible with new data in question model.
 
 ### Version 4.0
 
-27/2/2020
+27/5/2020
 
 - Added create new target score in TOEIC page.
 - Relocate file and folder.
 
 ### Version 4.1
 
-28/2/2020
+28/5/2020
 
 - Added full layout for toeic page.
 - Added update TOEIC target score
@@ -156,7 +156,7 @@
 
 ### Version 4.2
 
-29/2/2020
+29/5/2020
 
 - Added test single part and short test mechanic.
 - Progress updated when complete a test.
