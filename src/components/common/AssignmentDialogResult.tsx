@@ -23,13 +23,24 @@ const Transition: any = React.forwardRef(function Transition(
 });
 
 const AssignmentDialogResult: FunctionComponent<{
-  assignment: any;
+  name: any;
+  duration: any;
   openResult: number;
   handleOpenResult: Function;
   questionOrderArray: any;
-}> = ({ assignment, handleOpenResult, openResult, questionOrderArray }) => {
+  questionIds: any;
+  participantIds: any;
+}> = ({
+  name,
+  duration,
+  handleOpenResult,
+  openResult,
+  questionOrderArray,
+  questionIds,
+  participantIds,
+}) => {
   const [userAnswer, setUserAnswer] = useState(
-    assignment.participantIds[openResult].userAnswer
+    participantIds[openResult].userAnswer
   );
 
   const radioButtonLabel = ['(A)', '(B)', '(C)', '(D)'];
@@ -51,18 +62,16 @@ const AssignmentDialogResult: FunctionComponent<{
           <div className='duration-of-assignment'>
             <div className='assignment-info-title'>Thời gian làm bài</div>
             <div className='assignment-info-data'>
-              {convertSecondToMinute(assignment.duration)}
+              {convertSecondToMinute(duration)}
             </div>
           </div>
           <div className='number-of-question'>
             <div className='assignment-info-title'>Số câu hỏi</div>
-            <div className='assignment-info-data'>
-              {assignment.questionIds.length}
-            </div>
+            <div className='assignment-info-data'>{questionIds.length}</div>
           </div>
         </div>
         <div className='assignment-user-answer-content'>
-          {assignment.questionIds.map((question: any, index: number) => (
+          {questionIds.map((question: any, index: number) => (
             <div key={index} className='assignment-user-answer-container'>
               <div className='assignment-dialog-overlay' />
               {question.childrenIds && question.childrenIds.length
@@ -137,7 +146,7 @@ const AssignmentDialogResult: FunctionComponent<{
   };
 
   const renderRightPanel = () => {
-    return assignment.questionIds.map((question: any, index: number) => (
+    return questionIds.map((question: any, index: number) => (
       <Paper key={index} elevation={1} className='assignment-question-item'>
         {question.childrenIds && question.childrenIds.length
           ? renderHaveChildQuestion(question, index)
@@ -163,7 +172,7 @@ const AssignmentDialogResult: FunctionComponent<{
           </audio>
         ) : null}
         {question.script && question.script !== '' ? (
-          <div>{question.script}</div>
+          <div dangerouslySetInnerHTML={{ __html: question.script }} />
         ) : null}
         <div dangerouslySetInnerHTML={{ __html: question.content }} />
         {question.childrenIds.map((children: any, childrenIndex: number) => (
@@ -195,6 +204,7 @@ const AssignmentDialogResult: FunctionComponent<{
                 />
               ))}
             </RadioGroup>
+            <div dangerouslySetInnerHTML={{ __html: children.content }} />
             {childrenIndex !== question.childrenIds.length - 1 ? (
               <React.Fragment>
                 <br />
@@ -234,6 +244,11 @@ const AssignmentDialogResult: FunctionComponent<{
             className='assignment-item assignment-question-item-audio'
           />
         ) : null}
+
+        {question.script && question.script !== '' ? (
+          <div dangerouslySetInnerHTML={{ __html: question.script }} />
+        ) : null}
+
         <div dangerouslySetInnerHTML={{ __html: question.content }} />
         <RadioGroup
           aria-label='gender'
@@ -278,7 +293,7 @@ const AssignmentDialogResult: FunctionComponent<{
       classes={{ paper: 'assignment-dialog-container' }}
     >
       <div className='assigment-dialog-header'>
-        <div className='assigment-dialog-header-title'>{assignment.name}</div>
+        <div className='assigment-dialog-header-title'>{name}</div>
         <IconButton
           className='assigment-dialog-close-icon'
           onClick={() => {

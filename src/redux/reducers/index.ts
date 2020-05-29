@@ -8,6 +8,7 @@ import assignmentState from './assignment';
 import authState from './auth';
 import toeicState from './toeic';
 import scaleState from './scale';
+import testState from './test';
 
 const rootReducer = combineReducers<AppState>({
   authState: authState,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers<AppState>({
   assignmentState: assignmentState,
   toeicState: toeicState,
   scaleState: scaleState,
+  testState: testState,
 });
 
 export default rootReducer;

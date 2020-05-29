@@ -11,7 +11,15 @@ const BreadCrumb: FunctionComponent<{
   lessonState?: any;
   assignmentState?: any;
   path: any;
-}> = ({ courseState, lessonState, topicState, path, assignmentState }) => {
+  params?: any;
+}> = ({
+  courseState,
+  lessonState,
+  topicState,
+  path,
+  assignmentState,
+  params,
+}) => {
   const renderContent = () => {
     if (path === Routes.TOEIC_SCREEN) {
       return (
@@ -26,6 +34,37 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/toeic' className='breadcrumb-current-link'>
             Luyện thi TOEIC
           </Link>
+        </Breadcrumbs>
+      );
+    }
+    if (path === Routes.TEST_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/toeic' className='breadcrumb-link'>
+            Luyện thi TOEIC
+          </Link>
+          {!isNaN(Number(params.part)) ? (
+            <Link
+              to={`/test/${params.part}`}
+              className='breadcrumb-current-link'
+            >
+              {`Bài thi Part ${params.part}`}
+            </Link>
+          ) : params.part === 'short-test' ? (
+            <Link
+              to={`/test/${params.part}`}
+              className='breadcrumb-current-link'
+            >
+              Bài thi rút gọn
+            </Link>
+          ) : null}
         </Breadcrumbs>
       );
     }

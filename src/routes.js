@@ -10,5 +10,6 @@ class Routes {
   static SIGNIN_SCREEN = '/signin';
   static REGISTER_SCREEN = '/register';
   static TOEIC_SCREEN = '/toeic';
+  static TEST_SCREEN = '/test/:part';
 }
 export default Routes;

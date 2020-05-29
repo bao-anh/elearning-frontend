@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import Moment from 'react-moment';
+import { renderNumberOfQuestion } from '../../utils';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -63,10 +64,11 @@ const CurrentActivity: FunctionComponent<{
           <Moment format='DD/MM/YYYY'>{participant.date}</Moment>
         </span>
       );
-    else if (columnId === 'score')
-      return `${Math.round((participant.score / 100) * questionIds.length)}/${
-        questionIds.length
-      }`;
+    else if (columnId === 'score') {
+      return `${Math.round(
+        (participant.score / 100) * renderNumberOfQuestion(questionIds)
+      )}/${renderNumberOfQuestion(questionIds)}`;
+    }
   };
 
   return (
