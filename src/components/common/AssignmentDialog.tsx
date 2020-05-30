@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import * as operationAction from '../../redux/actions/operation';
 import { AppState } from '../../redux/appstate';
@@ -6,19 +6,12 @@ import { convertSecondToMinute, renderNumberOfQuestion } from '../../utils';
 import Routes from '../../routes';
 import HourGlass from '../../resources/images/hourglasstrans.gif';
 import Loading from './Loading';
+import Timer from './Timer';
+import AssignmentDialogAnswer from './AssignmentDialogAnswer';
+import AssignmentDialogQuestion from './AssignmentDialogQuestion';
 import '../../resources/scss/assignmentDialog.scss';
 
-import {
-  Dialog,
-  Slide,
-  IconButton,
-  Paper,
-  RadioGroup,
-  Button,
-  FormControlLabel,
-  Radio,
-  Divider,
-} from '@material-ui/core';
+import { Dialog, Slide, IconButton, Paper, Button } from '@material-ui/core';
 import { Cancel as CancelIcon } from '@material-ui/icons';
 import { TransitionProps } from '@material-ui/core/transitions';
 
@@ -32,7 +25,7 @@ const Transition: any = React.forwardRef(function Transition(
 const AssignmentDialog: FunctionComponent<{
   assignment: any;
   handleOpenAssignment: Function;
-  match?: any;
+  match: any;
   submitAssignment?: any;
   submitTest?: any;
   assigmentState?: any;
@@ -46,29 +39,23 @@ const AssignmentDialog: FunctionComponent<{
   assigmentState,
   questionOrderArray,
 }) => {
-  const [timeLeft, setTimeLeft] = useState(assignment.duration);
-  const [userAnswer, setUserAnswer] = useState([Number]);
+  const [userAnswer, setUserAnswer] = useState([] as any);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isFetchApiSuccess, setIsFetchApiSuccess] = useState(false);
   const [isOverLay, setIsOverLay] = useState(false);
+  const [changeIndexNeedToRender, setChangeIndexNeedToRender] = useState(0);
 
-  useEffect(() => {
-    const myTimeOut = setTimeout(() => {
-      if (assignment.isOpen === true && !isSubmit) {
-        setTimeLeft(timeLeft - 1);
-        if (timeLeft <= 0) {
-          setIsSubmit(true);
-          setIsFetchApiSuccess(true);
-        }
-      }
-    }, 1000);
+  const handleChangeUserAnswer = (index: any, value: any) => {
+    setUserAnswer((uA: any) => {
+      const newUserAnswer = [...uA];
+      newUserAnswer[index] = value;
+      return newUserAnswer;
+    });
+  };
 
-    return () => {
-      clearTimeout(myTimeOut);
-    };
-  });
-
-  const radioButtonLabel = ['(A)', '(B)', '(C)', '(D)'];
+  const handleChangeQuestionIndex = (parentIndex: any) => {
+    setChangeIndexNeedToRender(parentIndex);
+  };
 
   const handleChangeStyle = (question: any, index: any) => {
     return isFetchApiSuccess
@@ -76,12 +63,6 @@ const AssignmentDialog: FunctionComponent<{
         ? { backgroundColor: '#ccefe6', borderRadius: '5px' }
         : {}
       : {};
-  };
-
-  const handleChangeUserAnswer = (e: any) => {
-    const newUserAnswer = [...userAnswer];
-    newUserAnswer[e.target.name] = e.target.value;
-    setUserAnswer(newUserAnswer);
   };
 
   const handleSubmit = () => {
@@ -162,8 +143,6 @@ const AssignmentDialog: FunctionComponent<{
       );
     });
 
-    console.log(progressIds);
-
     return {
       questionIds,
       progressIds,
@@ -173,7 +152,10 @@ const AssignmentDialog: FunctionComponent<{
   };
 
   const handleSendPayload = () => {
-    if (match.path === Routes.ASSIGNMENT_SCREEN) {
+    if (
+      match.path === Routes.ASSIGNMENT_SCREEN ||
+      match.path === Routes.LESSON_SCREEN
+    ) {
       const score = handleConvertPoint();
       let percentComplete =
         score / assignment.passPercent > 1
@@ -236,7 +218,6 @@ const AssignmentDialog: FunctionComponent<{
   };
 
   const handleCloseDialog = () => {
-    setTimeLeft(assignment.duration);
     handleOpenAssignment(false);
     setIsSubmit(false);
     setUserAnswer([]);
@@ -265,21 +246,30 @@ const AssignmentDialog: FunctionComponent<{
             <img src={HourGlass} alt='hour glass' className=' clock-image' />
           </div>
           <div className='assignment-info-data'>
-            {convertSecondToMinute(timeLeft)}
+            <Timer
+              duration={assignment.duration}
+              isOpen={assignment.isOpen}
+              isSubmit={isSubmit}
+              setIsSubmit={setIsSubmit}
+              setIsFetchApiSuccess={setIsFetchApiSuccess}
+            />
           </div>
         </div>
         <div className='assignment-user-answer-content'>
           {assignment.questionIds.map((question: any, parentIndex: number) => (
-            <div key={parentIndex}>
-              {isSubmit ? <div className='assignment-dialog-overlay' /> : null}
-              {question.childrenIds && question.childrenIds.length ? (
-                <div className='assignment-user-answer-have-children'>
-                  {renderHaveChildrenAnswer(question, parentIndex)}
-                </div>
-              ) : (
-                renderDoesntHaveChildAnswer(question, parentIndex)
-              )}
-            </div>
+            <AssignmentDialogAnswer
+              key={` answer ${question._id}`}
+              questionOrderArray={questionOrderArray}
+              isFetchApiSuccess={isFetchApiSuccess}
+              userAnswer={userAnswer}
+              handleChangeStyle={handleChangeStyle}
+              question={question}
+              parentIndex={parentIndex}
+              isSubmit={isSubmit}
+              handleChangeUserAnswer={handleChangeUserAnswer}
+              changeQuestionIndex={changeIndexNeedToRender}
+              handleChangeQuestionIndex={handleChangeQuestionIndex}
+            />
           ))}
         </div>
         <div className='assignment-submit-button'>
@@ -297,214 +287,25 @@ const AssignmentDialog: FunctionComponent<{
     );
   };
 
-  const renderHaveChildrenAnswer = (question: any, parentIndex: number) => {
-    const firstIndex =
-      questionOrderArray[parentIndex] - question.childrenIds.length;
-    return question.childrenIds.map((children: any, childrenIndex: number) => (
-      <div key={childrenIndex} className='assignment-user-answer-children'>
-        <div className='assignment-user-answer-label'>
-          {firstIndex + childrenIndex + 1}
-        </div>
-        <RadioGroup
-          aria-label='gender'
-          name={(firstIndex + childrenIndex).toString()}
-          value={
-            userAnswer[firstIndex + childrenIndex] !== null
-              ? Number(userAnswer[firstIndex + childrenIndex])
-              : null
-          }
-          onChange={(e) => handleChangeUserAnswer(e)}
-          classes={{ root: 'assignment-user-answer-list' }}
-        >
-          {radioButtonLabel.map((label: string, index: number) => (
-            <FormControlLabel
-              key={index}
-              style={handleChangeStyle(children, index)}
-              value={index}
-              control={<Radio />}
-              label={label}
-            />
-          ))}
-        </RadioGroup>
-      </div>
-    ));
-  };
-
-  const renderDoesntHaveChildAnswer = (question: any, parentIndex: number) => {
-    const firstIndex = questionOrderArray[parentIndex];
-    return (
-      <div className='assignment-user-answer-doesnt-have-children'>
-        <div className='assignment-user-answer-label'>{firstIndex + 1}</div>
-        <RadioGroup
-          aria-label='gender'
-          name={firstIndex.toString()}
-          value={
-            userAnswer[firstIndex] !== null
-              ? Number(userAnswer[firstIndex])
-              : null
-          }
-          onChange={(e) => handleChangeUserAnswer(e)}
-          classes={{ root: 'assignment-user-answer-list' }}
-        >
-          {radioButtonLabel.map((label: string, index: number) => (
-            <FormControlLabel
-              key={index}
-              style={handleChangeStyle(question, index)}
-              value={index}
-              control={<Radio />}
-              label={label}
-            />
-          ))}
-        </RadioGroup>
-      </div>
-    );
-  };
-
   const renderRightPanel = () => {
     return assignment.questionIds.map((question: any, parentIndex: number) => (
-      <Paper
-        key={parentIndex}
-        elevation={1}
-        className='assignment-question-item'
-      >
-        {question.childrenIds && question.childrenIds.length
-          ? renderHaveChildQuestion(question, parentIndex)
-          : renderDoesntHaveChildQuestion(question, parentIndex)}
-      </Paper>
+      <AssignmentDialogQuestion
+        key={question._id}
+        questionOrderArray={questionOrderArray}
+        isFetchApiSuccess={isFetchApiSuccess}
+        userAnswer={userAnswer}
+        isSubmit={isSubmit}
+        handleChangeStyle={handleChangeStyle}
+        question={question}
+        parentIndex={parentIndex}
+        handleChangeUserAnswer={handleChangeUserAnswer}
+        changeQuestionIndex={changeIndexNeedToRender}
+        handleChangeQuestionIndex={handleChangeQuestionIndex}
+      />
     ));
   };
 
-  const renderHaveChildQuestion = (question: any, parentIndex: number) => {
-    const firstIndex =
-      questionOrderArray[parentIndex] - question.childrenIds.length;
-    return (
-      <React.Fragment>
-        <div className='assignment-item assignment-question-item-title'>
-          {`Câu ${firstIndex + 1} - ${questionOrderArray[parentIndex]}`}
-        </div>
-        {question.soundLink && question.soundLink !== '' ? (
-          <audio
-            controls
-            className='assignment-item assignment-question-item-audio'
-          >
-            <source src={question.soundLink} type='audio/ogg' />
-          </audio>
-        ) : null}
-        {question.script && question.script !== '' ? (
-          <div dangerouslySetInnerHTML={{ __html: question.script }} />
-        ) : null}
-        {isFetchApiSuccess ? (
-          <div dangerouslySetInnerHTML={{ __html: question.content }} />
-        ) : null}
-        {question.childrenIds.map((children: any, childrenIndex: number) => (
-          <React.Fragment key={childrenIndex}>
-            <div className='assignment-question-item-title'>{`Câu ${
-              firstIndex + childrenIndex + 1
-            }`}</div>
-            <div className='assignment-question-item-title'>
-              {children.script}
-            </div>
-            <RadioGroup
-              aria-label='gender'
-              name={(firstIndex + childrenIndex).toString()}
-              value={
-                userAnswer[firstIndex + childrenIndex] !== null
-                  ? Number(userAnswer[firstIndex + childrenIndex])
-                  : null
-              }
-              onChange={(e) => handleChangeUserAnswer(e)}
-              className='assignment-dialog-right-radio-group'
-            >
-              {isSubmit ? <div className='assignment-dialog-overlay' /> : null}
-              {children.answerArray.map((label: string, index: number) => (
-                <FormControlLabel
-                  key={index}
-                  style={handleChangeStyle(children, index)}
-                  value={index}
-                  control={<Radio />}
-                  label={label}
-                />
-              ))}
-            </RadioGroup>
-            {childrenIndex !== question.childrenIds.length - 1 ? (
-              <React.Fragment>
-                <br />
-                <Divider />
-                <br />
-              </React.Fragment>
-            ) : null}
-          </React.Fragment>
-        ))}
-      </React.Fragment>
-    );
-  };
-
-  const renderDoesntHaveChildQuestion = (
-    question: any,
-    parentIndex: number
-  ) => {
-    const firstIndex = questionOrderArray[parentIndex];
-    return (
-      <React.Fragment>
-        <div className='assignment-item assignment-question-item-title'>
-          {`Câu ${firstIndex + 1}`}
-        </div>
-        {question.soundLink && question.soundLink !== '' ? (
-          <audio
-            controls
-            className='assignment-item assignment-question-item-audio'
-          >
-            <source src={question.soundLink} type='audio/ogg' />
-          </audio>
-        ) : null}
-        {question.imageLink && question.imageLink !== '' ? (
-          <img
-            src={question.imageLink}
-            alt='imageLink'
-            className='assignment-item assignment-question-item-audio'
-          />
-        ) : null}
-        {question.script && question.script !== '' ? (
-          <div dangerouslySetInnerHTML={{ __html: question.script }} />
-        ) : null}
-        {isFetchApiSuccess ? (
-          <div dangerouslySetInnerHTML={{ __html: question.content }} />
-        ) : null}
-        <RadioGroup
-          aria-label='gender'
-          name={firstIndex.toString()}
-          value={
-            userAnswer[firstIndex] !== null
-              ? Number(userAnswer[firstIndex])
-              : null
-          }
-          onChange={(e) => handleChangeUserAnswer(e)}
-          className='assignment-dialog-right-radio-group'
-        >
-          {isSubmit ? <div className='assignment-dialog-overlay' /> : null}
-          {question.answerArray && question.answerArray.length
-            ? question.answerArray.map((label: string, index: number) => (
-                <FormControlLabel
-                  key={index}
-                  style={handleChangeStyle(question, index)}
-                  value={index}
-                  control={<Radio />}
-                  label={label}
-                />
-              ))
-            : radioButtonLabel.map((label: string, index: number) => (
-                <FormControlLabel
-                  key={index}
-                  style={handleChangeStyle(question, index)}
-                  value={index}
-                  control={<Radio />}
-                  label={label}
-                />
-              ))}
-        </RadioGroup>
-      </React.Fragment>
-    );
-  };
+  console.log('changeQuestionIndex', changeIndexNeedToRender);
 
   return (
     <Dialog

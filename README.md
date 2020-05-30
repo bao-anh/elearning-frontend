@@ -160,3 +160,11 @@
 
 - Added test single part and short test mechanic.
 - Progress updated when complete a test.
+
+### Version 4.3
+
+30/5/2002
+
+- Optimize test successfully, only rerender needed question cluster.
+- Successfully implement React.memo.
+- We can proud of ourself today.

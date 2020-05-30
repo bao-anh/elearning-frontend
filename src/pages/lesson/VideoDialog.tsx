@@ -25,7 +25,8 @@ const VideoDialog: FunctionComponent<{
   isOpenVideo: any;
   setOpenVideo: Function;
   lessonState: any;
-}> = ({ isOpenVideo, setOpenVideo, lessonState }) => {
+  match: any;
+}> = ({ isOpenVideo, setOpenVideo, lessonState, match }) => {
   const [assignmentArray, setAssignmentArray] = useState([
     ...lessonState.data.assignmentIds,
   ]);
@@ -62,6 +63,7 @@ const VideoDialog: FunctionComponent<{
             key={assignment._id}
             assignment={assignment}
             handleOpenAssignment={handleOpenAssignment}
+            match={match}
           />
         ) : null
       )}

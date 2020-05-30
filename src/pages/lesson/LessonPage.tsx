@@ -59,6 +59,7 @@ const LessonPage: FunctionComponent<{
             isOpenVideo={isOpenVideo}
             setOpenVideo={setOpenVideo}
             lessonState={lessonState}
+            match={match}
           />
         )}
 
