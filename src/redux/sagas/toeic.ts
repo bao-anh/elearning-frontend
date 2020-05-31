@@ -25,11 +25,16 @@ export const putToeicScore = (targetScore: any) => {
   return api.put('/toeic/scores', { targetScore });
 };
 
+export const getLeaderboard = () => {
+  return api.get('/toeic/leaderboard');
+};
+
 export function* fetchToeicByUserId() {
   try {
     yield put(fetchToeicOnProgress());
     const response = yield call(getToeicByUserId);
-    yield put(setToeic(response.data));
+    const leaderboard = yield call(getLeaderboard);
+    yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
     console.log(err);
@@ -42,7 +47,8 @@ export function* submitToeicScore(action: any) {
     yield call(postToeicScore, action.currentScore, action.targetScore);
     yield put(fetchUserInfo());
     const response = yield call(getToeicByUserId);
-    yield put(setToeic(response.data));
+    const leaderboard = yield call(getLeaderboard);
+    yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
     console.log(err);
@@ -54,7 +60,8 @@ export function* updateToeicScore(action: any) {
     yield put(fetchToeicOnProgress());
     yield call(putToeicScore, action.targetScore);
     const response = yield call(getToeicByUserId);
-    yield put(setToeic(response.data));
+    const leaderboard = yield call(getLeaderboard);
+    yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
     console.log(err);

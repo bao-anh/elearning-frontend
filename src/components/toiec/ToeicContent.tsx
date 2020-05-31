@@ -131,6 +131,10 @@ const ToeicContent: FunctionComponent<{ toeicState: any; scaleState: any }> = ({
                   : `${targetProgressReading}%`}
               </div>
             </div>
+            <div className='toeic-content-target-score-text'>
+              Mục tiêu hiện tại
+            </div>
+            <div className='toeic-content-current-score-text'>Cột mốc</div>
           </div>
           <Button
             variant='contained'

@@ -8,8 +8,7 @@ import Loading from '../../components/common/Loading';
 import Reference from '../../components/course/Reference';
 import TopicContent from '../../components/course/TopicContent';
 import TopicSideBar from '../../components/course/TopicSideBar';
-import UserInfoSideBar from '../../components/common/UserInfoSideBar';
-import Comment from '../../components/course/Comment';
+import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import '../../resources/scss/lesson.scss';
@@ -85,7 +84,6 @@ const LessonPage: FunctionComponent<{
             path={match.path}
           />
           <Reference lessonState={lessonState} />
-          <Comment />
         </Grid>
         <Grid item xs={3}>
           <TopicSideBar

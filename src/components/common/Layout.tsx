@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { MainWidget } from './Widgets';
-import Header from './Header';
+import CustomHeader from './CustomHeader';
 import Footer from './Footer';
 
 const Layout: FunctionComponent<{ children: any }> = ({ children }) => {
   return (
     <MainWidget className={'home-page'}>
-      <Header />
-      {children}
+      <CustomHeader>{children}</CustomHeader>
       <Footer />
     </MainWidget>
   );

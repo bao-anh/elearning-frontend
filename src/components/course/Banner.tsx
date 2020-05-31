@@ -7,7 +7,7 @@ const Banner: FunctionComponent<{ topicState: any }> = ({ topicState }) => {
       {topicState.isLoadingLargeTopic ? null : (
         <div className='banner-content-detail'>
           <div className='banner-content-text'>
-            <h1>{topicState.largeTopic.name}</h1>
+            <h2 style={{ marginBottom: '0' }}>{topicState.largeTopic.name}</h2>
           </div>
         </div>
       )}

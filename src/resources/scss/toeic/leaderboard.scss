@@ -1,0 +1,29 @@
+.leaderboard-panel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.leaderboard-panel-text {
+  flex-grow: 1;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  padding-left: 10px;
+}
+
+.leaderboard-item-progress {
+  width: 50px;
+  text-align: right;
+}
+
+.leaderboard-item-progress-content {
+  font-size: 0.8em;
+  position: absolute;
+  top: 12px;
+  right: 5px;
+}

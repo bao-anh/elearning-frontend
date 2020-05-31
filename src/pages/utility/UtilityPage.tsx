@@ -5,7 +5,7 @@ import Banner from '../../components/course/Banner';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
-import UserInfoSideBar from '../../components/common/UserInfoSideBar';
+import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import HeaderPanel from '../../components/common/HeaderPanel';
 import Loading from '../../components/common/Loading';
 import MemberTable from '../../components/course/MemberTable';

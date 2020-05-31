@@ -30,7 +30,7 @@ const TopicContent: FunctionComponent<{
             </div>
             <div className='topic-item-row-info-panel'>
               <div className='topic-item-content'>
-                <AssignmentIcon style={{ padding: '10px' }} />
+                <AssignmentIcon style={{ padding: '10px', fontSize: '3em' }} />
                 <div className='name-panel topic-detail-item-content'>
                   <Link
                     to={`/assignment/${assignment._id}`}
@@ -70,9 +70,9 @@ const TopicContent: FunctionComponent<{
           <div className='topic-item-row-info-panel'>
             <div className='topic-item-content'>
               {topic.videoLink ? (
-                <MenuBookIcon style={{ padding: '10px' }} />
+                <MenuBookIcon style={{ padding: '10px', fontSize: '3em' }} />
               ) : (
-                <AlarmIcon style={{ padding: '10px' }} />
+                <AlarmIcon style={{ padding: '10px', fontSize: '3em' }} />
               )}
               <div className='name-panel topic-detail-item-content'>
                 {topic.videoLink ? (
@@ -117,7 +117,7 @@ const TopicContent: FunctionComponent<{
           </div>
           <div className='topic-item-row-info-panel'>
             <div className='topic-item-content'>
-              <AirplayIcon style={{ padding: '10px' }} />
+              <AirplayIcon style={{ padding: '10px', fontSize: '3em' }} />
               <div className='name-panel topic-detail-item-content'>
                 <Link
                   to={`/topic/${topic._id}`}

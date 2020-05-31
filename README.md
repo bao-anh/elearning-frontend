@@ -1,10 +1,9 @@
 # Todo list
 
-- Làm giao diện Admin [3]
+- Làm tính năng Flashcard [3]
+- Sửa login page đang bị lỗi sidebar [2]
 - Validate Signin, Register page [2]
 - Hiện snackbar nếu lỗi ở backend [1]
-- Làm page theo dõi tiến độ học tập [3]
-- Làm 404 page [3]
 
 **Mai Gia Bảo Anh**
 
@@ -168,3 +167,9 @@
 - Optimize test successfully, only rerender needed question cluster.
 - Successfully implement React.memo.
 - We can proud of ourself today.
+
+### Version 4.4
+
+- Added left sidebar.
+- Move result page into whole new page in short test and full test.
+- Decrease payload of test page.

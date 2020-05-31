@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import Moment from 'react-moment';
 import { renderNumberOfQuestion } from '../../utils';
+import Routes from '../../routes';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -39,10 +40,23 @@ const columns: Column[] = [
 const CurrentActivity: FunctionComponent<{
   participantIds: any;
   questionIds: any;
-}> = ({ participantIds, questionIds }) => {
+  match: any;
+}> = ({ participantIds, questionIds, match }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const currentParticipantIds = participantIds.filter((participant: any) => {
+    if (match.path === Routes.TEST_SCREEN) {
+      if (match.params.part === 'full-test') {
+        if (participant.testId.questionIds.length > 50) return true;
+        else return false;
+      } else {
+        if (participant.testId.questionIds.length < 50) return true;
+        else return false;
+      }
+    } else return true;
+  });
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -55,7 +69,7 @@ const CurrentActivity: FunctionComponent<{
     setPage(0);
   };
 
-  const renderRowValue = (participant: any, columnId: any) => {
+  const renderRowValue = (participant: any, columnId: any, index: number) => {
     if (columnId === 'name') return participant.userId.name;
     else if (columnId === 'date')
       return (
@@ -65,9 +79,15 @@ const CurrentActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score') {
-      return `${Math.round(
-        (participant.score / 100) * renderNumberOfQuestion(questionIds)
-      )}/${renderNumberOfQuestion(questionIds)}`;
+      if (match.path === Routes.TEST_SCREEN) {
+        return `${Math.round(
+          (participant.score / 100) *
+            renderNumberOfQuestion(participantIds[index].testId.questionIds)
+        )}/${renderNumberOfQuestion(participantIds[index].testId.questionIds)}`;
+      } else
+        return `${Math.round(
+          (participant.score / 100) * renderNumberOfQuestion(questionIds)
+        )}/${renderNumberOfQuestion(questionIds)}`;
     }
   };
 
@@ -89,9 +109,9 @@ const CurrentActivity: FunctionComponent<{
             </TableRow>
           </TableHead>
           <TableBody>
-            {participantIds
+            {currentParticipantIds
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((participant: any) => {
+              .map((participant: any, index: number) => {
                 return (
                   <TableRow
                     hover
@@ -102,7 +122,11 @@ const CurrentActivity: FunctionComponent<{
                     {columns.map((column) => {
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {renderRowValue(participant, column.id)}
+                          {renderRowValue(
+                            participant,
+                            column.id,
+                            page * rowsPerPage + index
+                          )}
                         </TableCell>
                       );
                     })}

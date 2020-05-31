@@ -6,9 +6,8 @@ import Banner from '../../components/course/Banner';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog';
 import TopicContent from '../../components/course/TopicContent';
-import UserInfoSideBar from '../../components/common/UserInfoSideBar';
+import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
-import Comment from '../../components/course/Comment';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 
@@ -46,7 +45,6 @@ const CoursePage: FunctionComponent<{
       <Grid container className='container'>
         <Grid item xs={9}>
           <TopicContent path={match.path} topicState={topicState} />
-          <Comment />
         </Grid>
         <Grid item xs={3}>
           <UserInfoSideBar authState={authState} topicState={topicState} />

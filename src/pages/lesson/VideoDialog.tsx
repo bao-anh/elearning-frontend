@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player';
 import { convertSecondToMinute, getQuestionOrder } from '../../utils';
 import AssignmentDialog from '../../components/common/AssignmentDialog';
 import Reference from '../../components/course/Reference';
-import Comment from '../../components/course/Comment';
 import '../../resources/scss/videoDialog.scss';
 import '../../resources/scss/lesson.scss';
 
@@ -114,10 +113,9 @@ const VideoDialog: FunctionComponent<{
               </div>
             ))}
           </div>
-          <Reference lessonState={lessonState} />
         </div>
         <div className='video-dialog-right-panel'>
-          <Comment />
+          <Reference lessonState={lessonState} />
         </div>
       </div>
     </Dialog>

@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import { convertSecondToMinute } from '../../utils';
+import Routes from '../../routes';
 import '../../resources/scss/assignmentDialog.scss';
 
 import {
@@ -26,10 +27,11 @@ const AssignmentDialogResult: FunctionComponent<{
   name: any;
   duration: any;
   openResult: number;
-  handleOpenResult: Function;
   questionOrderArray: any;
   questionIds: any;
   participantIds: any;
+  handleOpenResult: Function;
+  match?: any;
 }> = ({
   name,
   duration,
@@ -38,6 +40,7 @@ const AssignmentDialogResult: FunctionComponent<{
   questionOrderArray,
   questionIds,
   participantIds,
+  match,
 }) => {
   const [userAnswer, setUserAnswer] = useState(
     participantIds[openResult].userAnswer
@@ -294,15 +297,24 @@ const AssignmentDialogResult: FunctionComponent<{
     >
       <div className='assigment-dialog-header'>
         <div className='assigment-dialog-header-title'>{name}</div>
-        <IconButton
-          className='assigment-dialog-close-icon'
-          onClick={() => {
-            handleCloseDialog();
-            handleOpenResult(-1);
-          }}
-        >
-          <CancelIcon />
-        </IconButton>
+        {match && match.path === Routes.REVIEW_SCREEN ? (
+          <IconButton
+            className='assigment-dialog-close-icon'
+            onClick={() => window.close()}
+          >
+            <CancelIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            className='assigment-dialog-close-icon'
+            onClick={() => {
+              handleCloseDialog();
+              handleOpenResult(-1);
+            }}
+          >
+            <CancelIcon />
+          </IconButton>
+        )}
       </div>
       <div className='assigment-dialog-content-panel'>
         <div className='assignment-dialog-content-left-panel'>

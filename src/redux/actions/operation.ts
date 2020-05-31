@@ -7,6 +7,7 @@ import {
   OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
   OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
   OPERATION_FETCH_DATA_IN_TEST_PAGE,
+  OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
   OPERATION_SUBMIT_TEST,
   OPERATION_PURCHASE_COURSE,
@@ -29,6 +30,7 @@ export interface OperationAction {
   assignmentState?: any;
   testType?: any;
   numberOfQuestionIds?: any;
+  participantId?: any;
 }
 
 export function fetchDataInCategoryPage(
@@ -87,6 +89,13 @@ export function fetchDataInTestPage(testType: any): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_TEST_PAGE,
     testType,
+  };
+}
+
+export function fetchDataInTestResultPage(participantId: any): OperationAction {
+  return {
+    type: OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
+    participantId,
   };
 }
 
