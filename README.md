@@ -1,19 +1,9 @@
 # Todo list
 
-<<<<<<< HEAD
 - Làm tính năng Flashcard [3]
 - Sửa login page đang bị lỗi sidebar [2]
 - Validate Signin, Register page [2]
 - Hiện snackbar nếu lỗi ở backend [1]
-=======
-- Hoàn thiện chức năng thanh Sidebar [4]
-- Làm tính năng Flashcard [3]
-- Chặn không cho người dùng làm test nếu chưa có toeicId [3]
-- Chuyển xem lại kết full-test ra 1 page khác [3]
-- Validate Signin, Register page [2]
-- Hiện snackbar nếu lỗi ở backend [1]
-
->>>>>>> master
 
 **Mai Gia Bảo Anh**
 
@@ -179,6 +169,8 @@
 - We can proud of ourself today.
 
 ### Version 4.4
+
+ 31/5/2020
 
 - Added left sidebar.
 - Move result page into whole new page in short test and full test.
