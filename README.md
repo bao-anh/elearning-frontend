@@ -1,10 +1,12 @@
 # Todo list
 
-- Làm giao diện Admin [3]
+- Hoàn thiện chức năng thanh Sidebar [4]
+- Làm tính năng Flashcard [3]
+- Chặn không cho người dùng làm test nếu chưa có toeicId [3]
+- Chuyển xem lại kết full-test ra 1 page khác [3]
 - Validate Signin, Register page [2]
 - Hiện snackbar nếu lỗi ở backend [1]
-- Làm page theo dõi tiến độ học tập [3]
-- Làm 404 page [3]
+
 
 **Mai Gia Bảo Anh**
 
