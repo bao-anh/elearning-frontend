@@ -10,6 +10,9 @@ import TestInfo from '../../components/toiec/TestInfo';
 import YourActivity from '../../components/common/YourActivity';
 import CurrentActivity from '../../components/common/CurrentActivity';
 import AssignmentDialog from '../../components/common/AssignmentDialog';
+import LeaderBoard from '../../components/toiec/LeaderBoard';
+import UserInfoSideBar from '../../components/toiec/UserInfoSideBar';
+import ToeicWarningDialog from '../../components/toiec/ToeicWarningDialog';
 
 import { Grid } from '@material-ui/core';
 
@@ -18,7 +21,8 @@ const TestPage: FunctionComponent<{
   match: any;
   testState: any;
   authState: any;
-}> = ({ fetchDataInTestPage, match, testState, authState }) => {
+  toeicState: any;
+}> = ({ fetchDataInTestPage, match, testState, authState, toeicState }) => {
   useEffect(() => {
     fetchDataInTestPage(match.params.part);
     //eslint-disable-next-line
@@ -29,6 +33,9 @@ const TestPage: FunctionComponent<{
   return (
     <React.Fragment>
       <BreadCrumb path={match.path} params={match.params} />
+      {authState.isLoading ? null : (
+        <ToeicWarningDialog authState={authState} />
+      )}
       <Grid container className='container'>
         {testState.isLoading ? null : (
           <AssignmentDialog
@@ -53,7 +60,7 @@ const TestPage: FunctionComponent<{
               <YourActivity
                 assignmentState={testState.data}
                 authState={authState}
-                path={match.path}
+                match={match}
               />
             )}
           </HeaderPanel>
@@ -64,12 +71,40 @@ const TestPage: FunctionComponent<{
               <CurrentActivity
                 participantIds={testState.data.participantIds}
                 questionIds={testState.data.questionIds}
+                match={match}
               />
             )}
           </HeaderPanel>
         </Grid>
         <Grid item xs={3}>
-          This is right panel
+          <HeaderPanel
+            title={
+              isNaN(Number(match.params.part))
+                ? 'Bảng xếp hạng tổng'
+                : `Bảng xếp hạng Part ${match.params.part}`
+            }
+          >
+            {testState.isLoading ? (
+              <Loading />
+            ) : (
+              <LeaderBoard
+                leaderboard={testState.data.leaderboard}
+                match={match}
+              />
+            )}
+          </HeaderPanel>
+          <HeaderPanel title='Thông tin cá nhân'>
+            {testState.isLoading ? (
+              <Loading />
+            ) : (
+              <UserInfoSideBar
+                authState={authState}
+                testState={testState}
+                toeicState={toeicState}
+                match={match}
+              />
+            )}
+          </HeaderPanel>
         </Grid>
       </Grid>
     </React.Fragment>

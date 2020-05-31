@@ -64,6 +64,13 @@ const BreadCrumb: FunctionComponent<{
             >
               Bài thi rút gọn
             </Link>
+          ) : params.part === 'full-test' ? (
+            <Link
+              to={`/test/${params.part}`}
+              className='breadcrumb-current-link'
+            >
+              Bài thi hoàn chỉnh
+            </Link>
           ) : null}
         </Breadcrumbs>
       );

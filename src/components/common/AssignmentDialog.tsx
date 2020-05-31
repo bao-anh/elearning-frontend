@@ -179,7 +179,10 @@ const AssignmentDialog: FunctionComponent<{
         }
       );
     } else if (match.path === Routes.TEST_SCREEN) {
-      if (match.params.part === 'short-test') {
+      if (
+        match.params.part === 'short-test' ||
+        match.params.part === 'full-test'
+      ) {
         const result = handleConvertPointInComplexTest();
         // Phải làm như thế này để tránh lỗi payload quá lớn khi đưa vào backend
         const newAssignment = {
@@ -304,8 +307,6 @@ const AssignmentDialog: FunctionComponent<{
       />
     ));
   };
-
-  console.log('changeQuestionIndex', changeIndexNeedToRender);
 
   return (
     <Dialog

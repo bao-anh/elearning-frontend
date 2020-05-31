@@ -180,10 +180,8 @@ const CategoryPage: FunctionComponent<{
       ) : null}
       <Grid container className='container'>
         <Grid item xs={3}>
-          <Paper elevation={1} className='category-left-side'>
-            {categoryState.isLoading ? (
-              <Loading />
-            ) : (
+          {categoryState.data.length ? (
+            <Paper elevation={1} className='category-left-side'>
               <List component='nav' aria-labelledby='nested-list-subheader'>
                 <Link to='/category/all' className='category-content-link'>
                   <ListItem
@@ -213,10 +211,10 @@ const CategoryPage: FunctionComponent<{
                   renderCategoryItems(category)
                 )}
               </List>
-            )}
-          </Paper>
+            </Paper>
+          ) : null}
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={9} style={{ position: 'relative' }}>
           {courseState.data.length ? (
             courseState.data.map((course: any) => (
               <React.Fragment key={course._id}>

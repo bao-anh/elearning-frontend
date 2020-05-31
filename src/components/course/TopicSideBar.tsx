@@ -24,7 +24,7 @@ const TopicSideBar: FunctionComponent<{
         className='topic-item'
         style={currentId === topic._id ? { backgroundColor: '#eeeeee' } : {}}
       >
-        <AirplayIcon className='topic-item-icon' />
+        <AirplayIcon className='topic-item-icon' style={{ fontSize: '3em' }} />
         <Link to={`/topic/${topic._id}`} className='link'>
           {topic.name}
         </Link>
@@ -41,14 +41,20 @@ const TopicSideBar: FunctionComponent<{
       >
         {topic.videoLink ? (
           <React.Fragment>
-            <MenuBookIcon className='topic-item-icon' />
+            <MenuBookIcon
+              className='topic-item-icon'
+              style={{ fontSize: '3em' }}
+            />
             <Link to={`/lesson/${topic._id}`} className='link'>
               {topic.name}
             </Link>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <AlarmIcon className='topic-item-icon' />
+            <AlarmIcon
+              className='topic-item-icon'
+              style={{ fontSize: '3em' }}
+            />
             <Link to={`/assignment/${topic._id}`} className='link'>
               {topic.name}
             </Link>

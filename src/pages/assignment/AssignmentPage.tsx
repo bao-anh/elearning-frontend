@@ -6,10 +6,9 @@ import { getQuestionOrder } from '../../utils';
 import HeaderPanel from '../../components/common/HeaderPanel';
 import Loading from '../../components/common/Loading';
 import AssignmentInfo from '../../components/common/AssignmentInfo';
-import Comment from '../../components/course/Comment';
 import TopicSideBar from '../../components/course/TopicSideBar';
 import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog';
-import UserInfoSideBar from '../../components/common/UserInfoSideBar';
+import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import AssignmentDialog from '../../components/common/AssignmentDialog';
@@ -83,6 +82,7 @@ const AssignmentPage: FunctionComponent<{
               <YourActivity
                 assignmentState={assignmentState.data}
                 authState={authState}
+                match={match}
               />
             )}
           </HeaderPanel>
@@ -93,10 +93,10 @@ const AssignmentPage: FunctionComponent<{
               <CurrentActivity
                 participantIds={assignmentState.data.participantIds}
                 questionIds={assignmentState.data.questionIds}
+                match={match}
               />
             )}
           </HeaderPanel>
-          <Comment />
         </Grid>
         <Grid item xs={3}>
           <TopicSideBar

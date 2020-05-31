@@ -11,5 +11,7 @@ class Routes {
   static REGISTER_SCREEN = '/register';
   static TOEIC_SCREEN = '/toeic';
   static TEST_SCREEN = '/test/:part';
+  static REVIEW_SCREEN = '/review/:id';
+  static FLASHCARD_SCREEN = '/flashcard';
 }
 export default Routes;

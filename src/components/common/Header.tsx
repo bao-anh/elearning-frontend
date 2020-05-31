@@ -193,7 +193,6 @@ const Header: FunctionComponent<{
     } else {
       return (
         <React.Fragment>
-          {' '}
           <Link href='/' className={'logo-web'}>
             <img alt='' src={Logo} />
           </Link>

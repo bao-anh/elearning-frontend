@@ -8,6 +8,8 @@ import ProgressPanel from '../../components/toiec/ProgressPanel';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import ToeicContent from '../../components/toiec/ToeicContent';
 import Loading from '../../components/common/Loading';
+import LeaderBoard from '../../components/toiec/LeaderBoard';
+import UserInfoSideBar from '../../components/toiec/UserInfoSideBar';
 
 import { Grid } from '@material-ui/core';
 
@@ -68,7 +70,27 @@ const ToeicPage: FunctionComponent<{
           ) : null}
         </Grid>
         <Grid item xs={3}>
-          This is right panel
+          <HeaderPanel title='Bảng xếp hạng tổng'>
+            {toeicState.isLoading ? (
+              <Loading />
+            ) : (
+              <LeaderBoard
+                leaderboard={toeicState.data.leaderboard}
+                match={match}
+              />
+            )}
+          </HeaderPanel>
+          <HeaderPanel title='Thông tin cá nhân'>
+            {toeicState.isLoading ? (
+              <Loading />
+            ) : (
+              <UserInfoSideBar
+                authState={authState}
+                toeicState={toeicState}
+                match={match}
+              />
+            )}
+          </HeaderPanel>
         </Grid>
       </Grid>
     </React.Fragment>

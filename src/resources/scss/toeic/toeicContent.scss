@@ -11,7 +11,7 @@
 
 .progress-panel-title {
   display: flex;
-  flex-grow: 1;
+  min-width: 225px;
   align-items: center;
   justify-content: center;
 }
@@ -36,6 +36,7 @@
 }
 
 .progress-panel-user-progress-container {
+  flex-grow: 1;
   width: 55%;
 }
 
@@ -51,7 +52,7 @@
 
 .progress-panel-current-score-part {
   position: absolute;
-  top: -46%;
+  top: -70%;
   width: 40px;
   background-color: var(--root-color);
   color: white;
@@ -75,7 +76,7 @@
 .progress-panel-target-score-part {
   position: absolute;
   right: -8px;
-  top: 60%;
+  top: 90%;
   width: 40px;
   background-color: var(--root-color);
   color: white;
@@ -106,7 +107,7 @@
   z-index: 1;
   position: absolute;
   left: -8px;
-  top: 60%;
+  top: 90%;
 }
 
 .progress-panel-min-score-part::after {
@@ -123,4 +124,18 @@
 .button-link {
   text-decoration: none;
   color: white;
+}
+
+.toeic-content-target-score-text {
+  position: absolute;
+  color: #777;
+  font-size: 0.8em;
+  right: 160px;
+}
+
+.toeic-content-current-score-text {
+  position: absolute;
+  color: #777;
+  font-size: 0.8em;
+  left: 290px;
 }

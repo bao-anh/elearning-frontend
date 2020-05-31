@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import AssignmentDialogResult from './AssignmentDialogResult';
 import { getQuestionOrder, renderNumberOfQuestion } from '../../utils';
@@ -42,8 +43,8 @@ const columns: Column[] = [
 const YourActivity: FunctionComponent<{
   assignmentState: any;
   authState: any;
-  path?: any;
-}> = ({ assignmentState, authState, path }) => {
+  match: any;
+}> = ({ assignmentState, authState, match }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -52,8 +53,17 @@ const YourActivity: FunctionComponent<{
   const { participantIds, questionIds } = assignmentState;
 
   const yourParticipantIds = participantIds.filter((participant: any) => {
-    if (authState._id === participant.userId._id) return true;
-    else return false;
+    if (authState._id === participant.userId._id) {
+      if (match.path === Routes.TEST_SCREEN) {
+        if (match.params.part === 'full-test') {
+          if (participant.testId.questionIds.length > 50) return true;
+          else return false;
+        } else {
+          if (participant.testId.questionIds.length < 50) return true;
+          else return false;
+        }
+      } else return true;
+    } else return false;
   });
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -70,13 +80,27 @@ const YourActivity: FunctionComponent<{
   const renderRowValue = (participant: any, columnId: any, index: number) => {
     if (columnId === 'button')
       return (
-        <Button
-          color='primary'
-          variant='contained'
-          onClick={() => handleOpenResult(index)}
-        >
-          Xem lại
-        </Button>
+        <React.Fragment>
+          {!isNaN(Number(match.params.part)) ? (
+            <Button
+              color='primary'
+              variant='contained'
+              onClick={() => handleOpenResult(index)}
+            >
+              Xem lại
+            </Button>
+          ) : (
+            <Button color='primary' variant='contained'>
+              <Link
+                to={`/review/${participant._id}`}
+                target='_blank'
+                className='button-link'
+              >
+                Xem lại
+              </Link>
+            </Button>
+          )}
+        </React.Fragment>
       );
     else if (columnId === 'date')
       return (
@@ -86,7 +110,7 @@ const YourActivity: FunctionComponent<{
         </span>
       );
     else if (columnId === 'score')
-      if (path === Routes.TEST_SCREEN) {
+      if (match.path === Routes.TEST_SCREEN) {
         return `${Math.round(
           (participant.score / 100) *
             renderNumberOfQuestion(participantIds[index].testId.questionIds)
@@ -99,7 +123,7 @@ const YourActivity: FunctionComponent<{
 
   const renderAssignmentDialogResult = () => {
     if (openResult !== -1) {
-      if (path === Routes.TEST_SCREEN) {
+      if (match.path === Routes.TEST_SCREEN) {
         return (
           <AssignmentDialogResult
             name={assignmentState.name}

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import UserImage from '../../resources/images/user.png';
-import Loading from './Loading';
+import Loading from '../common/Loading';
 
 import '../../resources/scss/component/userInfoSideBar.scss';
 

@@ -73,7 +73,7 @@
 .progress-panel-target-score {
   position: absolute;
   right: 11px;
-  top: 70%;
+  top: 90%;
   width: 40px;
   background-color: var(--root-color);
   color: white;
@@ -104,7 +104,7 @@
   z-index: 1;
   position: absolute;
   left: 11px;
-  top: 70%;
+  top: 90%;
 }
 
 .progress-panel-min-score::after {
@@ -135,4 +135,18 @@
 
 .progress-panel-update-text:hover {
   cursor: pointer;
+}
+
+.progress-panel-target-score-text {
+  position: absolute;
+  color: #777;
+  font-size: 0.8em;
+  right: 55px;
+}
+
+.progress-panel-current-score-text {
+  position: absolute;
+  color: #777;
+  font-size: 0.8em;
+  left: 55px;
 }
