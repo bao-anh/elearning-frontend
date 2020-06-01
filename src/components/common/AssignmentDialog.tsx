@@ -9,6 +9,7 @@ import Loading from './Loading';
 import Timer from './Timer';
 import AssignmentDialogAnswer from './AssignmentDialogAnswer';
 import AssignmentDialogQuestion from './AssignmentDialogQuestion';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/assignmentDialog.scss';
 
 import { Dialog, Slide, IconButton, Paper, Button } from '@material-ui/core';
@@ -44,6 +45,30 @@ const AssignmentDialog: FunctionComponent<{
   const [isFetchApiSuccess, setIsFetchApiSuccess] = useState(false);
   const [isOverLay, setIsOverLay] = useState(false);
   const [changeIndexNeedToRender, setChangeIndexNeedToRender] = useState(0);
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
 
   const handleChangeUserAnswer = (index: any, value: any) => {
     setUserAnswer((uA: any) => {
@@ -176,7 +201,8 @@ const AssignmentDialog: FunctionComponent<{
         () => {
           setIsFetchApiSuccess(true);
           setIsOverLay(false);
-        }
+        },
+        onError
       );
     } else if (match.path === Routes.TEST_SCREEN) {
       if (
@@ -253,8 +279,7 @@ const AssignmentDialog: FunctionComponent<{
               duration={assignment.duration}
               isOpen={assignment.isOpen}
               isSubmit={isSubmit}
-              setIsSubmit={setIsSubmit}
-              setIsFetchApiSuccess={setIsFetchApiSuccess}
+              handleSubmit={handleSubmit}
             />
           </div>
         </div>
@@ -315,6 +340,7 @@ const AssignmentDialog: FunctionComponent<{
       TransitionComponent={Transition}
       classes={{ paper: 'assignment-dialog-container' }}
     >
+      {renderSnackBar()}
       {isOverLay ? (
         <div className='assignment-dialog-overlay' style={{ opacity: '0.5' }}>
           <Loading />
@@ -366,7 +392,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     accumulatePercentComplete: any,
     userAnswer: any,
     score: any,
-    onSuccess: any
+    onSuccess: any,
+    onError: any
   ) =>
     dispatch(
       operationAction.submitAssignment(
@@ -375,7 +402,8 @@ const mapDispatchToProps = (dispatch: any) => ({
         accumulatePercentComplete,
         userAnswer,
         score,
-        onSuccess
+        onSuccess,
+        onError
       )
     ),
   submitTest: (

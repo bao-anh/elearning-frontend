@@ -1,4 +1,4 @@
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { useEffect, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
@@ -8,6 +8,7 @@ import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog
 import TopicContent from '../../components/course/TopicContent';
 import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 
@@ -29,12 +30,39 @@ const CoursePage: FunctionComponent<{
   authState,
 }) => {
   useEffect(() => {
-    fetchDataInCoursePage(match.params.id);
+    fetchDataInCoursePage(match.params.id, onError);
     //eslint-disable-next-line
   }, [match]);
 
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
     <React.Fragment>
+      {renderSnackBar()}
       <Banner topicState={topicState} />
       <BreadCrumb path={match.path} topicState={topicState} />
       <PurchaseWarningDialog
@@ -65,8 +93,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInCoursePage: (courseId: number) =>
-    dispatch(operationAction.fetchDataInCoursePage(courseId)),
+  fetchDataInCoursePage: (courseId: number, onError: any) =>
+    dispatch(operationAction.fetchDataInCoursePage(courseId, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursePage);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
@@ -6,6 +6,7 @@ import { getQuestionOrder } from '../../utils';
 import ToeicWarningDialog from '../../components/toiec/ToeicWarningDialog';
 import AssignmentDialogResult from '../../components/common/AssignmentDialogResult';
 import Loading from '../../components/common/Loading';
+import SnackBar from '../../components/common/SnackBar';
 
 const TestResultPage: FunctionComponent<{
   fetchDataInTestResultPage: Function;
@@ -14,12 +15,39 @@ const TestResultPage: FunctionComponent<{
   authState: any;
 }> = ({ fetchDataInTestResultPage, match, testState, authState }) => {
   useEffect(() => {
-    fetchDataInTestResultPage(match.params.id);
+    fetchDataInTestResultPage(match.params.id, onError);
     //eslint-disable-next-line
   }, [match]);
 
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
     <React.Fragment>
+      {renderSnackBar()}
       {authState.isLoading ? null : (
         <ToeicWarningDialog authState={authState} />
       )}
@@ -51,8 +79,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInTestResultPage: (participantId: any) =>
-    dispatch(operationAction.fetchDataInTestResultPage(participantId)),
+  fetchDataInTestResultPage: (participantId: any, onError: any) =>
+    dispatch(operationAction.fetchDataInTestResultPage(participantId, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestResultPage);

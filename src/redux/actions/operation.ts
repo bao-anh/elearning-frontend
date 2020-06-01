@@ -31,71 +31,103 @@ export interface OperationAction {
   testType?: any;
   numberOfQuestionIds?: any;
   participantId?: any;
+  onError?: any;
 }
 
 export function fetchDataInCategoryPage(
   params: any,
-  userId: any
+  userId: any,
+  onError: any
 ): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_CATEGORY_PAGE,
     params,
     userId,
+    onError,
   };
 }
 
-export function fetchDataInCoursePage(courseId: any): OperationAction {
+export function fetchDataInCoursePage(
+  courseId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_COURSE_PAGE,
     courseId,
+    onError,
   };
 }
 
-export function fetchDataInTopicPage(topicId: any): OperationAction {
+export function fetchDataInTopicPage(
+  topicId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_TOPIC_PAGE,
     topicId,
+    onError,
   };
 }
 
-export function fetchDataInLessonPage(lessonId: any): OperationAction {
+export function fetchDataInLessonPage(
+  lessonId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_LESSON_PAGE,
     lessonId,
+    onError,
   };
 }
 
-export function fetchDataInAssignmentPage(assignmentId: any): OperationAction {
+export function fetchDataInAssignmentPage(
+  assignmentId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_ASSIGNMENT_PAGE,
     assignmentId,
+    onError,
   };
 }
 
-export function fetchDataInUtilityPage(courseId: any): OperationAction {
+export function fetchDataInUtilityPage(
+  courseId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_UTILITY_PAGE,
     courseId,
+    onError,
   };
 }
 
-export function fetchDataInToeicPage(): OperationAction {
+export function fetchDataInToeicPage(onError: any): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
+    onError,
   };
 }
 
-export function fetchDataInTestPage(testType: any): OperationAction {
+export function fetchDataInTestPage(
+  testType: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_TEST_PAGE,
     testType,
+    onError,
   };
 }
 
-export function fetchDataInTestResultPage(participantId: any): OperationAction {
+export function fetchDataInTestResultPage(
+  participantId: any,
+  onError: any
+): OperationAction {
   return {
     type: OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
     participantId,
+    onError,
   };
 }
 
@@ -105,7 +137,8 @@ export function submitAssignment(
   percentComplete: any,
   userAnswer: any,
   score: any,
-  onSuccess: any
+  onSuccess: any,
+  onError: any
 ) {
   return {
     type: OPERATION_SUBMIT_ASSIGNMENT,
@@ -115,6 +148,7 @@ export function submitAssignment(
     userAnswer,
     score,
     onSuccess,
+    onError,
   };
 }
 
@@ -139,10 +173,11 @@ export function submitTest(
   };
 }
 
-export function purchaseCourse(courseId: any, onSuccess: any) {
+export function purchaseCourse(courseId: any, onSuccess: any, onError: any) {
   return {
     type: OPERATION_PURCHASE_COURSE,
     courseId,
     onSuccess,
+    onError,
   };
 }

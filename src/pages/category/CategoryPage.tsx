@@ -6,6 +6,7 @@ import * as operationAction from '../../redux/actions/operation';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import Loading from '../../components/common/Loading';
 import PurchaseDetailDialog from '../../components/course/PurchaseDetailDialog';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 import '../../resources/scss/category.scss';
@@ -44,7 +45,7 @@ const CategoryPage: FunctionComponent<{
   authState,
 }) => {
   useEffect(() => {
-    fetchDataInCategoryPage(match.params, authState._id);
+    fetchDataInCategoryPage(match.params, authState._id, onError);
     //eslint-disable-next-line
   }, [match]);
 
@@ -53,6 +54,31 @@ const CategoryPage: FunctionComponent<{
     false
   );
   const [forcusCourse, setForcusCourse] = useState(null);
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
 
   const handleExpandList = (id: any) => {
     const newCategoryArray = categoryArray.map((category: any) => {
@@ -65,39 +91,41 @@ const CategoryPage: FunctionComponent<{
   };
 
   const renderCategoryItems = (category: any) => {
-    if (category.childrenIds.length) {
-      return (
-        <React.Fragment key={category._id}>
-          <ListItem button onClick={() => handleExpandList(category._id)}>
-            <ListItemText primary={category.name} />
-            {category.isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItem>
-          <Collapse in={category.isOpen ? category.isOpen : false}>
-            <List>
-              {category.childrenIds.map((children: any) => (
-                <Link
-                  key={children._id}
-                  to={`/category/${children._id}`}
-                  className='category-left-side-link'
-                >
-                  <ListItem
-                    className='category-left-side-item'
-                    button
-                    style={
-                      categoryState.current === children._id
-                        ? { backgroundColor: '#e0e0e0' }
-                        : {}
-                    }
+    if (!categoryState.isLoading) {
+      if (category.childrenIds.length) {
+        return (
+          <React.Fragment key={category._id}>
+            <ListItem button onClick={() => handleExpandList(category._id)}>
+              <ListItemText primary={category.name} />
+              {category.isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </ListItem>
+            <Collapse in={category.isOpen ? category.isOpen : false}>
+              <List>
+                {category.childrenIds.map((children: any) => (
+                  <Link
+                    key={children._id}
+                    to={`/category/${children._id}`}
+                    className='category-left-side-link'
                   >
-                    {children.name}
-                  </ListItem>
-                </Link>
-              ))}
-            </List>
-          </Collapse>
-        </React.Fragment>
-      );
-    } else return null;
+                    <ListItem
+                      className='category-left-side-item'
+                      button
+                      style={
+                        categoryState.current === children._id
+                          ? { backgroundColor: '#e0e0e0' }
+                          : {}
+                      }
+                    >
+                      {children.name}
+                    </ListItem>
+                  </Link>
+                ))}
+              </List>
+            </Collapse>
+          </React.Fragment>
+        );
+      } else return null;
+    }
   };
 
   const renderPriceOfItem = (course: any) => {
@@ -169,9 +197,11 @@ const CategoryPage: FunctionComponent<{
 
   return (
     <React.Fragment>
+      {renderSnackBar()}
       <BreadCrumb path={match.path} />
       {forcusCourse ? (
         <PurchaseDetailDialog
+          onError={onError}
           course={forcusCourse}
           purchaseCourse={purchaseCourse}
           isOpenPurchaseDetailCourse={isOpenPurchaseDetailCourse}
@@ -215,7 +245,9 @@ const CategoryPage: FunctionComponent<{
           ) : null}
         </Grid>
         <Grid item xs={9} style={{ position: 'relative' }}>
-          {courseState.data.length ? (
+          {courseState.isLoading ? (
+            <Loading />
+          ) : courseState.data.length ? (
             courseState.data.map((course: any) => (
               <React.Fragment key={course._id}>
                 <Paper
@@ -250,9 +282,7 @@ const CategoryPage: FunctionComponent<{
                 </Paper>
               </React.Fragment>
             ))
-          ) : (
-            <Loading />
-          )}
+          ) : null}
         </Grid>
       </Grid>
     </React.Fragment>
@@ -268,10 +298,10 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInCategoryPage: (params: any, userId: any) =>
-    dispatch(operationAction.fetchDataInCategoryPage(params, userId)),
-  purchaseCourse: (courseId: any, onSuccess: any) =>
-    dispatch(operationAction.purchaseCourse(courseId, onSuccess)),
+  fetchDataInCategoryPage: (params: any, userId: any, onError: any) =>
+    dispatch(operationAction.fetchDataInCategoryPage(params, userId, onError)),
+  purchaseCourse: (courseId: any, onSuccess: any, onError: any) =>
+    dispatch(operationAction.purchaseCourse(courseId, onSuccess, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryPage);

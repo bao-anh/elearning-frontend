@@ -134,7 +134,9 @@ const ToeicContent: FunctionComponent<{ toeicState: any; scaleState: any }> = ({
             <div className='toeic-content-target-score-text'>
               Mục tiêu hiện tại
             </div>
-            <div className='toeic-content-current-score-text'>Cột mốc</div>
+            <div className='toeic-content-current-score-text'>
+              Cột mốc ban đầu
+            </div>
           </div>
           <Button
             variant='contained'

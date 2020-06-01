@@ -40,6 +40,7 @@
     "react-scripts": "3.4.0",
     "react-slick": "^0.25.2",
     "react-sound": "^1.2.0",
+    "recharts": "^1.8.5",
     "redux-logger": "3.0.6",
     "redux-persist": "^6.0.0",
     "redux-persist-transform-encrypt": "2.0.1",
@@ -72,6 +73,7 @@
   },
   "devDependencies": {
     "@types/react-audio-player": "^0.11.0",
-    "@types/react-gravatar": "^2.6.8"
+    "@types/react-gravatar": "^2.6.8",
+    "@types/recharts": "^1.8.10"
   }
 }

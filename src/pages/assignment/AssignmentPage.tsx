@@ -14,6 +14,7 @@ import BreadCrumb from '../../components/common/BreadCrumb';
 import AssignmentDialog from '../../components/common/AssignmentDialog';
 import CurrentActivity from '../../components/common/CurrentActivity';
 import YourActivity from '../../components/common/YourActivity';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 
@@ -37,14 +38,40 @@ const AssignmentPage: FunctionComponent<{
   authState,
 }) => {
   useEffect(() => {
-    fetchDataInAssignmentPage(match.params.id);
+    fetchDataInAssignmentPage(match.params.id, onError);
     //eslint-disable-next-line
   }, [match]);
 
   const [openAssignment, setOpenAssignment] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
 
   return (
     <React.Fragment>
+      {renderSnackBar()}
       <BreadCrumb
         path={match.path}
         courseState={courseState}
@@ -123,8 +150,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInAssignmentPage: (assignmentId: number) =>
-    dispatch(operationAction.fetchDataInAssignmentPage(assignmentId)),
+  fetchDataInAssignmentPage: (assignmentId: number, onError: any) =>
+    dispatch(operationAction.fetchDataInAssignmentPage(assignmentId, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentPage);

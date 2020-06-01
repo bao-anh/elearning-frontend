@@ -80,6 +80,7 @@ export function* fetchDataInCategoryPage(action: any) {
       yield put(fetchCourseByCategoryId(action.params.id));
     }
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -88,6 +89,7 @@ export function* fetchDataInCoursePage(action: any) {
   try {
     yield put(fetchTopicByCourseId(action.courseId));
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -102,6 +104,7 @@ export function* fetchDataInTopicPage(action: any) {
 
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -117,6 +120,7 @@ export function* fetchDataInLessonPage(action: any) {
     yield put(fetchTopicByTopicId(response.data.topicId));
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -136,6 +140,7 @@ export function* fetchDataInAssignmentPage(action: any) {
     yield put(fetchTopicByTopicId(response.data.topicId));
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -147,15 +152,17 @@ export function* fetchDataInUtilityPage(action: any) {
     yield put(setLargeTopic(response.data));
     yield put(fetchLargeTopicSuccess());
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
 
-export function* fetchDataInToeicPage() {
+export function* fetchDataInToeicPage(action: any) {
   try {
     yield put(fetchToeicByUserId());
     yield put(fetchScale());
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -164,6 +171,7 @@ export function* fetchDataInTestPage(action: any) {
   try {
     yield put(fetchTest(action.testType));
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -175,6 +183,7 @@ export function* fetchDataInTestResultPage(action: any) {
     yield put(setTest(response.data));
     yield put(fetchTestSuccess());
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -221,6 +230,7 @@ export function* submitAssignment(action: any) {
     yield put(setAssignment(assignment.data));
     action.onSuccess();
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -276,6 +286,7 @@ export function* submitTest(action: any) {
     yield put(setTest(testStateData));
     action.onSuccess();
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -287,6 +298,7 @@ export function* purchaseCourse(action: any) {
     yield put(fetchUserInfo());
     action.onSuccess();
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
