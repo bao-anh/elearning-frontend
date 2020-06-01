@@ -28,16 +28,18 @@ const PurchaseDialog: FunctionComponent<{
   setIsOpenPurchaseDetailCourse: any;
   isOpenPurchaseDetailCourse?: any;
   course: any;
+  onError: any;
 }> = ({
   purchaseCourse,
   setIsOpenPurchaseDetailCourse,
   isOpenPurchaseDetailCourse,
   course,
+  onError,
 }) => {
   const [isSubmit, setIsSubmit] = useState(false);
 
   const handlePurchaseCourse = () => {
-    purchaseCourse(course._id, onSuccess);
+    purchaseCourse(course._id, onSuccess, onError);
   };
 
   const onSuccess = () => {

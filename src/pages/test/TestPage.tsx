@@ -13,6 +13,7 @@ import AssignmentDialog from '../../components/common/AssignmentDialog';
 import LeaderBoard from '../../components/toiec/LeaderBoard';
 import UserInfoSideBar from '../../components/toiec/UserInfoSideBar';
 import ToeicWarningDialog from '../../components/toiec/ToeicWarningDialog';
+import SnackBar from '../../components/common/SnackBar';
 
 import { Grid } from '@material-ui/core';
 
@@ -24,14 +25,41 @@ const TestPage: FunctionComponent<{
   toeicState: any;
 }> = ({ fetchDataInTestPage, match, testState, authState, toeicState }) => {
   useEffect(() => {
-    fetchDataInTestPage(match.params.part);
+    fetchDataInTestPage(match.params.part, onError);
     //eslint-disable-next-line
   }, [match]);
 
   const [isOpenTest, setOpenTest] = useState(false);
 
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
     <React.Fragment>
+      {renderSnackBar()}
       <BreadCrumb path={match.path} params={match.params} />
       {authState.isLoading ? null : (
         <ToeicWarningDialog authState={authState} />
@@ -120,8 +148,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInTestPage: (testType: any) =>
-    dispatch(operationAction.fetchDataInTestPage(testType)),
+  fetchDataInTestPage: (testType: any, onError: any) =>
+    dispatch(operationAction.fetchDataInTestPage(testType, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestPage);

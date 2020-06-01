@@ -11,6 +11,7 @@ import TopicSideBar from '../../components/course/TopicSideBar';
 import UserInfoSideBar from '../../components/course/UserInfoSideBar';
 import UtilitySideBar from '../../components/course/UtilitySideBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
+import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/lesson.scss';
 
 import { Paper, Grid } from '@material-ui/core';
@@ -30,15 +31,42 @@ const LessonPage: FunctionComponent<{
   courseState,
   authState,
 }) => {
-  const [isOpenVideo, setOpenVideo] = useState(false);
-
   useEffect(() => {
-    fetchDataInLessonPage(match.params.id);
+    fetchDataInLessonPage(match.params.id, onError);
     //eslint-disable-next-line
   }, [match]);
 
+  const [isOpenVideo, setOpenVideo] = useState(false);
+
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
     <React.Fragment>
+      {renderSnackBar()}
       <BreadCrumb
         path={match.path}
         courseState={courseState}
@@ -109,8 +137,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchDataInLessonPage: (lessonId: number) =>
-    dispatch(operationAction.fetchDataInLessonPage(lessonId)),
+  fetchDataInLessonPage: (lessonId: number, onError: any) =>
+    dispatch(operationAction.fetchDataInLessonPage(lessonId, onError)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LessonPage);

@@ -16,7 +16,14 @@ const ProgressPanel: FunctionComponent<{
   updateToeicScore: Function;
   authState: any;
   toeicState: any;
-}> = ({ submitToeicScore, updateToeicScore, authState, toeicState }) => {
+  onError: any;
+}> = ({
+  submitToeicScore,
+  updateToeicScore,
+  authState,
+  toeicState,
+  onError,
+}) => {
   const [toeicScore, setToeicScore] = useState({
     currentScore: '',
     targetScore: '',
@@ -43,7 +50,11 @@ const ProgressPanel: FunctionComponent<{
       setIsError(true);
     } else {
       setIsSubmit(true);
-      submitToeicScore(toeicScore.targetScore, toeicScore.currentScore);
+      submitToeicScore(
+        toeicScore.targetScore,
+        onError,
+        toeicScore.currentScore
+      );
     }
   };
 
@@ -56,7 +67,7 @@ const ProgressPanel: FunctionComponent<{
       setIsError(true);
     } else {
       setIsUpdate(false);
-      updateToeicScore(toeicScore.targetScore);
+      updateToeicScore(toeicScore.targetScore, onError);
     }
   };
 
@@ -176,7 +187,9 @@ const ProgressPanel: FunctionComponent<{
             <div className='progress-panel-target-score-text'>
               Mục tiêu hiện tại
             </div>
-            <div className='progress-panel-current-score-text'>Cột mốc</div>
+            <div className='progress-panel-current-score-text'>
+              Cột mốc ban đầu
+            </div>
           </div>
           <div className='progress-panel-button-group'>
             <Button

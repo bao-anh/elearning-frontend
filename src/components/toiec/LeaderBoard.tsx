@@ -10,25 +10,32 @@ const LeaderBoard: FunctionComponent<{ leaderboard: any; match: any }> = ({
   leaderboard,
   match,
 }) => {
-  const sortedLeaderboard = sortArrayByPropertyValue(
-    leaderboard,
-    'percentComplete'
-  ).reverse();
+  let sortedLeaderboard = [] as any[];
+
+  if (match.path === Routes.TOEIC_SCREEN || isNaN(Number(match.params.part))) {
+    sortedLeaderboard = sortArrayByPropertyValue(
+      leaderboard,
+      'currentScore'
+    ).reverse();
+  } else {
+    sortedLeaderboard = sortArrayByPropertyValue(
+      leaderboard,
+      'percentComplete'
+    ).reverse();
+  }
 
   const handleRenderStyle = (index: number) => {
     if (index === 0) return { color: '#ffea00' };
     else if (index === 1) return { color: '#e0e0e0' };
     else if (index === 2) return { color: '#ffb300' };
-    else return {};
+    else return { color: 'white' };
   };
 
   return (
     <React.Fragment>
       {sortedLeaderboard.map((children: any, index: number) => (
         <div key={children.userId._id} className='leaderboard-panel-item'>
-          {index < 3 ? (
-            <SchoolIcon style={handleRenderStyle(index)} fontSize='large' />
-          ) : null}
+          <SchoolIcon style={handleRenderStyle(index)} fontSize='large' />
           <div className='leaderboard-panel-text'>{children.userId.name}</div>
           <div className='leaderboard-item-progress'>
             <div style={{ position: 'relative' }}>

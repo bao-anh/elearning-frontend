@@ -12,6 +12,7 @@ export interface ToeicAction {
   toeic?: any;
   targetScore?: any;
   currentScore?: any;
+  onError?: any;
 }
 
 export function fetchToeicByUserId(): ToeicAction {
@@ -41,18 +42,24 @@ export function fetchToeicSuccess(): ToeicAction {
 
 export function submitToeicScore(
   targetScore: number,
+  onError: any,
   currentScore?: number
 ): ToeicAction {
   return {
     type: TOEIC_SUBMIT_SCORE,
     targetScore,
+    onError,
     currentScore,
   };
 }
 
-export function updateToeicScore(targetScore: number): ToeicAction {
+export function updateToeicScore(
+  targetScore: number,
+  onError: any
+): ToeicAction {
   return {
     type: TOEIC_UPDATE_SCORE,
     targetScore,
+    onError,
   };
 }
