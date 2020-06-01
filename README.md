@@ -1,9 +1,7 @@
 # Todo list
 
 - Làm tính năng Flashcard [3]
-- Sửa login page đang bị lỗi sidebar [2]
 - Validate Signin, Register page [2]
-- Hiện snackbar nếu lỗi ở backend [1]
 
 **Mai Gia Bảo Anh**
 
@@ -170,8 +168,13 @@
 
 ### Version 4.4
 
- 31/5/2020
+31/5/2020
 
 - Added left sidebar.
 - Move result page into whole new page in short test and full test.
 - Decrease payload of test page.
+
+1/6/2020
+
+- Added homepage.
+- Push code to heroku.

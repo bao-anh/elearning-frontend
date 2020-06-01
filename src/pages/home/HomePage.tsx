@@ -1,70 +1,142 @@
-import React, { FunctionComponent } from 'react';
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from 'recharts';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { AppState } from '../../redux/appstate';
-import { MainWidget, FixedContainer } from '../../components/common/Widgets';
+import { convertRadioChartData, convertBarChartData } from '../../utils';
+import * as operationAction from '../../redux/actions/operation';
+import * as toeicAction from '../../redux/actions/toeic';
+import HeaderPanel from '../../components/common/HeaderPanel';
+import CustomRadarChart from '../../components/home/CustomRadarChart';
+import CustomBarChart from '../../components/home/CustomBarChart';
+import Loading from '../../components/common/Loading';
+import SnackBar from '../../components/common/SnackBar';
+import ProgressPanel from '../../components/toiec/ProgressPanel';
 import '../../resources/scss/home.scss';
 import '../../resources/scss/main.scss';
 
-import { Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
-const HomePage: FunctionComponent<{ authState: any }> = ({ authState }) => {
-  const data = [
-    { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
-    { name: 'Page B', uv: 300, pv: 2000, amt: 2200 },
-    { name: 'Page C', uv: 500, pv: 2600, amt: 2400 },
-    { name: 'Page D', uv: 200, pv: 2100, amt: 2300 },
-  ];
+const HomePage: FunctionComponent<{
+  fetchDataInHomePage: Function;
+  submitToeicScore: Function;
+  updateToeicScore: Function;
+  authState: any;
+  toeicState: any;
+  match: any;
+}> = ({
+  fetchDataInHomePage,
+  submitToeicScore,
+  updateToeicScore,
+  authState,
+  toeicState,
+  match,
+}) => {
+  useEffect(() => {
+    fetchDataInHomePage(onError);
+    //eslint-disable-next-line
+  }, [match]);
+
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
+
+  const onError = (data: any) => {
+    let message = '';
+    if (data.errors) {
+      data.errors.forEach((error: any) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
-    <MainWidget className={'home-page'}>
-      <FixedContainer>
-        <h1>Home page</h1>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Link
-            to='/category/all'
-            style={{ textDecoration: 'none', marginBottom: '10px' }}
-          >
-            <Button color='primary' variant='contained'>
-              Go to category page
-            </Button>
-          </Link>
-          <Link to='/toeic' style={{ textDecoration: 'none' }}>
-            <Button color='primary' variant='contained'>
-              Go to toeic page
-            </Button>
-          </Link>
-          <LineChart
-            width={600}
-            height={300}
-            data={data}
-            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-          >
-            <Line type='monotone' dataKey='uv' stroke='#8884d8' />
-            <CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
-            <XAxis dataKey='name' />
-            <YAxis />
-            <Tooltip />
-          </LineChart>
-        </div>
-      </FixedContainer>
-    </MainWidget>
+    <React.Fragment>
+      {renderSnackBar()}
+      <Grid container className='container'>
+        <Grid item xs={8}>
+          <HeaderPanel title='Tiến độ luyện tập'>
+            <ProgressPanel
+              submitToeicScore={submitToeicScore}
+              updateToeicScore={updateToeicScore}
+              authState={authState}
+              toeicState={toeicState}
+              onError={onError}
+            />
+          </HeaderPanel>
+          <HeaderPanel title='Số lượng bài thi đã làm gần đây'>
+            {authState.isLoading ? (
+              <Loading />
+            ) : (
+              <CustomBarChart
+                data={convertBarChartData(authState.participantIds, 'testId')}
+                color='#82ca9d'
+                name='Số lượng bài thi'
+              />
+            )}
+          </HeaderPanel>
+          <HeaderPanel title='Số lượng bài tập đã làm gần đây'>
+            {authState.isLoading ? (
+              <Loading />
+            ) : (
+              <CustomBarChart
+                data={convertBarChartData(
+                  authState.participantIds,
+                  'assignmentId'
+                )}
+                color='#ffe57f'
+                name='Số lượng bài tập'
+              />
+            )}
+          </HeaderPanel>
+        </Grid>
+        <Grid item xs={4}>
+          <HeaderPanel title='Tỷ lệ làm đúng các bài thi TOEIC'>
+            {authState.isLoading || toeicState.isLoading ? (
+              <Loading />
+            ) : authState.toeicId ? (
+              <CustomRadarChart
+                data={convertRadioChartData(toeicState.data.partIds)}
+                name={authState.name}
+              />
+            ) : (
+              <h3>Bạn chưa có điểm mục tiêu</h3>
+            )}
+          </HeaderPanel>
+          <HeaderPanel title='Tỷ lệ từ vựng đã học thuộc'>
+            <h2>Comming soon...</h2>
+          </HeaderPanel>
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
     authState: state.authState,
+    toeicState: state.toeicState,
     ...ownProps,
   };
 };
-const mapDispatchToProps = (dispatch: any) => ({});
+const mapDispatchToProps = (dispatch: any) => ({
+  fetchDataInHomePage: (onError: any) =>
+    dispatch(operationAction.fetchDataInHomePage(onError)),
+  submitToeicScore: (targetScore: any, currentScore: any, onError: any) =>
+    dispatch(toeicAction.submitToeicScore(targetScore, currentScore, onError)),
+  updateToeicScore: (targetScore: any, onError: any) =>
+    dispatch(toeicAction.updateToeicScore(targetScore, onError)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

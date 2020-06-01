@@ -141,8 +141,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchDataInToeicPage: (onError: any) =>
     dispatch(operationAction.fetchDataInToeicPage(onError)),
-  submitToeicScore: (currentScore: any, targetScore: any, onError: any) =>
-    dispatch(toeicAction.submitToeicScore(targetScore, onError, currentScore)),
+  submitToeicScore: (targetScore: any, currentScore: any, onError: any) =>
+    dispatch(toeicAction.submitToeicScore(targetScore, currentScore, onError)),
   updateToeicScore: (targetScore: any, onError: any) =>
     dispatch(toeicAction.updateToeicScore(targetScore, onError)),
 });

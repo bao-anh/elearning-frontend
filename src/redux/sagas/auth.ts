@@ -60,8 +60,10 @@ export function* register(action: any) {
 
 export function* fetchUserInfo() {
   try {
+    yield put(fetchUserOnProgress());
     const response = yield call(getUserInfo);
     yield put(setUserInfo(response.data));
+    yield put(fetchUserSuccess());
   } catch (err) {
     console.log(err);
   }

@@ -51,6 +51,7 @@ export function* submitToeicScore(action: any) {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }
@@ -64,6 +65,7 @@ export function* updateToeicScore(action: any) {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
+    action.onError(err.response.data);
     console.log(err);
   }
 }

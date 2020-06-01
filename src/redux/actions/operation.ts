@@ -8,6 +8,7 @@ import {
   OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
   OPERATION_FETCH_DATA_IN_TEST_PAGE,
   OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
+  OPERATION_FETCH_DATA_IN_HOME_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
   OPERATION_SUBMIT_TEST,
   OPERATION_PURCHASE_COURSE,
@@ -127,6 +128,13 @@ export function fetchDataInTestResultPage(
   return {
     type: OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
     participantId,
+    onError,
+  };
+}
+
+export function fetchDataInHomePage(onError: any): OperationAction {
+  return {
+    type: OPERATION_FETCH_DATA_IN_HOME_PAGE,
     onError,
   };
 }

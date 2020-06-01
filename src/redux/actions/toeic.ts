@@ -42,14 +42,14 @@ export function fetchToeicSuccess(): ToeicAction {
 
 export function submitToeicScore(
   targetScore: number,
-  onError: any,
-  currentScore?: number
+  currentScore: number,
+  onError: any
 ): ToeicAction {
   return {
     type: TOEIC_SUBMIT_SCORE,
     targetScore,
-    onError,
     currentScore,
+    onError,
   };
 }
 

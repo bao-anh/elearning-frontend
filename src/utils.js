@@ -52,3 +52,66 @@ export function renderNumberOfQuestion(arr) {
   });
   return count;
 }
+
+export function convertRadioChartData(arr) {
+  let part5 = 0;
+  let data = [];
+  arr.forEach((element, index) => {
+    if (index !== 4 && index !== 5) {
+      const newElement = {
+        subject: `Part ${element.partNumber}`,
+        A: element.progressIds[0].percentComplete,
+        fullMark: 100,
+      };
+      data.push(newElement);
+    } else if (index === 4) {
+      part5 = element.progressIds[0].percentComplete;
+    } else {
+      const newElement = {
+        subject: 'Part 5 - 6',
+        A: Math.round((part5 + element.progressIds[0].percentComplete) / 2),
+        fullMark: 100,
+      };
+      data.push(newElement);
+    }
+  });
+  return data;
+}
+
+export function convertBarChartData(arr, property) {
+  let dateArray = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+    const newDate = `${date.getDate()}/${date.getMonth() + 1}`;
+    dateArray.push(newDate);
+  }
+
+  const arrayFiltered = arr.filter((element) => {
+    if (
+      element[property] !== null &&
+      element[property] !== undefined &&
+      new Date().getDate() - new Date(element.date).getDate() <= 7
+    ) {
+      return true;
+    } else return false;
+  });
+
+  let count = [0, 0, 0, 0, 0, 0, 0];
+
+  arrayFiltered.forEach((element, index) => {
+    const date = new Date(element.date);
+    const countIndex = dateArray.indexOf(
+      `${date.getDate()}/${date.getMonth() + 1}`
+    );
+    count[countIndex]++;
+  });
+
+  const result = count.map((element, index) => {
+    return {
+      date: dateArray[index],
+      count: element,
+    };
+  });
+
+  return result.reverse();
+}

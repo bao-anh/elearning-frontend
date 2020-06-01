@@ -9,6 +9,7 @@ import {
   OPERATION_FETCH_DATA_IN_TOEIC_PAGE,
   OPERATION_FETCH_DATA_IN_TEST_PAGE,
   OPERATION_FETCH_DATA_IN_TEST_RESULT_PAGE,
+  OPERATION_FETCH_DATA_IN_HOME_PAGE,
   OPERATION_SUBMIT_ASSIGNMENT,
   OPERATION_SUBMIT_TEST,
   OPERATION_PURCHASE_COURSE,
@@ -188,6 +189,16 @@ export function* fetchDataInTestResultPage(action: any) {
   }
 }
 
+export function* fetchDataInHomePage(action: any) {
+  try {
+    yield put(fetchUserInfo());
+    yield put(fetchToeicByUserId());
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
 export function* submitAssignment(action: any) {
   try {
     const userInfo = yield select((state) => state.authState);
@@ -351,6 +362,10 @@ export function* watchFetchDataInTestResultPage() {
   );
 }
 
+export function* watchFetchDataInHomePage() {
+  yield takeLatest(OPERATION_FETCH_DATA_IN_HOME_PAGE, fetchDataInHomePage);
+}
+
 export function* watchSubmitAssignment() {
   yield takeLatest(OPERATION_SUBMIT_ASSIGNMENT, submitAssignment);
 }
@@ -373,6 +388,7 @@ export default function* operation() {
   yield fork(watchFetchDataInToeicPage);
   yield fork(watchFetchDataInTestPage);
   yield fork(watchFetchDataInTestResultPage);
+  yield fork(watchFetchDataInHomePage);
   yield fork(watchSubmitAssignment);
   yield fork(watchSubmitTest);
   yield fork(watchPurchaseCourse);
