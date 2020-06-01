@@ -174,6 +174,8 @@
 - Move result page into whole new page in short test and full test.
 - Decrease payload of test page.
 
+### Version 4.5
+
 1/6/2020
 
 - Added homepage.
