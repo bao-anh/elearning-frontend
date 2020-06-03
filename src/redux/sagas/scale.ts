@@ -27,6 +27,6 @@ export function* watchFetchScale() {
   yield takeLatest(SCALE_FETCH_DATA, fetchScale);
 }
 
-export default function* toeic() {
+export default function* scale() {
   yield fork(watchFetchScale);
 }

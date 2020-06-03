@@ -13,7 +13,7 @@ import { removeToken } from '../../services';
 import { Link } from 'react-router-dom';
 import Routes from '../../routes';
 import * as authAction from '../../redux/actions/auth';
-import Logo from '../../resources/images/logo.svg';
+import Logo from '../../resources/images/white-wolf-transparent.png';
 
 import {
   Drawer,
@@ -218,8 +218,8 @@ const CustomHeader: FunctionComponent<{
           >
             <MenuIcon />
           </IconButton>
-          <Link to='/' className={'logo-web'}>
-            <img alt='' src={Logo} />
+          <Link to='/' className='logo-web'>
+            <img alt='' src={Logo} className='logo' />
           </Link>
           <Typography className={classes.titleNoFlexGrow} variant='h6' noWrap>
             E-LEARNING

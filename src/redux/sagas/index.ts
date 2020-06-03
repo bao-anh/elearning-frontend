@@ -9,6 +9,7 @@ import toeic from './toeic';
 import scale from './scale';
 import operation from './operation';
 import test from './test';
+import set from './set';
 
 export default function* rootSaga() {
   yield fork(auth);
@@ -21,4 +22,5 @@ export default function* rootSaga() {
   yield fork(scale);
   yield fork(toeic);
   yield fork(test);
+  yield fork(set);
 }

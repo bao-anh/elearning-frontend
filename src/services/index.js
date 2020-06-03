@@ -16,7 +16,7 @@ export const removeToken = () => {
 };
 
 export const api = axios.create({
-  baseURL: Config.HEROKU_URL,
+  baseURL: Config.LOCALHOST_URL,
   timeout: 30000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',

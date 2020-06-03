@@ -180,3 +180,10 @@
 
 - Added homepage.
 - Push code to heroku.
+
+### Version 5.0
+
+3/6/2020
+
+- Added add set and flashcard page.
+- Can add image into cloudinary.

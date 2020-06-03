@@ -6,6 +6,7 @@
 
 .logo-web {
   font-size: 20px;
+  width: 5%;
 }
 .search-panel {
   padding: 1px 10px;
@@ -25,6 +26,11 @@
     width: calc(100% - 40px);
   }
 }
+
+.logo {
+  width: 100%;
+}
+
 header {
   .logo-web {
     color: var(--main-color);
@@ -45,6 +51,7 @@ header {
 footer {
   background-color: var(--main-color);
   .logo-web {
+    width: 6%;
     color: white;
     display: flex;
     align-items: center;
@@ -337,6 +344,7 @@ footer {
   }
   .main-app-bar {
     .logo-web {
+      width: 7%;
       width: 50px;
       padding: 5px 10px;
     }

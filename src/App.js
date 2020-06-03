@@ -13,7 +13,7 @@ import NotFoundPage from './pages/404/NotFoundPage';
 import ToeicPage from './pages/toeic/ToeicPage';
 import TestPage from './pages/test/TestPage';
 import TestResultPage from './pages/test/TestResultPage';
-import FlashcardPage from './pages/flashcard/FlashCardPage';
+import FlashcardPage from './pages/flashcard/FlashcardPage';
 import Routes from './routes';
 import Layout from './components/common/Layout';
 import PrivateRoute from './PrivateRoute';
