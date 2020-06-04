@@ -96,3 +96,152 @@
 .flash-card-content-image {
   width: 100%;
 }
+
+.edit-set-header-container {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  height: 100px;
+}
+
+.sticky-header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 64px;
+  z-index: 3;
+}
+
+.edit-set-header-left-panel {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 3px 0px;
+  border-radius: 5px;
+}
+
+.edit-set-header-right-panel {
+  width: 50%;
+  text-align: right;
+  padding: 10px;
+}
+
+.edit-set-header-right-image {
+  width: 50%;
+  height: 100%;
+  text-align: right;
+}
+
+.edit-set-header-content-left {
+  width: 50%;
+}
+
+.edit-set-header-content-left-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.edit-set-header-content-left-subtitle {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  color: #aaa;
+  font-size: 0.8em;
+}
+
+.edit-set-header-content-image {
+  width: auto;
+  height: 100%;
+}
+
+.edit-set-header-left-panel-border {
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+}
+
+.edit-set-content-add {
+  margin-top: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.edit-set-content-complete {
+  margin: 10px;
+  text-align: right;
+}
+
+.edit-set-content-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  height: 75%;
+}
+
+.edit-set-content-item-image {
+  display: flex;
+  width: 15%;
+  padding: 10px;
+  flex-direction: column;
+  text-align: center;
+  border: 1px dashed #aaa;
+}
+
+.edit-set-content-image-icon:hover {
+  color: var(--root-color);
+  cursor: pointer;
+}
+
+.edit-set-content-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 0px 10px;
+  height: 25%;
+}
+
+.edit-set-content-item-paper {
+  margin-top: 10px;
+  height: 130px;
+  position: relative;
+}
+
+.edit-set-content-item-delete:hover {
+  color: var(--root-color);
+  cursor: pointer;
+}
+
+.edit-set-image-wrap {
+  position: relative;
+  text-align: center;
+  height: 100%;
+  width: 15%;
+}
+
+.edit-set-image-wrap:hover {
+  background-color: #eee;
+  filter: brightness(1);
+  border: 1px dashed #aaa;
+}
+
+.edit-set-image-wrap-delete-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 3px;
+  border-radius: 5px;
+  background-color: #455358;
+  color: white;
+}
+
+.edit-set-image-wrap-delete-icon:hover {
+  color: var(--root-color);
+  cursor: pointer;
+}

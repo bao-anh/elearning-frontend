@@ -187,3 +187,10 @@
 
 - Added add set and flashcard page.
 - Can add image into cloudinary.
+
+### Version 5.1
+
+4/6/2020
+
+- Added full function of edit set page.
+- Edit set page can perform like quizlet.

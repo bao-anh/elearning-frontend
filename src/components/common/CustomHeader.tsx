@@ -283,7 +283,7 @@ const CustomHeader: FunctionComponent<{
       if (index === 2) {
         return { backgroundColor };
       } else return {};
-    } else if (path[1] === 'flashcard') {
+    } else if (path[1] === 'flashcard' || path[1] === 'set') {
       if (index === 3) {
         return { backgroundColor };
       } else return {};

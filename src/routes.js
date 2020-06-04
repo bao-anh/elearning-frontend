@@ -13,5 +13,7 @@ class Routes {
   static TEST_SCREEN = '/test/:part';
   static REVIEW_SCREEN = '/review/:id';
   static FLASHCARD_SCREEN = '/flashcard';
+  static SET_SCREEN = '/set/:id';
+  static EDIT_SET_SCREEN = '/set/:id/edit';
 }
 export default Routes;

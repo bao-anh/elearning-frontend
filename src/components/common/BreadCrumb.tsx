@@ -10,10 +10,12 @@ const BreadCrumb: FunctionComponent<{
   topicState?: any;
   lessonState?: any;
   assignmentState?: any;
+  setState?: any;
   path: any;
   params?: any;
 }> = ({
   courseState,
+  setState,
   lessonState,
   topicState,
   path,
@@ -21,6 +23,63 @@ const BreadCrumb: FunctionComponent<{
   params,
 }) => {
   const renderContent = () => {
+    if (path === Routes.FLASHCARD_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/flashcard' className='breadcrumb-current-link'>
+            Học từ vựng
+          </Link>
+        </Breadcrumbs>
+      );
+    }
+    if (path === Routes.SET_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/flashcard' className='breadcrumb-current-link'>
+            Học từ vựng
+          </Link>
+          <Link to={`/set${params.id}`} className='breadcrumb-current-link'>
+            Học phần
+          </Link>
+        </Breadcrumbs>
+      );
+    }
+    if (path === Routes.EDIT_SET_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/flashcard' className='breadcrumb-current-link'>
+            Học từ vựng
+          </Link>
+          <Link
+            to={`/set${params.id}/edit`}
+            className='breadcrumb-current-link'
+          >
+            Chỉnh sửa học phần
+          </Link>
+        </Breadcrumbs>
+      );
+    }
     if (path === Routes.TOEIC_SCREEN) {
       return (
         <Breadcrumbs
