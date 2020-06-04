@@ -7,8 +7,12 @@ const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
   setState,
   history,
 }) => {
-  const handleClick = () => {
-    history.push('/');
+  const handleClick = (set: any) => {
+    if (set.termIds.length) {
+      history.push(`/set/${set._id}`);
+    } else {
+      history.push(`/set/${set._id}/edit`);
+    }
   };
 
   return (
@@ -19,7 +23,10 @@ const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
           style={(index + 1) % 3 === 0 ? { marginRight: 0 } : {}}
           className='flash-card-content-item'
         >
-          <div className='flash-card-content-item-border' onClick={handleClick}>
+          <div
+            className='flash-card-content-item-border'
+            onClick={() => handleClick(set)}
+          >
             <div className='flash-card-content-content'>
               <div className='flash-card-content-left'>
                 <h1 className='flash-card-content-left-header'>{set.name}</h1>
@@ -41,6 +48,7 @@ const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
                   <img
                     src={set.imageURL}
                     className='flash-card-content-image'
+                    alt='set'
                   />{' '}
                 </div>
               ) : null}

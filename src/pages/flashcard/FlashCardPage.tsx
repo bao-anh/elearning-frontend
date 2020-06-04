@@ -17,10 +17,9 @@ const FlashcardPage: FunctionComponent<{
   addSet: Function;
   fetchSet: Function;
   match: any;
-  authState: any;
   setState: any;
   history: any;
-}> = ({ addSet, fetchSet, match, authState, setState, history }) => {
+}> = ({ addSet, fetchSet, match, setState, history }) => {
   const { speak } = useSpeechSynthesis();
 
   useEffect(() => {
@@ -81,7 +80,6 @@ const FlashcardPage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
-    authState: state.authState,
     setState: state.setState,
     ...ownProps,
   };
