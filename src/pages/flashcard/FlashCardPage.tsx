@@ -23,7 +23,6 @@ const FlashcardPage: FunctionComponent<{
   const { speak } = useSpeechSynthesis();
 
   useEffect(() => {
-    speak({ text: '' });
     fetchSet(onError);
     //eslint-disable-next-line
   }, [match]);

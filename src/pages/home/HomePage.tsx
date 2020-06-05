@@ -114,7 +114,7 @@ const HomePage: FunctionComponent<{
               <h3>Bạn chưa có điểm mục tiêu</h3>
             )}
           </HeaderPanel>
-          <HeaderPanel title='Tỷ lệ từ vựng đã học thuộc'>
+          <HeaderPanel title='Tỷ lệ học thuộc tất cả các từ vựng'>
             <h2>Comming soon...</h2>
           </HeaderPanel>
         </Grid>

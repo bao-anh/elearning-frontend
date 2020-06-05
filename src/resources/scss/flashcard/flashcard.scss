@@ -245,3 +245,180 @@
   color: var(--root-color);
   cursor: pointer;
 }
+
+.set-page-filp-card-content {
+  overflow: hidden;
+  text-align: center;
+}
+
+.set-page-filp-card-paper {
+  text-align: center;
+  transform: translateX(-100%);
+  -webkit-transform: translateX(-100%);
+}
+
+.set-page-filp-card-paper-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 5px;
+  font-size: 2em;
+}
+
+.set-page-filp-card-paper:hover {
+  cursor: pointer;
+}
+
+.set-page-filp-card-navigate {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide-in {
+  animation: slide-in 0.5s forwards;
+  -webkit-animation: slide-in 0.5s forwards;
+}
+
+.slide-out {
+  animation: slide-out 0.5s forwards;
+  -webkit-animation: slide-out 0.5s forwards;
+}
+
+@keyframes slide-in {
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@-webkit-keyframes slide-in {
+  100% {
+    -webkit-transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+    -webkit-transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(0%);
+  }
+}
+
+.set-page-filp-card-paper-definition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.set-page-filp-card-paper-image {
+  width: 40%;
+  height: auto;
+  margin-right: 10px;
+}
+
+.set-page-filp-card-paper-definition-content {
+  font-size: 0.8em;
+}
+
+.set-page-filp-card-navigate-icon {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.set-page-filp-card-navigate-icon:hover {
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+.set-page-filp-card-flex {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.set-page-filp-card-flex:hover {
+  cursor: pointer;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.set-page-filp-card-flex-icon {
+  margin-right: 5px;
+}
+
+.set-page-filp-card-icon {
+  position: relative;
+}
+
+.set-page-left-header {
+  padding: 10px;
+  font-size: 1.4em;
+  font-weight: bold;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.set-page-bottom-header-flex {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.set-page-bottom-header {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.set-page-bottom-paper {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+}
+
+.set-page-bottom-paper-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.set-page-bottom-left {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #dddddd;
+  flex: 10;
+}
+
+.set-page-bottom-right {
+  margin-left: 10px;
+  flex: 15;
+}
+
+.set-page-bottom-image {
+  flex: 5;
+  height: 100%;
+}
