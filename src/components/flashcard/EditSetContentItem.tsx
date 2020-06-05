@@ -91,7 +91,8 @@ const EditSetContentItem: FunctionComponent<{
               >
                 <img
                   src={term.imageLocalURL}
-                  style={{ height: '100%', maxWidth: '100%' }}
+                  height='100%'
+                  width='100%'
                   alt='set'
                 />
                 <DeleteIcon
@@ -110,11 +111,7 @@ const EditSetContentItem: FunctionComponent<{
                 onMouseEnter={() => setIsShowDeleteIcon(true)}
                 onMouseLeave={() => setIsShowDeleteIcon(false)}
               >
-                <img
-                  src={term.imageURL}
-                  style={{ height: '100%', maxWidth: '100%' }}
-                  alt='set'
-                />
+                <img src={term.imageURL} height='100%' width='100%' alt='set' />
                 <DeleteIcon
                   onClick={() => handleDeleteImage()}
                   className='edit-set-image-wrap-delete-icon'

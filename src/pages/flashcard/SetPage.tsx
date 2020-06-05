@@ -4,6 +4,12 @@ import { AppState } from '../../redux/appstate';
 import * as setAction from '../../redux/actions/set';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
+import SetPageCard from '../../components/flashcard/SetPageCard';
+import SetPageLeft from '../../components/flashcard/SetPageLeft';
+import SetPageRight from '../../components/flashcard/SetPageRight';
+import SetPageBottom from '../../components/flashcard/SetPageBottom';
+import HeaderPanel from '../../components/common/HeaderPanel';
+import Loading from '../../components/common/Loading';
 
 import { Grid } from '@material-ui/core';
 
@@ -11,9 +17,11 @@ const SetPage: FunctionComponent<{
   fetchSetById: any;
   setState: any;
   match: any;
-}> = ({ fetchSetById, setState, match }) => {
+  history: any;
+}> = ({ fetchSetById, setState, match, history }) => {
   useEffect(() => {
     fetchSetById(match.params.id, onError);
+    //eslint-disable-next-line
   }, [match]);
 
   const [snackBar, setSnackBar] = useState({
@@ -47,9 +55,30 @@ const SetPage: FunctionComponent<{
       {renderSnackBar()}
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
-        <Grid item xs={12}>
-          Nothing to show right now
-        </Grid>
+        {setState.isLoading ? (
+          <Loading />
+        ) : (
+          <SetPageLeft setState={setState.current} history={history} />
+        )}
+        {setState.isLoading || !Object.keys(setState.current) ? (
+          <Loading />
+        ) : (
+          <SetPageCard setState={setState.current} />
+        )}
+        {setState.isLoading ? (
+          <Loading />
+        ) : (
+          <Grid item xs={4}>
+            <HeaderPanel title='Tỷ lệ học thuộc các từ vựng'>
+              <SetPageRight setState={setState} />
+            </HeaderPanel>
+          </Grid>
+        )}
+        {setState.isLoading ? (
+          <Loading />
+        ) : (
+          <SetPageBottom setState={setState.current} />
+        )}
       </Grid>
     </React.Fragment>
   );

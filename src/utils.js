@@ -115,3 +115,76 @@ export function convertBarChartData(arr, property) {
 
   return result.reverse();
 }
+
+export function convertPieChartData(arr) {
+  let countArray = [
+    {
+      name: 'Luôn đúng',
+      subtitle: 'Bạn đã trả lời đúng rất nhiều!',
+      count: 0,
+      color: '#4caf50',
+      termIds: [],
+    },
+    {
+      name: 'Hay đúng',
+      subtitle: 'Bạn trả lời đúng nhiều, nhưng vẫn đôi khi sai!',
+      count: 0,
+      color: '#8bc34a',
+      termIds: [],
+    },
+    {
+      name: 'Có lúc đúng, lúc sai',
+      subtitle: 'Các đáp án của bạn đôi lúc đúng, đôi lúc sai!',
+      count: 0,
+      color: '#ffeb3b',
+      termIds: [],
+    },
+    {
+      name: 'Hay sai',
+      subtitle: 'Bạn trả lời sai nhiều hơn đúng!',
+      count: 0,
+      color: '#ff9800',
+      termIds: [],
+    },
+    {
+      name: 'Luôn sai',
+      subtitle: 'Bạn cần luyện tập thêm những từ vựng này',
+      count: 0,
+      color: '#f44336',
+      termIds: [],
+    },
+    {
+      name: 'Chưa trả lời',
+      subtitle: 'Bạn chưa luyện tập những từ vựng này',
+      count: 0,
+      color: '#9e9e9e',
+      termIds: [],
+    },
+  ];
+
+  arr.forEach((element) => {
+    const { attempt, correct } = element.rememberIds[0];
+
+    if (attempt === 0) {
+      countArray[5].count++;
+      countArray[5].termIds.push(element);
+    } else if (correct / attempt > 0.9) {
+      countArray[0].count++;
+      countArray[0].termIds.push(element);
+    } else if (correct / attempt > 0.6) {
+      countArray[1].count++;
+      countArray[1].termIds.push(element);
+    } else if (correct / attempt > 0.4) {
+      countArray[2].count++;
+      countArray[2].termIds.push(element);
+    } else if (correct / attempt > 0.2) {
+      countArray[3].count++;
+      countArray[3].termIds.push(element);
+    } else {
+      countArray[4].count++;
+      countArray[4].termIds.push(element);
+    }
+  });
+
+  return countArray;
+}

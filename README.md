@@ -194,3 +194,9 @@
 
 - Added full function of edit set page.
 - Edit set page can perform like quizlet.
+
+### Version 5.2
+
+5/6/2020
+
+- Added show card page.

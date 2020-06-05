@@ -52,7 +52,7 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-current-link'>
             Học từ vựng
           </Link>
-          <Link to={`/set${params.id}`} className='breadcrumb-current-link'>
+          <Link to={`/set/${params.id}`} className='breadcrumb-current-link'>
             Học phần
           </Link>
         </Breadcrumbs>
