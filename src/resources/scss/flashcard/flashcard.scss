@@ -384,7 +384,7 @@
 }
 
 .set-page-bottom-header {
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -421,4 +421,126 @@
 .set-page-bottom-image {
   flex: 5;
   height: 100%;
+}
+
+.practice-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+}
+
+.practice-page-item {
+  margin-top: 10px;
+}
+
+.write-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 430px;
+  margin-left: 10px;
+  padding: 10px;
+}
+
+.write-page-content {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.write-page-image {
+  width: 40%;
+  margin-right: 10px;
+}
+
+.write-page-definition {
+  width: 60%;
+}
+
+.write-page-form {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.write-page-result-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.write-page-result-title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.write-page-result-subtitle {
+  font-weight: bold;
+  color: #aaaaaa;
+  font-size: 1.2em;
+}
+
+.write-page-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  height: 20%;
+}
+
+.write-page-result-content {
+  overflow: auto;
+}
+
+.write-page-result-name {
+  width: 35%;
+}
+
+.write-page-result-definition {
+  width: 45%;
+}
+
+.write-page-result-image {
+  height: 100%;
+  width: 20%;
+}
+
+.write-page-correct-answer-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.write-page-correct-answer-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.write-page-correct-answer-header {
+  width: 50%;
+}
+
+.write-page-correct-answer-image {
+  height: 100%;
+  width: 30%;
+}
+
+.write-page-correct-answer-item {
+  width: 50%;
+}
+
+.write-page-font-bold {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.progress-green {
+  background-color: #4caf50;
 }

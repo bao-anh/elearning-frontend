@@ -1,6 +1,8 @@
 # Todo list
 
-- Làm tính năng Flashcard [3]
+- Làm tính năng press Enter to continue ở incorrect page in write [4]
+- Làm tính năng Listen và Study trong Flashcard[3]
+- Chỉnh sửa lại Breadcrumb phần Flashcard [3]
 - Validate Signin, Register page [2]
 
 **Mai Gia Bảo Anh**
@@ -200,3 +202,9 @@
 5/6/2020
 
 - Added show card page.
+
+### Version 5.3
+
+6/6/2020
+
+- Added learn writing page.

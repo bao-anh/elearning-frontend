@@ -87,7 +87,7 @@ const ToeicPage: FunctionComponent<{
               title='Luyện tập theo từng phần'
               style={{ margin: '0 10px 0 10px' }}
             >
-              {toeicState.isLoading ? (
+              {toeicState.isLoading || scaleState.isLoading ? (
                 <Loading />
               ) : (
                 <ToeicContent

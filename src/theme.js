@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#3f51b5' },
-    secondary: { main: '#c21b17' },
+    secondary: { main: '#f44336' },
     error: { main: '#f44336' },
     friendMessage: { main: '#f1f0f0' },
     ownMessage: { main: '#0099ff' },
