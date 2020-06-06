@@ -3,33 +3,32 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
-import PracticePageLeft from '../../components/flashcard/PracticePageLeft';
-import WritePageContent from '../../components/flashcard/WritePageContent';
-import Loading from '../../components/common/Loading';
 import BreadCrumb from '../../components/common/BreadCrumb';
+import Loading from '../../components/common/Loading';
+import PracticePageLeft from '../../components/flashcard/PracticePageLeft';
+import ListenPageContent from '../../components/flashcard/ListenPageContent';
 
 import { Grid } from '@material-ui/core';
 
-const WriteSetPage: FunctionComponent<{
-  fetchWriteBySetId: Function;
-  writeAnswer: Function;
+const ListenSetPage: FunctionComponent<{
+  fetchListenBySetId: Function;
   updateRemember: Function;
+  listenAnswer: Function;
   learnState: any;
   match: any;
 }> = ({
-  fetchWriteBySetId,
-  writeAnswer,
+  fetchListenBySetId,
   updateRemember,
+  listenAnswer,
   learnState,
   match,
 }) => {
   useEffect(() => {
-    if (!Object.keys(learnState.write).length) {
-      fetchWriteBySetId(match.params.id, onError);
+    if (!Object.keys(learnState.listen).length) {
+      fetchListenBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
   }, [match]);
-
   const [snackBar, setSnackBar] = useState({
     isOpen: false,
     severity: '',
@@ -55,30 +54,29 @@ const WriteSetPage: FunctionComponent<{
       return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
     } else return null;
   };
-
   return (
     <React.Fragment>
       {renderSnackBar()}
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
         <Grid item xs={3}>
-          {learnState.isLoading || !Object.keys(learnState.write).length ? (
+          {learnState.isLoading || !Object.keys(learnState.listen).length ? (
             <Loading />
           ) : (
-            <PracticePageLeft match={match} practiceState={learnState.write} />
+            <PracticePageLeft match={match} practiceState={learnState.listen} />
           )}
         </Grid>
         <Grid item xs={9}>
-          {learnState.isLoading || !Object.keys(learnState.write).length ? (
+          {learnState.isLoading || !Object.keys(learnState.listen).length ? (
             <Loading />
           ) : (
-            <WritePageContent
-              writeState={learnState.write}
-              writeAnswer={writeAnswer}
+            <ListenPageContent
               match={match}
+              listenState={learnState.listen}
               onError={onError}
-              fetchWriteBySetId={fetchWriteBySetId}
+              fetchListenBySetId={fetchListenBySetId}
               updateRemember={updateRemember}
+              listenAnswer={listenAnswer}
             />
           )}
         </Grid>
@@ -94,9 +92,10 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
   };
 };
 const mapDispatchToProps = (dispatch: any) => ({
-  fetchWriteBySetId: (setId: any, onError: any) =>
-    dispatch(learnAction.fetchWriteBySetId(setId, onError)),
-  writeAnswer: (isCorrect: any) => dispatch(learnAction.writeAnswer(isCorrect)),
+  fetchListenBySetId: (setId: any, onError: any) =>
+    dispatch(learnAction.fetchListenBySetId(setId, onError)),
+  listenAnswer: (isCorrect: any) =>
+    dispatch(learnAction.listenAnswer(isCorrect)),
   updateRemember: (
     setId: any,
     practiceType: any,
@@ -108,4 +107,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     ),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(WriteSetPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ListenSetPage);

@@ -15,6 +15,7 @@ import TestPage from './pages/test/TestPage';
 import TestResultPage from './pages/test/TestResultPage';
 import FlashcardPage from './pages/flashcard/FlashcardPage';
 import WriteSetPage from './pages/flashcard/WriteSetPage';
+import ListenSetPage from './pages/flashcard/ListenSetPage';
 import EditSetPage from './pages/flashcard/EditSetPage';
 import SetPage from './pages/flashcard/SetPage';
 import Routes from './routes';
@@ -88,6 +89,11 @@ function App() {
             exact
             path={Routes.WRITE_SET_SCREEN}
             component={WriteSetPage}
+          />
+          <PrivateRoute
+            exact
+            path={Routes.LISTEN_SET_SCREEN}
+            component={ListenSetPage}
           />
           <PrivateRoute
             exact

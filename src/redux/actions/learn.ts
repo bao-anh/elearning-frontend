@@ -6,6 +6,7 @@ import {
   LEARN_SET_STUDY_DATA,
   LEARN_SET_WRITE_DATA,
   LEARN_WRITE_ANSWER,
+  LEARN_LISTEN_ANSWER,
   LEARN_UPDATE_REMEMBER,
   LEARN_FETCH_ON_PROGRESS,
   LEARN_FETCH_SUCCESS,
@@ -23,6 +24,7 @@ export interface LearnAction {
   isCorrect?: any;
   correct?: any;
   incorrect?: any;
+  practiceType?: String;
 }
 
 export function fetchStudyBySetId(setId: any, onError: any): LearnAction {
@@ -77,14 +79,23 @@ export function writeAnswer(isCorrect: any): LearnAction {
   };
 }
 
+export function listenAnswer(isCorrect: any): LearnAction {
+  return {
+    type: LEARN_LISTEN_ANSWER,
+    isCorrect,
+  };
+}
+
 export function updateRemember(
   setId: any,
+  practiceType: String,
   onSuccess: any,
   onError: any
 ): LearnAction {
   return {
     type: LEARN_UPDATE_REMEMBER,
     setId,
+    practiceType,
     onSuccess,
     onError,
   };
