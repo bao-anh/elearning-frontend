@@ -48,7 +48,7 @@ const SetPageLeft: FunctionComponent<{ history: any; setState: any }> = ({
   const handleChangeLink = (index: any) => {
     if (index === 0) history.push(`/set/${setState._id}/study`);
     else if (index === 1) history.push(`/set/${setState._id}/write`);
-    else if (index === 2) history.push(`/set/${setState._id}/listening`);
+    else if (index === 2) history.push(`/set/${setState._id}/listen`);
     else if (index === 3) history.push(`/set/${setState._id}/edit`);
   };
 

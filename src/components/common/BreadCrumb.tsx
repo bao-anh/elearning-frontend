@@ -102,6 +102,28 @@ const BreadCrumb: FunctionComponent<{
         </Breadcrumbs>
       );
     }
+    if (path === Routes.LISTEN_SET_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/flashcard' className='breadcrumb-link'>
+            Học từ vựng
+          </Link>
+          <Link
+            to={`/set${params.id}/listen`}
+            className='breadcrumb-current-link'
+          >
+            Luyện nghe
+          </Link>
+        </Breadcrumbs>
+      );
+    }
     if (path === Routes.TOEIC_SCREEN) {
       return (
         <Breadcrumbs

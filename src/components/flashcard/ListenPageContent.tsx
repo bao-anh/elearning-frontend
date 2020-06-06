@@ -1,77 +1,100 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import PracticeCorrectAnswer from './PracticeCorrectAnswer';
 import PracticeResult from './PracticeResult';
+// @ts-ignore
+import { useSpeechSynthesis } from 'react-speech-kit';
 
-import { Paper, Button, TextField } from '@material-ui/core';
-import { Check as CheckIcon } from '@material-ui/icons';
+import {
+  Button,
+  TextField,
+  Paper,
+  Typography,
+  IconButton,
+} from '@material-ui/core';
+import {
+  Check as CheckIcon,
+  RecordVoiceOver as RecordVoiceOverIcon,
+} from '@material-ui/icons';
 
-const WritePageContent: FunctionComponent<{
-  writeAnswer: any;
-  writeState: any;
+const ListenPageContent: FunctionComponent<{
+  listenState: any;
   match: any;
   onError: any;
-  fetchWriteBySetId: Function;
+  fetchListenBySetId: Function;
   updateRemember: Function;
+  listenAnswer: Function;
 }> = ({
   match,
   onError,
-  fetchWriteBySetId,
-  writeAnswer,
-  writeState,
+  fetchListenBySetId,
+  listenState,
   updateRemember,
+  listenAnswer,
 }) => {
+  const { speak } = useSpeechSynthesis();
   const [userAnswer, setUserAnswer] = useState('');
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const [isAnswerIncorrect, setIsAnswerIncorrect] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const handleChange = (e: any) => {
-    setUserAnswer(e.target.value);
-  };
+  useEffect(() => {
+    if (listenState.remain.length) {
+      speak({ text: listenState.remain[0].name });
+    }
+    //eslint-disable-next-line
+  }, [listenState.remain.length && listenState.remain[0].name]);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
     const answer = userAnswer.trim().toLowerCase();
-    if (answer === writeState.remain[0].name.trim().toLowerCase()) {
+    if (answer === listenState.remain[0].name.trim().toLowerCase()) {
       setIsAnswerCorrect(true);
       setTimeout(() => {
         setUserAnswer('');
         setIsAnswerCorrect(false);
-        writeAnswer(true);
+        listenAnswer(true);
       }, 1000);
     } else {
       setIsAnswerIncorrect(true);
     }
   };
 
+  const handleChange = (e: any) => {
+    setUserAnswer(e.target.value);
+  };
+
   const handleNextWhenIncorrect = () => {
     setUserAnswer('');
     setIsAnswerIncorrect(false);
-    writeAnswer(false);
+    listenAnswer(false);
   };
 
   const handleRestart = () => {
     setIsSubmit(true);
-    updateRemember(match.params.id, 'write', onSuccess, onError);
+    updateRemember(match.params.id, 'listen', onSuccess, onError);
   };
 
   const onSuccess = () => {
     setIsSubmit(false);
-    fetchWriteBySetId(match.params.id, onError);
+    fetchListenBySetId(match.params.id, onError);
   };
 
   const renderQuestion = () => {
-    if (writeState.remain.length) {
-      const { definition, imageURL } = writeState.remain[0];
+    if (listenState.remain.length) {
+      const { name } = listenState.remain[0];
       return (
         <React.Fragment>
-          <div className='write-page-content'>
-            <div className='write-page-image'>
-              {imageURL && imageURL !== '' ? (
-                <img src={imageURL} alt='term' height='100%' width='100%' />
-              ) : null}
-            </div>
-            <div className='write-page-definition'>{definition}</div>
+          <div className='flex-left' style={{ flexGrow: 1 }}>
+            <IconButton onClick={() => speak({ text: name })}>
+              <RecordVoiceOverIcon color='primary' fontSize='large' />
+            </IconButton>
+            <Typography
+              variant='h6'
+              color='primary'
+              style={{ marginLeft: '10px' }}
+            >
+              Hãy nhập vào những gì bạn nghe được
+            </Typography>
           </div>
           <form onSubmit={onSubmit} className='write-page-form'>
             <TextField
@@ -110,13 +133,12 @@ const WritePageContent: FunctionComponent<{
       );
     }
   };
-
   return (
     <Paper className='write-page-container'>
-      {writeState.remain.length ? (
+      {listenState.remain.length ? (
         isAnswerIncorrect ? (
           <PracticeCorrectAnswer
-            remain={writeState.remain}
+            remain={listenState.remain}
             userAnswer={userAnswer}
             handleNextWhenIncorrect={handleNextWhenIncorrect}
           />
@@ -125,7 +147,7 @@ const WritePageContent: FunctionComponent<{
         )
       ) : (
         <PracticeResult
-          practiceState={writeState}
+          practiceState={listenState}
           handleRestart={handleRestart}
           isSubmit={isSubmit}
         />
@@ -134,4 +156,4 @@ const WritePageContent: FunctionComponent<{
   );
 };
 
-export default WritePageContent;
+export default ListenPageContent;

@@ -208,3 +208,9 @@
 6/6/2020
 
 - Added learn writing page.
+
+### Version 5.4
+
+6/6/2020
+
+- Added learn listening page.

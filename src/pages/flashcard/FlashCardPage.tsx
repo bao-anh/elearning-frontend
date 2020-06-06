@@ -2,8 +2,6 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as setAction from '../../redux/actions/set';
-// @ts-ignore
-import { useSpeechSynthesis } from 'react-speech-kit';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import FlashcardHeader from '../../components/flashcard/FlashcardHeader';
 import FlashcardContent from '../../components/flashcard/FlashcardContent';
@@ -20,8 +18,6 @@ const FlashcardPage: FunctionComponent<{
   setState: any;
   history: any;
 }> = ({ addSet, fetchSet, match, setState, history }) => {
-  const { speak } = useSpeechSynthesis();
-
   useEffect(() => {
     fetchSet(onError);
     //eslint-disable-next-line

@@ -5,6 +5,7 @@ import {
   LEARN_SET_STUDY_DATA,
   LEARN_SET_WRITE_DATA,
   LEARN_WRITE_ANSWER,
+  LEARN_LISTEN_ANSWER,
   LEARN_FETCH_ON_PROGRESS,
   LEARN_FETCH_SUCCESS,
 } from '../actions/types';
@@ -17,9 +18,13 @@ export interface LearnState {
     remain: Array<any>;
     correct: Array<any>;
     incorrect: Array<any>;
-    length: Number;
   };
-  listen: Object;
+  listen: {
+    termIds: Array<any>;
+    remain: Array<any>;
+    correct: Array<any>;
+    incorrect: Array<any>;
+  };
   error: string;
 }
 
@@ -31,9 +36,13 @@ const initState = {
     remain: [],
     correct: [],
     incorrect: [],
-    length: 0,
   },
-  listen: {},
+  listen: {
+    termIds: [],
+    remain: [],
+    correct: [],
+    incorrect: [],
+  },
   error: '',
 };
 
@@ -75,6 +84,27 @@ const learnState: Reducer<LearnState> = (
         ...state,
         write: {
           ...state.write,
+          remain: newRemain,
+          correct: newCorrect,
+          incorrect: newIncorrect,
+        },
+      };
+    }
+    case LEARN_LISTEN_ANSWER: {
+      const newRemain = [...state.listen.remain];
+      const newCorrect = [...state.listen.correct];
+      const newIncorrect = [...state.listen.incorrect];
+      if (action.isCorrect) {
+        newCorrect.push(newRemain[0]);
+        newRemain.shift();
+      } else {
+        newIncorrect.push(newRemain[0]);
+        newRemain.shift();
+      }
+      return {
+        ...state,
+        listen: {
+          ...state.listen,
           remain: newRemain,
           correct: newCorrect,
           incorrect: newIncorrect,
