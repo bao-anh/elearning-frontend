@@ -10,6 +10,7 @@ import toeicState from './toeic';
 import scaleState from './scale';
 import testState from './test';
 import setState from './set';
+import learnState from './learn';
 
 const rootReducer = combineReducers<AppState>({
   authState: authState,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers<AppState>({
   scaleState: scaleState,
   testState: testState,
   setState: setState,
+  learnState: learnState,
 });
 
 export default rootReducer;

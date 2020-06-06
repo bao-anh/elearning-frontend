@@ -8,6 +8,7 @@ import { ToeicState } from './reducers/toeic';
 import { ScaleState } from './reducers/scale';
 import { TestState } from './reducers/test';
 import { SetState } from './reducers/set';
+import { LearnState } from './reducers/learn';
 
 export interface AppState {
   authState: AuthState;
@@ -20,4 +21,5 @@ export interface AppState {
   scaleState: ScaleState;
   testState: TestState;
   setState: SetState;
+  learnState: LearnState;
 }

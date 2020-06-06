@@ -14,6 +14,7 @@ import ToeicPage from './pages/toeic/ToeicPage';
 import TestPage from './pages/test/TestPage';
 import TestResultPage from './pages/test/TestResultPage';
 import FlashcardPage from './pages/flashcard/FlashcardPage';
+import WriteSetPage from './pages/flashcard/WriteSetPage';
 import EditSetPage from './pages/flashcard/EditSetPage';
 import SetPage from './pages/flashcard/SetPage';
 import Routes from './routes';
@@ -83,6 +84,11 @@ function App() {
             component={FlashcardPage}
           />
           <PrivateRoute exact path={Routes.SET_SCREEN} component={SetPage} />
+          <PrivateRoute
+            exact
+            path={Routes.WRITE_SET_SCREEN}
+            component={WriteSetPage}
+          />
           <PrivateRoute
             exact
             path={Routes.EDIT_SET_SCREEN}

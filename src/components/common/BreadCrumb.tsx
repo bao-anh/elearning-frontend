@@ -49,7 +49,7 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/' className='breadcrumb-link'>
             Trang chủ
           </Link>
-          <Link to='/flashcard' className='breadcrumb-current-link'>
+          <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
           <Link to={`/set/${params.id}`} className='breadcrumb-current-link'>
@@ -68,7 +68,7 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/' className='breadcrumb-link'>
             Trang chủ
           </Link>
-          <Link to='/flashcard' className='breadcrumb-current-link'>
+          <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
           <Link
@@ -76,6 +76,28 @@ const BreadCrumb: FunctionComponent<{
             className='breadcrumb-current-link'
           >
             Chỉnh sửa học phần
+          </Link>
+        </Breadcrumbs>
+      );
+    }
+    if (path === Routes.WRITE_SET_SCREEN) {
+      return (
+        <Breadcrumbs
+          separator='›'
+          aria-label='breadcrumb'
+          className='breadcrumb-container'
+        >
+          <Link to='/' className='breadcrumb-link'>
+            Trang chủ
+          </Link>
+          <Link to='/flashcard' className='breadcrumb-link'>
+            Học từ vựng
+          </Link>
+          <Link
+            to={`/set${params.id}/write`}
+            className='breadcrumb-current-link'
+          >
+            Luyện viết
           </Link>
         </Breadcrumbs>
       );

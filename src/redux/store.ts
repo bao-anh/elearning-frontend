@@ -35,15 +35,7 @@ const persistConfig = {
   storage: localforage,
   stateReconciler: autoMergeLevel2,
   transform: [encryptor],
-  whitelist: [
-    // 'courseState',
-    'categoryState',
-    // 'topicState',
-    // 'assignmentState',
-    // 'lessonState',
-    'scaleState',
-    'authState',
-  ],
+  whitelist: ['categoryState', 'scaleState', 'authState', 'learnState'],
 };
 const pReducer = persistReducer(persistConfig, rootReducer);
 export default function configureStore() {

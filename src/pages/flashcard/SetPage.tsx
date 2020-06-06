@@ -55,17 +55,17 @@ const SetPage: FunctionComponent<{
       {renderSnackBar()}
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
-        {setState.isLoading ? (
+        {setState.isLoading || !Object.keys(setState.current).length ? (
           <Loading />
         ) : (
           <SetPageLeft setState={setState.current} history={history} />
         )}
-        {setState.isLoading || !Object.keys(setState.current) ? (
+        {setState.isLoading || !Object.keys(setState.current).length ? (
           <Loading />
         ) : (
           <SetPageCard setState={setState.current} />
         )}
-        {setState.isLoading ? (
+        {setState.isLoading || !Object.keys(setState.current).length ? (
           <Loading />
         ) : (
           <Grid item xs={4}>
@@ -74,7 +74,7 @@ const SetPage: FunctionComponent<{
             </HeaderPanel>
           </Grid>
         )}
-        {setState.isLoading ? (
+        {setState.isLoading || !Object.keys(setState.current).length ? (
           <Loading />
         ) : (
           <SetPageBottom setState={setState.current} />

@@ -10,6 +10,7 @@ import scale from './scale';
 import operation from './operation';
 import test from './test';
 import set from './set';
+import learn from './learn';
 
 export default function* rootSaga() {
   yield fork(auth);
@@ -23,4 +24,5 @@ export default function* rootSaga() {
   yield fork(toeic);
   yield fork(test);
   yield fork(set);
+  yield fork(learn);
 }

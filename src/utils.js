@@ -188,3 +188,8 @@ export function convertPieChartData(arr) {
 
   return countArray;
 }
+
+export function shuffleArray(arr) {
+  const newArr = [...arr];
+  return newArr.sort(() => Math.random() - 0.5);
+}
