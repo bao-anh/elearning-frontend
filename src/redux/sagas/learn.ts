@@ -6,10 +6,12 @@ import {
   fetchLearnSuccess,
   setWrite,
   setListen,
+  setStudy,
 } from '../actions/learn';
 import {
   LEARN_FETCH_WRITE_BY_SET_ID,
   LEARN_FETCH_LISTEN_BY_SET_ID,
+  LEARN_FETCH_STUDY_BY_SET_ID,
   LEARN_UPDATE_REMEMBER,
 } from '../actions/types';
 
@@ -49,13 +51,33 @@ export function* fetchListenBySetId(action: any) {
     yield put(fetchLearnOnProgress());
     const response = yield call(getSetById, action.setId);
     const termIds = response.data.termIds;
-    const listent = {
+    const listen = {
       termIds: termIds,
       remain: shuffleArray(termIds),
       correct: [],
       incorrect: [],
     };
-    yield put(setListen(listent));
+    yield put(setListen(listen));
+    yield put(fetchLearnSuccess());
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
+export function* fetchStudyBySetId(action: any) {
+  try {
+    yield put(fetchLearnOnProgress());
+    const response = yield call(getSetById, action.setId);
+    const termIds = response.data.termIds;
+    const study = {
+      termIds: termIds,
+      remain: termIds,
+      familiar: [],
+      mastered: [],
+      current: termIds[0],
+    };
+    yield put(setStudy(study));
     yield put(fetchLearnSuccess());
   } catch (err) {
     action.onError(err.response.data);
@@ -94,6 +116,10 @@ export function* watchFetchListenBySetId() {
   yield takeLatest(LEARN_FETCH_LISTEN_BY_SET_ID, fetchListenBySetId);
 }
 
+export function* watchFetchStudyBySetId() {
+  yield takeLatest(LEARN_FETCH_STUDY_BY_SET_ID, fetchStudyBySetId);
+}
+
 export function* watchUpdateRemember() {
   yield takeLatest(LEARN_UPDATE_REMEMBER, updateRemember);
 }
@@ -102,4 +128,5 @@ export default function* learn() {
   yield fork(watchFetchWriteBySetId);
   yield fork(watchUpdateRemember);
   yield fork(watchFetchListenBySetId);
+  yield fork(watchFetchStudyBySetId);
 }

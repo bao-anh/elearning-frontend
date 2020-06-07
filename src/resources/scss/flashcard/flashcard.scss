@@ -544,3 +544,40 @@
 .progress-green {
   background-color: #4caf50;
 }
+
+.study-page-choice-right-item {
+  background-color: #4caf50;
+  width: 25%;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.study-page-choice-item {
+  position: relative;
+  width: 25%;
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+.study-page-choice-item:hover {
+  border: 1px solid var(--secondary-color);
+  cursor: pointer;
+}
+
+.study-page-choice-number {
+  position: absolute;
+  width: 1.5rem;
+  font-size: 1rem;
+  height: 1.5rem;
+  background-color: white;
+  top: -13px;
+  left: -13px;
+  border-radius: 50%;
+  border: 1px solid #aaaaaa;
+  color: #aaaaaa;
+}
+
+.study-page-left-icon {
+  margin: 10px 0px 10px 0px;
+}

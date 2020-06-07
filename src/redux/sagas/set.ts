@@ -14,6 +14,7 @@ import {
   setSet,
   setCurrentSet,
 } from '../actions/set';
+import { fetchUserInfo } from '../actions/auth';
 
 export const getSet = () => {
   return api.get('/sets');
@@ -84,6 +85,7 @@ export function* addSet(action: any) {
     yield call(postSet, action.set);
     const response = yield call(getSetById, action.setId);
     yield put(setSet(response.data));
+    yield put(fetchUserInfo());
     action.onSuccess();
   } catch (err) {
     action.onError(err.response.data);

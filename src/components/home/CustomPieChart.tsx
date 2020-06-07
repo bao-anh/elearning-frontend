@@ -8,17 +8,23 @@ import {
   Legend,
 } from 'recharts';
 
-const CustomPieChart: FunctionComponent<{ data: any }> = ({ data }) => {
+const CustomPieChart: FunctionComponent<{
+  data: any;
+  height: any;
+  outerRadius: any;
+  isAnimationActive: any;
+}> = ({ data, height, outerRadius, isAnimationActive }) => {
   return (
-    <ResponsiveContainer width='100%' height={236}>
-      <PieChart width={730} height={250}>
+    <ResponsiveContainer width='100%' height={height}>
+      <PieChart width={730} height={height}>
         <Pie
           dataKey='count'
           data={data}
           cx='50%'
           cy='50%'
-          outerRadius={80}
+          outerRadius={outerRadius}
           label
+          isAnimationActive={isAnimationActive}
         >
           {data.map((element: any, index: number) => (
             <Cell key={`cell-${index}`} fill={element.color} />

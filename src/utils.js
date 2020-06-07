@@ -193,3 +193,18 @@ export function shuffleArray(arr) {
   const newArr = [...arr];
   return newArr.sort(() => Math.random() - 0.5);
 }
+
+export function randomMultipleElementLeftOfArray(arr, element, number) {
+  const arrayShuffled = shuffleArray([...arr]);
+  const index = arrayShuffled.findIndex((ele) => ele.name === element.name);
+  arrayShuffled.splice(index, 1);
+  return arrayShuffled.slice(0, number);
+}
+
+export function mergeElementOfArray(arr, property) {
+  let newArray = [];
+  arr.forEach((element) => {
+    newArray = [...newArray, ...element[property]];
+  });
+  return newArray;
+}

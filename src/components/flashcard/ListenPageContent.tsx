@@ -44,6 +44,12 @@ const ListenPageContent: FunctionComponent<{
     //eslint-disable-next-line
   }, [listenState.remain.length && listenState.remain[0].name]);
 
+  const handlePressKey = (e: any) => {
+    if (e.keyCode === 13) {
+      onSubmit(e);
+    }
+  };
+
   const onSubmit = (e: any) => {
     e.preventDefault();
     const answer = userAnswer.trim().toLowerCase();
@@ -96,13 +102,15 @@ const ListenPageContent: FunctionComponent<{
               Hãy nhập vào những gì bạn nghe được
             </Typography>
           </div>
-          <form onSubmit={onSubmit} className='write-page-form'>
+          <div className='write-page-form'>
             <TextField
               id='standard-basic'
               label='Câu trả lời'
               value={userAnswer}
               onChange={(e) => handleChange(e)}
               fullWidth
+              autoFocus
+              onKeyDown={handlePressKey}
               style={{ marginRight: '10px' }}
             />
             {isAnswerCorrect ? (
@@ -128,7 +136,7 @@ const ListenPageContent: FunctionComponent<{
                 Đáp án
               </Button>
             )}
-          </form>
+          </div>
         </React.Fragment>
       );
     }
@@ -138,7 +146,7 @@ const ListenPageContent: FunctionComponent<{
       {listenState.remain.length ? (
         isAnswerIncorrect ? (
           <PracticeCorrectAnswer
-            remain={listenState.remain}
+            data={listenState.remain[0]}
             userAnswer={userAnswer}
             handleNextWhenIncorrect={handleNextWhenIncorrect}
           />

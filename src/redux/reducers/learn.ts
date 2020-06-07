@@ -6,13 +6,20 @@ import {
   LEARN_SET_WRITE_DATA,
   LEARN_WRITE_ANSWER,
   LEARN_LISTEN_ANSWER,
+  LEARN_STUDY_ANSWER,
   LEARN_FETCH_ON_PROGRESS,
   LEARN_FETCH_SUCCESS,
 } from '../actions/types';
 
 export interface LearnState {
   isLoading: boolean;
-  study: Object;
+  study: {
+    termIds: Array<any>;
+    remain: Array<any>;
+    familiar: Array<any>;
+    mastered: Array<any>;
+    current: Object;
+  };
   write: {
     termIds: Array<any>;
     remain: Array<any>;
@@ -30,7 +37,13 @@ export interface LearnState {
 
 const initState = {
   isLoading: true,
-  study: {},
+  study: {
+    termIds: [],
+    remain: [],
+    familiar: [],
+    mastered: [],
+    current: {},
+  },
   write: {
     termIds: [],
     remain: [],
@@ -111,6 +124,106 @@ const learnState: Reducer<LearnState> = (
         },
       };
     }
+
+    case LEARN_STUDY_ANSWER: {
+      const { remain, familiar, mastered, current } = state.study;
+      const newRemain = [...remain];
+      const newFamiliar = [...familiar];
+      const newMastered = [...mastered];
+      if (action.isCorrect) {
+        if (action.position === 'remain') {
+          const index = newRemain.findIndex(
+            //@ts-ignore
+            (ele) => ele.name === current.name
+          );
+          newRemain.splice(index, 1);
+          newFamiliar.push(current);
+          const newCurrentIndex = Math.floor(
+            Math.random() * (newRemain.length + newFamiliar.length)
+          );
+          let newCurrent = {};
+          if (newCurrentIndex >= newRemain.length) {
+            newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
+          } else newCurrent = newRemain[newCurrentIndex];
+          return {
+            ...state,
+            study: {
+              ...state.study,
+              familiar: newFamiliar,
+              remain: newRemain,
+              current: newCurrent,
+            },
+          };
+        } else if (action.position === 'familiar') {
+          const index = newFamiliar.findIndex(
+            //@ts-ignore
+            (ele) => ele.name === current.name
+          );
+          newFamiliar.splice(index, 1);
+          newMastered.push(current);
+          let newCurrent = {};
+          if (newRemain.length !== 0 || newFamiliar.length !== 0) {
+            const newCurrentIndex = Math.floor(
+              Math.random() * (newRemain.length + newFamiliar.length)
+            );
+            if (newCurrentIndex >= newRemain.length) {
+              newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
+            } else newCurrent = newRemain[newCurrentIndex];
+          }
+          return {
+            ...state,
+            study: {
+              ...state.study,
+              familiar: newFamiliar,
+              mastered: newMastered,
+              current: newCurrent,
+            },
+          };
+        }
+      } else {
+        if (action.position === 'remain') {
+          const newCurrentIndex = Math.floor(
+            Math.random() * (newRemain.length + newFamiliar.length)
+          );
+          let newCurrent = {};
+          if (newCurrentIndex >= newRemain.length) {
+            newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
+          } else newCurrent = newRemain[newCurrentIndex];
+          return {
+            ...state,
+            study: {
+              ...state.study,
+              current: newCurrent,
+            },
+          };
+        } else if (action.position === 'familiar') {
+          const index = newFamiliar.findIndex(
+            //@ts-ignore
+            (ele) => ele.name === current.name
+          );
+          newFamiliar.splice(index, 1);
+          newRemain.push(current);
+          const newCurrentIndex = Math.floor(
+            Math.random() * (newRemain.length + newFamiliar.length)
+          );
+          let newCurrent = {};
+          if (newCurrentIndex >= newRemain.length) {
+            newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
+          } else newCurrent = newRemain[newCurrentIndex];
+          return {
+            ...state,
+            study: {
+              ...state.study,
+              familiar: newFamiliar,
+              remain: newRemain,
+              current: newCurrent,
+            },
+          };
+        }
+      }
+      return state;
+    }
+
     case LEARN_FETCH_SUCCESS: {
       return {
         ...state,

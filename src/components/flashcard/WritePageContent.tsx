@@ -29,6 +29,12 @@ const WritePageContent: FunctionComponent<{
     setUserAnswer(e.target.value);
   };
 
+  const handlePressKey = (e: any) => {
+    if (e.keyCode === 13) {
+      onSubmit(e);
+    }
+  };
+
   const onSubmit = (e: any) => {
     e.preventDefault();
     const answer = userAnswer.trim().toLowerCase();
@@ -73,7 +79,7 @@ const WritePageContent: FunctionComponent<{
             </div>
             <div className='write-page-definition'>{definition}</div>
           </div>
-          <form onSubmit={onSubmit} className='write-page-form'>
+          <div className='write-page-form'>
             <TextField
               id='standard-basic'
               label='Câu trả lời'
@@ -81,6 +87,8 @@ const WritePageContent: FunctionComponent<{
               onChange={(e) => handleChange(e)}
               fullWidth
               style={{ marginRight: '10px' }}
+              onKeyDown={handlePressKey}
+              autoFocus
             />
             {isAnswerCorrect ? (
               <Button
@@ -105,7 +113,7 @@ const WritePageContent: FunctionComponent<{
                 Đáp án
               </Button>
             )}
-          </form>
+          </div>
         </React.Fragment>
       );
     }
@@ -116,7 +124,7 @@ const WritePageContent: FunctionComponent<{
       {writeState.remain.length ? (
         isAnswerIncorrect ? (
           <PracticeCorrectAnswer
-            remain={writeState.remain}
+            data={writeState.remain[0]}
             userAnswer={userAnswer}
             handleNextWhenIncorrect={handleNextWhenIncorrect}
           />
