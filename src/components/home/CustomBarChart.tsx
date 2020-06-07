@@ -16,7 +16,7 @@ const CustomeBarChart: FunctionComponent<{
   name: any;
 }> = ({ data, color, name }) => {
   return (
-    <ResponsiveContainer width='100%' height={280}>
+    <ResponsiveContainer width='100%' height={235}>
       <BarChart data={data} barSize={30}>
         <CartesianGrid strokeDasharray='3 3' />
         <XAxis dataKey='date' />

@@ -2,6 +2,8 @@
 
 :root {
   --root-color: #f44336;
+  --primary-color: #3f51b5;
+  --secondary-color: #ff9800;
 }
 
 .logo-web {
@@ -37,10 +39,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .fixed-container {
-    // padding-top: 10px;
-    // padding-bottom: 10px;
   }
   .header-tab-panel {
     padding-top: 10px;
@@ -433,4 +431,29 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height-and-width {
+  height: 100%;
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.xs4-font {
+  font-size: 1.2em;
 }

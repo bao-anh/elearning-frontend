@@ -15,8 +15,8 @@ const CustomRadarChart: FunctionComponent<{ data: any; name: any }> = ({
   name,
 }) => {
   return (
-    <ResponsiveContainer width='100%' height={280}>
-      <RadarChart outerRadius={90} data={data}>
+    <ResponsiveContainer width='100%' height={350}>
+      <RadarChart outerRadius={100} data={data}>
         <PolarGrid />
         <PolarAngleAxis dataKey='subject' />
         <PolarRadiusAxis angle={30} domain={[0, 100]} />

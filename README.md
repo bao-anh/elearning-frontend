@@ -1,7 +1,9 @@
 # Todo list
 
-- Làm tính năng press Enter to continue ở incorrect page in write [4]
-- Làm tính năng Listen và Study trong Flashcard[3]
+- Kiểm tra lại xem có thể ấn được các phím khi đang setTimeout ở practice set hay không [4].
+- Thoát đăng nhập thì sẽ xóa luôn những dữ liệu được lưu trong persist [4]
+- Làm tính năng study and learn all term in set [3]
+- Có thể chỉnh sửa được học phần [3]
 - Chỉnh sửa lại Breadcrumb phần Flashcard [3]
 - Validate Signin, Register page [2]
 
@@ -214,3 +216,11 @@
 6/6/2020
 
 - Added learn listening page.
+
+### Verison 5.5
+
+7/6/2020
+
+- Added study set page.
+- Learned how to use useMemo().
+- Added pie chart to home page.

@@ -1,13 +1,27 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import { Button } from '@material-ui/core';
 
 const PracticeCorrectAnswer: FunctionComponent<{
-  remain: any;
+  data: any;
   userAnswer: any;
   handleNextWhenIncorrect: any;
-}> = ({ remain, userAnswer, handleNextWhenIncorrect }) => {
-  const { name, definition, imageURL } = remain[0];
+}> = ({ data, userAnswer, handleNextWhenIncorrect }) => {
+  useEffect(() => {
+    window.addEventListener('keydown', handlePressKey);
+    return () => {
+      window.removeEventListener('keydown', handlePressKey);
+    };
+    //eslint-disable-next-line
+  }, []);
+
+  const handlePressKey = (e: any) => {
+    if (e.key === 'Enter') {
+      handleNextWhenIncorrect();
+    }
+  };
+
+  const { name, definition, imageURL } = data;
   return (
     <React.Fragment>
       <div className='write-page-correct-answer-container'>
