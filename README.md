@@ -9,6 +9,11 @@
 
 **Mai Gia Bảo Anh**
 
+## Line of codes
+- Frontend: 18092 lines
+- Backend: 3735 lines 
+- Total: 21827 lines
+
 ### Version 1.0
 
 25/3/2020
