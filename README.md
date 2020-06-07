@@ -8,11 +8,12 @@
 - Validate Signin, Register page [2]
 
 **Mai Gia Bảo Anh**
-
+-----------------------
 ## Line of codes
 - Frontend: 18092 lines
 - Backend: 3735 lines 
 - Total: 21827 lines
+-----------------------
 
 ### Version 1.0
 
