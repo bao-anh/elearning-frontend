@@ -17,8 +17,13 @@ const StudySetPage: FunctionComponent<{
   learnState: any;
   match: any;
 }> = ({ fetchStudyBySetId, studyAnswer, learnState, match }) => {
+  const isReadyToRender =
+    !learnState[match.params.id] ||
+    !learnState[match.params.id].study ||
+    !Object.keys(learnState[match.params.id].study).length;
+
   useEffect(() => {
-    if (!Object.keys(learnState.study).length) {
+    if (isReadyToRender) {
       fetchStudyBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
@@ -56,18 +61,18 @@ const StudySetPage: FunctionComponent<{
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
         <Grid item xs={3}>
-          {learnState.isLoading ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
-            <StudyPageLeft studyState={learnState.study} />
+            <StudyPageLeft studyState={learnState[match.params.id].study} />
           )}
         </Grid>
         <Grid item xs={9}>
-          {learnState.isLoading ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
             <StudyPageContent
-              studyState={learnState.study}
+              studyState={learnState[match.params.id].study}
               studyAnswer={studyAnswer}
               fetchStudyBySetId={fetchStudyBySetId}
               onError={onError}
@@ -89,8 +94,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchStudyBySetId: (setId: any, onError: any) =>
     dispatch(learnAction.fetchStudyBySetId(setId, onError)),
-  studyAnswer: (position: any, isCorrect: any) =>
-    dispatch(learnAction.studyAnswer(position, isCorrect)),
+  studyAnswer: (position: any, isCorrect: any, setId: any) =>
+    dispatch(learnAction.studyAnswer(position, isCorrect, setId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StudySetPage);

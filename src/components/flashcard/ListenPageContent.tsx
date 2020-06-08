@@ -58,7 +58,7 @@ const ListenPageContent: FunctionComponent<{
       setTimeout(() => {
         setUserAnswer('');
         setIsAnswerCorrect(false);
-        listenAnswer(true);
+        listenAnswer(true, match.params.id);
       }, 1000);
     } else {
       setIsAnswerIncorrect(true);
@@ -72,7 +72,7 @@ const ListenPageContent: FunctionComponent<{
   const handleNextWhenIncorrect = () => {
     setUserAnswer('');
     setIsAnswerIncorrect(false);
-    listenAnswer(false);
+    listenAnswer(false, match.params.id);
   };
 
   const handleRestart = () => {

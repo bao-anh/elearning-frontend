@@ -23,8 +23,13 @@ const WriteSetPage: FunctionComponent<{
   learnState,
   match,
 }) => {
+  const isReadyToRender =
+    !learnState[match.params.id] ||
+    !learnState[match.params.id].write ||
+    !Object.keys(learnState[match.params.id].write).length;
+
   useEffect(() => {
-    if (!Object.keys(learnState.write).length) {
+    if (isReadyToRender) {
       fetchWriteBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
@@ -62,18 +67,21 @@ const WriteSetPage: FunctionComponent<{
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
         <Grid item xs={3}>
-          {learnState.isLoading || !Object.keys(learnState.write).length ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
-            <PracticePageLeft match={match} practiceState={learnState.write} />
+            <PracticePageLeft
+              match={match}
+              practiceState={learnState[match.params.id].write}
+            />
           )}
         </Grid>
         <Grid item xs={9}>
-          {learnState.isLoading || !Object.keys(learnState.write).length ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
             <WritePageContent
-              writeState={learnState.write}
+              writeState={learnState[match.params.id].write}
               writeAnswer={writeAnswer}
               match={match}
               onError={onError}
@@ -96,7 +104,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchWriteBySetId: (setId: any, onError: any) =>
     dispatch(learnAction.fetchWriteBySetId(setId, onError)),
-  writeAnswer: (isCorrect: any) => dispatch(learnAction.writeAnswer(isCorrect)),
+  writeAnswer: (isCorrect: any, setId: any) =>
+    dispatch(learnAction.writeAnswer(isCorrect, setId)),
   updateRemember: (
     setId: any,
     practiceType: any,

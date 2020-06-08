@@ -1,7 +1,6 @@
 # Todo list
 
 - Kiểm tra lại xem có thể ấn được các phím khi đang setTimeout ở practice set hay không [4].
-- Thoát đăng nhập thì sẽ xóa luôn những dữ liệu được lưu trong persist [4]
 - Làm tính năng study and learn all term in set [3]
 - Có thể chỉnh sửa được học phần [3]
 - Chỉnh sửa lại Breadcrumb phần Flashcard [3]
@@ -9,12 +8,15 @@
 
 **Mai Gia Bảo Anh**
 
------------------------
+---
+
 ### Line of codes
+
 - Frontend: 18092 lines
-- Backend: 3735 lines 
+- Backend: 3735 lines
 - Total: 21827 lines
------------------------
+
+---
 
 ### Version 1.0
 
@@ -231,3 +233,10 @@
 - Added study set page.
 - Learned how to use useMemo().
 - Added pie chart to home page.
+
+### Version 5.6
+
+8/6/2020
+
+- Fixed bug of learnState (only have one set work concurrently).
+- Added feature logout will reiterate learnState.

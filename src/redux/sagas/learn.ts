@@ -38,7 +38,7 @@ export function* fetchWriteBySetId(action: any) {
       correct: [],
       incorrect: [],
     };
-    yield put(setWrite(write));
+    yield put(setWrite(write, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
     action.onError(err.response.data);
@@ -57,7 +57,7 @@ export function* fetchListenBySetId(action: any) {
       correct: [],
       incorrect: [],
     };
-    yield put(setListen(listen));
+    yield put(setListen(listen, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
     action.onError(err.response.data);
@@ -77,7 +77,7 @@ export function* fetchStudyBySetId(action: any) {
       mastered: [],
       current: termIds[0],
     };
-    yield put(setStudy(study));
+    yield put(setStudy(study, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
     action.onError(err.response.data);
@@ -88,16 +88,20 @@ export function* fetchStudyBySetId(action: any) {
 export function* updateRemember(action: any) {
   try {
     if (action.practiceType === 'write') {
-      const correct = yield select((state) => state.learnState.write.correct);
+      const correct = yield select(
+        (state) => state.learnState[action.setId].write.correct
+      );
       const incorrect = yield select(
-        (state) => state.learnState.write.incorrect
+        (state) => state.learnState[action.setId].write.incorrect
       );
       yield call(putTermUpdateRemeber, action.setId, correct, incorrect);
       action.onSuccess();
     } else if (action.practiceType === 'listen') {
-      const correct = yield select((state) => state.learnState.write.correct);
+      const correct = yield select(
+        (state) => state.learnState[action.setId].write.correct
+      );
       const incorrect = yield select(
-        (state) => state.learnState.write.incorrect
+        (state) => state.learnState[action.setId].write.incorrect
       );
       yield call(putTermUpdateRemeber, action.setId, correct, incorrect);
       action.onSuccess();

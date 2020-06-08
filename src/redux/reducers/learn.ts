@@ -9,53 +9,16 @@ import {
   LEARN_STUDY_ANSWER,
   LEARN_FETCH_ON_PROGRESS,
   LEARN_FETCH_SUCCESS,
+  AUTH_LOGOUT,
 } from '../actions/types';
 
 export interface LearnState {
   isLoading: boolean;
-  study: {
-    termIds: Array<any>;
-    remain: Array<any>;
-    familiar: Array<any>;
-    mastered: Array<any>;
-    current: Object;
-  };
-  write: {
-    termIds: Array<any>;
-    remain: Array<any>;
-    correct: Array<any>;
-    incorrect: Array<any>;
-  };
-  listen: {
-    termIds: Array<any>;
-    remain: Array<any>;
-    correct: Array<any>;
-    incorrect: Array<any>;
-  };
   error: string;
 }
 
 const initState = {
   isLoading: true,
-  study: {
-    termIds: [],
-    remain: [],
-    familiar: [],
-    mastered: [],
-    current: {},
-  },
-  write: {
-    termIds: [],
-    remain: [],
-    correct: [],
-    incorrect: [],
-  },
-  listen: {
-    termIds: [],
-    remain: [],
-    correct: [],
-    incorrect: [],
-  },
   error: '',
 };
 
@@ -67,25 +30,40 @@ const learnState: Reducer<LearnState> = (
     case LEARN_SET_LISTEN_DATA: {
       return {
         ...state,
-        listen: action.listen,
+        [action.setId]: {
+          //@ts-ignore
+          ...state[action.setId],
+          listen: action.listen,
+        },
       };
     }
     case LEARN_SET_WRITE_DATA: {
       return {
         ...state,
-        write: action.write,
+        [action.setId]: {
+          //@ts-ignore
+          ...state[action.setId],
+          write: action.write,
+        },
       };
     }
     case LEARN_SET_STUDY_DATA: {
       return {
         ...state,
-        study: action.study,
+        [action.setId]: {
+          //@ts-ignore
+          ...state[action.setId],
+          study: action.study,
+        },
       };
     }
     case LEARN_WRITE_ANSWER: {
-      const newRemain = [...state.write.remain];
-      const newCorrect = [...state.write.correct];
-      const newIncorrect = [...state.write.incorrect];
+      //@ts-ignore
+      const newRemain = [...state[action.setId].write.remain];
+      //@ts-ignore
+      const newCorrect = [...state[action.setId].write.correct];
+      //@ts-ignore
+      const newIncorrect = [...state[action.setId].write.incorrect];
       if (action.isCorrect) {
         newCorrect.push(newRemain[0]);
         newRemain.shift();
@@ -95,18 +73,26 @@ const learnState: Reducer<LearnState> = (
       }
       return {
         ...state,
-        write: {
-          ...state.write,
-          remain: newRemain,
-          correct: newCorrect,
-          incorrect: newIncorrect,
+        [action.setId]: {
+          //@ts-ignore
+          ...state[action.setId],
+          write: {
+            //@ts-ignore
+            ...state[action.setId].write,
+            remain: newRemain,
+            correct: newCorrect,
+            incorrect: newIncorrect,
+          },
         },
       };
     }
     case LEARN_LISTEN_ANSWER: {
-      const newRemain = [...state.listen.remain];
-      const newCorrect = [...state.listen.correct];
-      const newIncorrect = [...state.listen.incorrect];
+      //@ts-ignore
+      const newRemain = [...state[action.setId].listen.remain];
+      //@ts-ignore
+      const newCorrect = [...state[action.setId].listen.correct];
+      //@ts-ignore
+      const newIncorrect = [...state[action.setId].listen.incorrect];
       if (action.isCorrect) {
         newCorrect.push(newRemain[0]);
         newRemain.shift();
@@ -116,17 +102,23 @@ const learnState: Reducer<LearnState> = (
       }
       return {
         ...state,
-        listen: {
-          ...state.listen,
-          remain: newRemain,
-          correct: newCorrect,
-          incorrect: newIncorrect,
+        [action.setId]: {
+          //@ts-ignore
+          ...state[action.setId],
+          listen: {
+            //@ts-ignore
+            ...state[action.setId].listen,
+            remain: newRemain,
+            correct: newCorrect,
+            incorrect: newIncorrect,
+          },
         },
       };
     }
 
     case LEARN_STUDY_ANSWER: {
-      const { remain, familiar, mastered, current } = state.study;
+      //@ts-ignore
+      const { remain, familiar, mastered, current } = state[action.setId].study;
       const newRemain = [...remain];
       const newFamiliar = [...familiar];
       const newMastered = [...mastered];
@@ -145,13 +137,19 @@ const learnState: Reducer<LearnState> = (
           if (newCurrentIndex >= newRemain.length) {
             newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
           } else newCurrent = newRemain[newCurrentIndex];
+
           return {
             ...state,
-            study: {
-              ...state.study,
-              familiar: newFamiliar,
-              remain: newRemain,
-              current: newCurrent,
+            [action.setId]: {
+              //@ts-ignore
+              ...state[action.setId],
+              study: {
+                //@ts-ignore
+                ...state[action.setId].study,
+                familiar: newFamiliar,
+                remain: newRemain,
+                current: newCurrent,
+              },
             },
           };
         } else if (action.position === 'familiar') {
@@ -172,11 +170,16 @@ const learnState: Reducer<LearnState> = (
           }
           return {
             ...state,
-            study: {
-              ...state.study,
-              familiar: newFamiliar,
-              mastered: newMastered,
-              current: newCurrent,
+            [action.setId]: {
+              //@ts-ignore
+              ...state[action.setId],
+              study: {
+                //@ts-ignore
+                ...state[action.setId].study,
+                familiar: newFamiliar,
+                mastered: newMastered,
+                current: newCurrent,
+              },
             },
           };
         }
@@ -189,11 +192,17 @@ const learnState: Reducer<LearnState> = (
           if (newCurrentIndex >= newRemain.length) {
             newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
           } else newCurrent = newRemain[newCurrentIndex];
+
           return {
             ...state,
-            study: {
-              ...state.study,
-              current: newCurrent,
+            [action.setId]: {
+              //@ts-ignore
+              ...state[action.setId],
+              study: {
+                //@ts-ignore
+                ...state[action.setId].study,
+                current: newCurrent,
+              },
             },
           };
         } else if (action.position === 'familiar') {
@@ -210,13 +219,19 @@ const learnState: Reducer<LearnState> = (
           if (newCurrentIndex >= newRemain.length) {
             newCurrent = newFamiliar[newCurrentIndex - newRemain.length];
           } else newCurrent = newRemain[newCurrentIndex];
+
           return {
             ...state,
-            study: {
-              ...state.study,
-              familiar: newFamiliar,
-              remain: newRemain,
-              current: newCurrent,
+            [action.setId]: {
+              //@ts-ignore
+              ...state[action.setId],
+              study: {
+                //@ts-ignore
+                ...state[action.setId].study,
+                familiar: newFamiliar,
+                remain: newRemain,
+                current: newCurrent,
+              },
             },
           };
         }
@@ -230,11 +245,16 @@ const learnState: Reducer<LearnState> = (
         isLoading: false,
       };
     }
+
     case LEARN_FETCH_ON_PROGRESS: {
       return {
         ...state,
         isLoading: true,
       };
+    }
+
+    case AUTH_LOGOUT: {
+      return initState;
     }
     default:
       return state;

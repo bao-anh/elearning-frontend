@@ -36,7 +36,7 @@ const StudyContentPage: FunctionComponent<{
       setTimeout(() => {
         setUserAnswer('');
         setIsAnswerCorrect(false);
-        studyAnswer('remain', true);
+        studyAnswer('remain', true, match.params.id);
       }, 1000);
     } else {
       setUserAnswer(choiceArray[index].name);
@@ -52,7 +52,7 @@ const StudyContentPage: FunctionComponent<{
       setTimeout(() => {
         setUserAnswer('');
         setIsAnswerCorrect(false);
-        studyAnswer('familiar', true);
+        studyAnswer('familiar', true, match.params.id);
       }, 1000);
     } else {
       setIsFamiliarAnswerIncorrect(true);
@@ -62,13 +62,13 @@ const StudyContentPage: FunctionComponent<{
   const handleNextWhenRemainIncorrect = () => {
     setUserAnswer('');
     setIsRemainAnswerIncorrect(false);
-    studyAnswer('remain', false);
+    studyAnswer('remain', false, match.params.id);
   };
 
   const handleNextWhenFamiliarIncorrect = () => {
     setUserAnswer('');
     setIsFamiliarAnswerIncorrect(false);
-    studyAnswer('familiar', false);
+    studyAnswer('familiar', false, match.params.id);
   };
 
   const renderQuestion = () => {
