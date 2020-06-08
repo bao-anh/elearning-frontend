@@ -23,8 +23,13 @@ const ListenSetPage: FunctionComponent<{
   learnState,
   match,
 }) => {
+  const isReadyToRender =
+    !learnState[match.params.id] ||
+    !learnState[match.params.id].listen ||
+    !Object.keys(learnState[match.params.id].listen).length;
+
   useEffect(() => {
-    if (!Object.keys(learnState.listen).length) {
+    if (isReadyToRender) {
       fetchListenBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
@@ -60,19 +65,22 @@ const ListenSetPage: FunctionComponent<{
       <BreadCrumb path={match.path} params={match.params} />
       <Grid container className='container'>
         <Grid item xs={3}>
-          {learnState.isLoading || !Object.keys(learnState.listen).length ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
-            <PracticePageLeft match={match} practiceState={learnState.listen} />
+            <PracticePageLeft
+              match={match}
+              practiceState={learnState[match.params.id].listen}
+            />
           )}
         </Grid>
         <Grid item xs={9}>
-          {learnState.isLoading || !Object.keys(learnState.listen).length ? (
+          {learnState.isLoading || isReadyToRender ? (
             <Loading />
           ) : (
             <ListenPageContent
               match={match}
-              listenState={learnState.listen}
+              listenState={learnState[match.params.id].listen}
               onError={onError}
               fetchListenBySetId={fetchListenBySetId}
               updateRemember={updateRemember}
@@ -94,8 +102,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchListenBySetId: (setId: any, onError: any) =>
     dispatch(learnAction.fetchListenBySetId(setId, onError)),
-  listenAnswer: (isCorrect: any) =>
-    dispatch(learnAction.listenAnswer(isCorrect)),
+  listenAnswer: (isCorrect: any, setId: any) =>
+    dispatch(learnAction.listenAnswer(isCorrect, setId)),
   updateRemember: (
     setId: any,
     practiceType: any,

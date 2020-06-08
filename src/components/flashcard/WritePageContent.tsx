@@ -43,7 +43,7 @@ const WritePageContent: FunctionComponent<{
       setTimeout(() => {
         setUserAnswer('');
         setIsAnswerCorrect(false);
-        writeAnswer(true);
+        writeAnswer(true, match.params.id);
       }, 1000);
     } else {
       setIsAnswerIncorrect(true);
@@ -53,7 +53,7 @@ const WritePageContent: FunctionComponent<{
   const handleNextWhenIncorrect = () => {
     setUserAnswer('');
     setIsAnswerIncorrect(false);
-    writeAnswer(false);
+    writeAnswer(false, match.params.id);
   };
 
   const handleRestart = () => {

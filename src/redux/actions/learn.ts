@@ -53,46 +53,56 @@ export function fetchListenBySetId(setId: any, onError: any): LearnAction {
   };
 }
 
-export function setStudy(study: any): LearnAction {
+export function setStudy(study: any, setId: any): LearnAction {
   return {
     type: LEARN_SET_STUDY_DATA,
     study,
+    setId,
   };
 }
 
-export function setWrite(write: any): LearnAction {
+export function setWrite(write: any, setId: any): LearnAction {
   return {
     type: LEARN_SET_WRITE_DATA,
     write,
+    setId,
   };
 }
 
-export function setListen(listen: any): LearnAction {
+export function setListen(listen: any, setId: any): LearnAction {
   return {
     type: LEARN_SET_LISTEN_DATA,
     listen,
+    setId,
   };
 }
 
-export function writeAnswer(isCorrect: any): LearnAction {
+export function writeAnswer(isCorrect: any, setId: any): LearnAction {
   return {
     type: LEARN_WRITE_ANSWER,
     isCorrect,
+    setId,
   };
 }
 
-export function listenAnswer(isCorrect: any): LearnAction {
+export function listenAnswer(isCorrect: any, setId: any): LearnAction {
   return {
     type: LEARN_LISTEN_ANSWER,
     isCorrect,
+    setId,
   };
 }
 
-export function studyAnswer(position: any, isCorrect: any): LearnAction {
+export function studyAnswer(
+  position: any,
+  isCorrect: any,
+  setId: any
+): LearnAction {
   return {
     type: LEARN_STUDY_ANSWER,
     position,
     isCorrect,
+    setId,
   };
 }
 
