@@ -3,6 +3,7 @@ import { api } from '../../services';
 import {
   SET_FETCH_DATA,
   SET_ADD_DATA,
+  SET_UPDATE_DATA,
   SET_FETCH_BY_ID,
   SET_MODIFY_TERM,
   SET_DELETE_TERM,
@@ -56,6 +57,18 @@ export const deleteTerm = (setId: any, termId: any) => {
   return api.delete(`/sets/${setId}/terms/${termId}`);
 };
 
+export const putSetWithImage = (setId: any, payload: any) => {
+  return api.put(`/sets/${setId}/with-image`, payload, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const putSetWithOutImage = (setId: any, payload: any) => {
+  return api.put(`/sets/${setId}/without-image`, payload);
+};
+
 export function* fetchSet(action: any) {
   try {
     yield put(fetchSetOnProgress());
@@ -93,6 +106,22 @@ export function* addSet(action: any) {
   }
 }
 
+export function* updateSet(action: any) {
+  try {
+    if (action.isUpdateWithImage) {
+      yield call(putSetWithImage, action.setId, action.set);
+    } else {
+      yield call(putSetWithOutImage, action.setId, action.set);
+    }
+    const response = yield call(getSet);
+    yield put(setSet(response.data));
+    action.onSuccess();
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
 export function* modifyTermBySetId(action: any) {
   try {
     for (let i = 0; i < action.createArray.length; i++) {
@@ -115,8 +144,8 @@ export function* modifyTermBySetId(action: any) {
     }
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    if (err.response) action.onError(err.response.data);
+    else action.onError('modifyTermBySetId went wrong');
   }
 }
 
@@ -142,6 +171,10 @@ export function* watchAddSet() {
   yield takeLatest(SET_ADD_DATA, addSet);
 }
 
+export function* watchUpdateSet() {
+  yield takeLatest(SET_UPDATE_DATA, updateSet);
+}
+
 export function* watchModifyTermBySetId() {
   yield takeLatest(SET_MODIFY_TERM, modifyTermBySetId);
 }
@@ -153,6 +186,7 @@ export function* watchDeleteTermBySetId() {
 export default function* set() {
   yield fork(watchFetchSet);
   yield fork(watchAddSet);
+  yield fork(watchUpdateSet);
   yield fork(watchFetchSetById);
   yield fork(watchModifyTermBySetId);
   yield fork(watchDeleteTermBySetId);

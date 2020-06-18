@@ -28,10 +28,13 @@
 }
 
 .flash-card-content-item {
-  padding: 10px;
+  padding: 10px 10px 5px 10px;
   margin: 0 10px 10px 0;
   width: 34%;
   height: 245px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .flash-card-content-item-border {
@@ -49,6 +52,11 @@
   cursor: pointer;
 }
 
+.flash-card-content-edit-icon:hover {
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
 .flash-card-content-left {
   display: flex;
   flex-direction: column;
@@ -59,7 +67,7 @@
 
 .flash-card-content-right {
   width: 50%;
-  height: auto;
+  max-height: 150px;
 }
 
 .flash-card-content-left-header {
@@ -81,8 +89,9 @@
 
 .flash-card-content-footer {
   display: flex;
-  justify-items: center;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 5px;
 }
 
 .flash-card-content-left-subtitle {
@@ -199,6 +208,17 @@
   cursor: pointer;
 }
 
+.modify-set-content-item-image {
+  display: flex;
+  width: 200px;
+  height: 120px;
+  padding: 10px;
+  margin-left: 10px;
+  flex-direction: column;
+  text-align: center;
+  border: 1px dashed #aaa;
+}
+
 .edit-set-content-item-header {
   display: flex;
   align-items: center;
@@ -231,6 +251,14 @@
   border: 1px dashed #aaa;
 }
 
+.modify-set-image-wrap {
+  position: relative;
+  margin-left: 10px;
+  text-align: center;
+  height: 120px;
+  width: 200px;
+}
+
 .edit-set-image-wrap-delete-icon {
   position: absolute;
   top: 5px;
@@ -244,6 +272,10 @@
 .edit-set-image-wrap-delete-icon:hover {
   color: var(--root-color);
   cursor: pointer;
+}
+
+.modify-set-dialog-wrap-button {
+  padding: 0px 10px 10px 10px;
 }
 
 .set-page-filp-card-content {

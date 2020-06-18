@@ -4,6 +4,7 @@ import {
   SET_SET_DATA,
   SET_SET_CURRENT,
   SET_ADD_DATA,
+  SET_UPDATE_DATA,
   SET_FETCH_ON_PROGRESS,
   SET_FETCH_SUCCESS,
   SET_MODIFY_TERM,
@@ -20,6 +21,7 @@ export interface SetAction {
   createArray?: any;
   updateWithImageArray?: any;
   updateWithOutImageArray?: any;
+  isUpdateWithImage?: any;
 }
 
 export function fetchSet(onError: any): SetAction {
@@ -41,6 +43,23 @@ export function addSet(set: any, onError: any, onSuccess: any): SetAction {
   return {
     type: SET_ADD_DATA,
     set,
+    onError,
+    onSuccess,
+  };
+}
+
+export function updateSet(
+  set: any,
+  setId: any,
+  isUpdateWithImage: any,
+  onError: any,
+  onSuccess: any
+): SetAction {
+  return {
+    type: SET_UPDATE_DATA,
+    set,
+    setId,
+    isUpdateWithImage,
     onError,
     onSuccess,
   };

@@ -59,7 +59,13 @@ const EditSetPage: FunctionComponent<{
   return (
     <React.Fragment>
       {renderSnackBar()}
-      <BreadCrumb path={match.path} params={match.params} />
+      {setState.isLoading || !Object.keys(setState.current).length ? null : (
+        <BreadCrumb
+          path={match.path}
+          params={match.params}
+          setState={setState}
+        />
+      )}
       <Grid container className='container'>
         {setState.isLoading || !Object.keys(setState.current).length ? (
           <Loading />

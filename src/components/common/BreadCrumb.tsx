@@ -53,7 +53,7 @@ const BreadCrumb: FunctionComponent<{
             Học từ vựng
           </Link>
           <Link to={`/set/${params.id}`} className='breadcrumb-current-link'>
-            Học phần
+            {setState.current.name}
           </Link>
         </Breadcrumbs>
       );
@@ -71,6 +71,15 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
+          {setState.current.termIds.length ? (
+            <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+              {setState.current.name}
+            </Link>
+          ) : (
+            <Link to={`/set/${params.id}/edit`} className='breadcrumb-link'>
+              {setState.current.name}
+            </Link>
+          )}
           <Link
             to={`/set/${params.id}/edit`}
             className='breadcrumb-current-link'
@@ -92,6 +101,9 @@ const BreadCrumb: FunctionComponent<{
           </Link>
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
+          </Link>
+          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+            {setState.current.name ? setState.current.name : 'Học phần'}
           </Link>
           <Link
             to={`/set/${params.id}/write`}
@@ -115,6 +127,9 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
+          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+            {setState.current.name ? setState.current.name : 'Học phần'}
+          </Link>
           <Link
             to={`/set/${params.id}/listen`}
             className='breadcrumb-current-link'
@@ -136,6 +151,9 @@ const BreadCrumb: FunctionComponent<{
           </Link>
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
+          </Link>
+          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+            {setState.current.name ? setState.current.name : 'Học phần'}
           </Link>
           <Link
             to={`/set/${params.id}/study`}

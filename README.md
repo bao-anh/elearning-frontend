@@ -1,9 +1,8 @@
 # Todo list
 
-- Kiểm tra lại xem có thể ấn được các phím khi đang setTimeout ở practice set hay không [4].
 - Làm tính năng study and learn all term in set [3]
-- Có thể chỉnh sửa được học phần [3]
-- Chỉnh sửa lại Breadcrumb phần Flashcard [3]
+- Có thể sử dụng được học phần của người khác nếu có link [3]
+- Sửa lỗi className khi build trên production environment [2]
 - Validate Signin, Register page [2]
 
 **Mai Gia Bảo Anh**
@@ -240,3 +239,11 @@
 
 - Fixed bug of learnState (only have one set work concurrently).
 - Added feature logout will reiterate learnState.
+
+### Version 6.0
+
+18/6/2020
+
+- Fixed bug when press "Hoàn tất" in edit set page.
+- Added edit set feature, allow user can preview image of set.
+- Prevent user press button when show "Choose correct answer" in study set page.
