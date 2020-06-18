@@ -62,6 +62,10 @@ const StudyPageMulChoice: FunctionComponent<{
     window.removeEventListener('keydown', handlePressKey);
   };
 
+  const handleClick = (index: any) => {
+    if (!isAnswerCorrect) handleChooseAnswer(index, choiceArray);
+  };
+
   return (
     <div className='flex-column full-height'>
       <div className='write-page-content'>
@@ -80,7 +84,7 @@ const StudyPageMulChoice: FunctionComponent<{
                 key={choice._id ? choice._id : index}
                 className='flex-center study-page-choice-right-item'
                 style={index ? { marginLeft: '20px' } : {}}
-                onClick={() => handleChooseAnswer(index, choiceArray)}
+                onClick={() => handleClick(index)}
               >
                 <CheckIcon htmlColor='white' />
                 <div style={{ color: 'white' }}> Đúng </div>
@@ -92,8 +96,11 @@ const StudyPageMulChoice: FunctionComponent<{
                 key={choice._id ? choice._id : index}
                 className='study-page-choice-item'
                 style={index ? { marginLeft: '20px' } : {}}
-                onClick={() => handleChooseAnswer(index, choiceArray)}
+                onClick={() => handleClick(index)}
               >
+                {isAnswerCorrect && (
+                  <div className='assignment-dialog-overlay' />
+                )}
                 <div className='study-page-choice-number'>{index + 1}</div>
                 <div>{choice.name}</div>
               </div>

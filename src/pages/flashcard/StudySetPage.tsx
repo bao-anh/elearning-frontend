@@ -15,8 +15,9 @@ const StudySetPage: FunctionComponent<{
   studyAnswer: Function;
   updateRemember: Function;
   learnState: any;
+  setState: any;
   match: any;
-}> = ({ fetchStudyBySetId, studyAnswer, learnState, match }) => {
+}> = ({ fetchStudyBySetId, studyAnswer, learnState, setState, match }) => {
   const isReadyToRender =
     !learnState[match.params.id] ||
     !learnState[match.params.id].study ||
@@ -58,7 +59,13 @@ const StudySetPage: FunctionComponent<{
   return (
     <React.Fragment>
       {renderSnackBar()}
-      <BreadCrumb path={match.path} params={match.params} />
+      {learnState.isLoading || isReadyToRender ? null : (
+        <BreadCrumb
+          path={match.path}
+          params={match.params}
+          setState={setState}
+        />
+      )}
       <Grid container className='container'>
         <Grid item xs={3}>
           {learnState.isLoading || isReadyToRender ? (
@@ -87,6 +94,7 @@ const StudySetPage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    setState: state.setState,
     learnState: state.learnState,
     ...ownProps,
   };

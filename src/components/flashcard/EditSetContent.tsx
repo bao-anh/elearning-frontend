@@ -89,7 +89,8 @@ const EditSetContent: FunctionComponent<{
   };
 
   const onSuccess = () => {
-    history.push(`/set/${setState._id}`);
+    if (setState.termIds.length) history.push(`/set/${setState._id}`);
+    else history.push('/flashcard');
   };
 
   const onDeleteSuccess = (_id: any) => {

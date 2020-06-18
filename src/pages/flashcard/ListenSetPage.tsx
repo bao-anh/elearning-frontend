@@ -15,12 +15,14 @@ const ListenSetPage: FunctionComponent<{
   updateRemember: Function;
   listenAnswer: Function;
   learnState: any;
+  setState: any;
   match: any;
 }> = ({
   fetchListenBySetId,
   updateRemember,
   listenAnswer,
   learnState,
+  setState,
   match,
 }) => {
   const isReadyToRender =
@@ -62,7 +64,13 @@ const ListenSetPage: FunctionComponent<{
   return (
     <React.Fragment>
       {renderSnackBar()}
-      <BreadCrumb path={match.path} params={match.params} />
+      {learnState.isLoading || isReadyToRender ? null : (
+        <BreadCrumb
+          path={match.path}
+          params={match.params}
+          setState={setState}
+        />
+      )}
       <Grid container className='container'>
         <Grid item xs={3}>
           {learnState.isLoading || isReadyToRender ? (
@@ -95,6 +103,7 @@ const ListenSetPage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    setState: state.setState,
     learnState: state.learnState,
     ...ownProps,
   };

@@ -15,11 +15,13 @@ const WriteSetPage: FunctionComponent<{
   writeAnswer: Function;
   updateRemember: Function;
   learnState: any;
+  setState: any;
   match: any;
 }> = ({
   fetchWriteBySetId,
   writeAnswer,
   updateRemember,
+  setState,
   learnState,
   match,
 }) => {
@@ -64,7 +66,13 @@ const WriteSetPage: FunctionComponent<{
   return (
     <React.Fragment>
       {renderSnackBar()}
-      <BreadCrumb path={match.path} params={match.params} />
+      {learnState.isLoading || isReadyToRender ? null : (
+        <BreadCrumb
+          path={match.path}
+          params={match.params}
+          setState={setState}
+        />
+      )}
       <Grid container className='container'>
         <Grid item xs={3}>
           {learnState.isLoading || isReadyToRender ? (
@@ -97,6 +105,7 @@ const WriteSetPage: FunctionComponent<{
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    setState: state.setState,
     learnState: state.learnState,
     ...ownProps,
   };

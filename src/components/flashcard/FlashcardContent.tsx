@@ -1,12 +1,18 @@
 import React, { FunctionComponent } from 'react';
 
 import { Paper, Typography } from '@material-ui/core';
-import { Lock as LockIcon, Public as PublicIcon } from '@material-ui/icons';
+import {
+  Lock as LockIcon,
+  Public as PublicIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
-const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
-  setState,
-  history,
-}) => {
+const FlashcardContent: FunctionComponent<{
+  setState: any;
+  history: any;
+  setIsEdit: any;
+  setSetInfo: any;
+}> = ({ setState, history, setIsEdit, setSetInfo }) => {
   const handleClick = (set: any) => {
     if (set.termIds.length) {
       history.push(`/set/${set._id}`);
@@ -30,18 +36,6 @@ const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
             <div className='flash-card-content-content'>
               <div className='flash-card-content-left'>
                 <h1 className='flash-card-content-left-header'>{set.name}</h1>
-                <div className='flash-card-content-left-subtitle'>
-                  <div
-                    style={{ marginRight: '5px' }}
-                  >{`${set.termIds.length} thuật ngữ `}</div>
-                  <div>
-                    {set.visiable ? (
-                      <PublicIcon fontSize='small' />
-                    ) : (
-                      <LockIcon fontSize='small' />
-                    )}
-                  </div>
-                </div>
               </div>
               {set.imageURL ? (
                 <div className='flash-card-content-right'>
@@ -49,13 +43,46 @@ const FlashcardContent: FunctionComponent<{ setState: any; history: any }> = ({
                     src={set.imageURL}
                     className='flash-card-content-image'
                     alt='set'
-                  />{' '}
+                  />
                 </div>
               ) : null}
             </div>
-            <div className='flash-card-content-footer'>
-              <div style={{ marginRight: '5px' }}>{`Được tạo bởi `}</div>
+            <div className='flash-card-content-left-subtitle'>
+              <div
+                style={{ marginRight: '5px' }}
+              >{`${set.termIds.length} thuật ngữ `}</div>
+              <div>
+                {set.visiable ? (
+                  <PublicIcon fontSize='small' />
+                ) : (
+                  <LockIcon fontSize='small' />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className='flash-card-content-footer'>
+            <div className='flex-center'>
+              <div style={{ marginRight: '5px' }}>Được tạo bởi</div>
               <Typography color='primary'>{set.ownerId.name}</Typography>
+            </div>
+            <div>
+              <EditIcon
+                fontSize='small'
+                className='flash-card-content-edit-icon'
+                onClick={() => {
+                  setSetInfo({
+                    _id: set._id,
+                    name: set.name,
+                    description: set.description,
+                    imageLocalURL: set.imageURL,
+                    imageLocalFile: null,
+                    imageURL: set.imageURL,
+                    visiable: set.visiable,
+                    editable: set.editable,
+                  });
+                  setIsEdit(true);
+                }}
+              />
             </div>
           </div>
         </Paper>
