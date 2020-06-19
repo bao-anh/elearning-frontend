@@ -4,6 +4,9 @@ import {
   LEARN_SET_LISTEN_DATA,
   LEARN_SET_STUDY_DATA,
   LEARN_SET_WRITE_DATA,
+  LEARN_SET_ALL_WRITE_DATA,
+  LEARN_SET_ALL_LISTEN_DATA,
+  LEARN_SET_ALL_STUDY_DATA,
   LEARN_WRITE_ANSWER,
   LEARN_LISTEN_ANSWER,
   LEARN_STUDY_ANSWER,
@@ -14,11 +17,21 @@ import {
 
 export interface LearnState {
   isLoading: boolean;
+  all: {
+    study: Object;
+    write: Object;
+    listen: Object;
+  };
   error: string;
 }
 
 const initState = {
   isLoading: true,
+  all: {
+    study: {},
+    write: {},
+    listen: {},
+  },
   error: '',
 };
 
@@ -37,6 +50,7 @@ const learnState: Reducer<LearnState> = (
         },
       };
     }
+
     case LEARN_SET_WRITE_DATA: {
       return {
         ...state,
@@ -47,6 +61,7 @@ const learnState: Reducer<LearnState> = (
         },
       };
     }
+
     case LEARN_SET_STUDY_DATA: {
       return {
         ...state,
@@ -57,6 +72,37 @@ const learnState: Reducer<LearnState> = (
         },
       };
     }
+
+    case LEARN_SET_ALL_WRITE_DATA: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          write: action.write,
+        },
+      };
+    }
+
+    case LEARN_SET_ALL_LISTEN_DATA: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          listen: action.listen,
+        },
+      };
+    }
+
+    case LEARN_SET_ALL_STUDY_DATA: {
+      return {
+        ...state,
+        all: {
+          ...state.all,
+          study: action.study,
+        },
+      };
+    }
+
     case LEARN_WRITE_ANSWER: {
       //@ts-ignore
       const newRemain = [...state[action.setId].write.remain];
@@ -86,6 +132,7 @@ const learnState: Reducer<LearnState> = (
         },
       };
     }
+
     case LEARN_LISTEN_ANSWER: {
       //@ts-ignore
       const newRemain = [...state[action.setId].listen.remain];

@@ -7,6 +7,7 @@ import BreadCrumb from '../../components/common/BreadCrumb';
 import FlashcardHeader from '../../components/flashcard/FlashcardHeader';
 import FlashcardContent from '../../components/flashcard/FlashcardContent';
 import ModifySetDialog from '../../components/flashcard/ModifySetDialog';
+import StudySetDialog from '../../components/flashcard/StudySetDialog';
 import Loading from '../../components/common/Loading';
 import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/flashcard/flashcard.scss';
@@ -15,12 +16,25 @@ import { Grid } from '@material-ui/core';
 
 const FlashcardPage: FunctionComponent<{
   addSet: Function;
+  addSetByLink: Function;
   updateSet: Function;
   fetchSet: Function;
+  searchSetById: Function;
   match: any;
   setState: any;
+  authState: any;
   history: any;
-}> = ({ addSet, updateSet, fetchSet, match, setState, history }) => {
+}> = ({
+  addSet,
+  addSetByLink,
+  updateSet,
+  fetchSet,
+  searchSetById,
+  match,
+  setState,
+  authState,
+  history,
+}) => {
   useEffect(() => {
     fetchSet(onError);
     //eslint-disable-next-line
@@ -28,6 +42,8 @@ const FlashcardPage: FunctionComponent<{
 
   const [isAdd, setIsAdd] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isSearch, setIsSearch] = useState(false);
+  const [isOpenStudyDialog, setIsOpenStudyDialog] = useState(false);
   const [setInfo, setSetInfo] = useState({
     _id: uuidv4(),
     name: '',
@@ -45,6 +61,8 @@ const FlashcardPage: FunctionComponent<{
     message: '',
   });
 
+  const isNotReadyToRender = setState.isLoading;
+
   const onError = (data: any) => {
     let message = '';
     if (data.errors) {
@@ -59,50 +77,87 @@ const FlashcardPage: FunctionComponent<{
     });
   };
 
+  const onWarning = (message: any) => {
+    setSnackBar({
+      isOpen: true,
+      severity: 'warning',
+      message,
+    });
+  };
+
+  const onSuccess = (setInfo: any) => {
+    setSetInfo(setInfo);
+    setIsSearch(true);
+  };
+
+  const onMessage = (message: any) => {
+    setSnackBar({
+      isOpen: true,
+      severity: 'success',
+      message,
+    });
+  };
+
   const renderSnackBar = () => {
     if (snackBar.isOpen) {
       return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      <BreadCrumb path={match.path} />
-      <ModifySetDialog
-        isAdd={isAdd}
-        isEdit={isEdit}
-        setIsAdd={setIsAdd}
-        setIsEdit={setIsEdit}
-        setInfo={setInfo}
-        setSetInfo={setSetInfo}
-        addSet={addSet}
-        updateSet={updateSet}
-        onError={onError}
-      />
-      <Grid container className='container'>
-        <Grid item xs={12}>
-          <FlashcardHeader setState={setState} setIsAdd={setIsAdd} />
-        </Grid>
-        <Grid item xs={12}>
-          {setState.isLoading ? (
-            <Loading />
-          ) : (
+  if (isNotReadyToRender) return <Loading />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
+        <BreadCrumb path={match.path} />
+        <ModifySetDialog
+          isAdd={isAdd}
+          isEdit={isEdit}
+          isSearch={isSearch}
+          setIsAdd={setIsAdd}
+          setIsEdit={setIsEdit}
+          setIsSearch={setIsSearch}
+          setInfo={setInfo}
+          setSetInfo={setSetInfo}
+          addSet={addSet}
+          addSetByLink={addSetByLink}
+          updateSet={updateSet}
+          onError={onError}
+          onWarning={onWarning}
+          onMessage={onMessage}
+        />
+        <StudySetDialog
+          isOpenStudyDialog={isOpenStudyDialog}
+          setIsOpenStudyDialog={setIsOpenStudyDialog}
+        />
+        <Grid container className='container'>
+          <Grid item xs={12}>
+            <FlashcardHeader
+              searchSetById={searchSetById}
+              onWarning={onWarning}
+              onSuccess={onSuccess}
+              setState={setState}
+              setIsAdd={setIsAdd}
+              setIsOpenStudyDialog={setIsOpenStudyDialog}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <FlashcardContent
               setState={setState}
+              authState={authState}
               setIsEdit={setIsEdit}
               setSetInfo={setSetInfo}
               history={history}
             />
-          )}
+          </Grid>
         </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    authState: state.authState,
     setState: state.setState,
     ...ownProps,
   };
@@ -110,6 +165,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   addSet: (set: any, onError: any, onSuccess: any) =>
     dispatch(setAction.addSet(set, onError, onSuccess)),
+  addSetByLink: (setId: any, onWarning: any, onSuccess: any) =>
+    dispatch(setAction.addSetByLink(setId, onWarning, onSuccess)),
   updateSet: (
     set: any,
     setId: any,
@@ -121,6 +178,8 @@ const mapDispatchToProps = (dispatch: any) => ({
       setAction.updateSet(set, setId, isUpdateWithImage, onError, onSuccess)
     ),
   fetchSet: (onError: any) => dispatch(setAction.fetchSet(onError)),
+  searchSetById: (setId: any, onWarning: any, onSuccess: any) =>
+    dispatch(setAction.searchSetById(setId, onWarning, onSuccess)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlashcardPage);

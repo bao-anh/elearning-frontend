@@ -208,3 +208,24 @@ export function mergeElementOfArray(arr, property) {
   });
   return newArray;
 }
+
+export function getSetIdFromURL(url) {
+  const urlArray = url.split('/');
+  return urlArray[urlArray.length - 1];
+}
+
+export function checkifArrayContainElementWithSpecificProperty(
+  arr,
+  property,
+  value
+) {
+  return arr.some((element) => element[property] === value);
+}
+
+export function isPermittedToEdit(auth, set) {
+  if (auth._id === set.ownerId._id) return true;
+  else {
+    if (set.editable) return true;
+    else return false;
+  }
+}

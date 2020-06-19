@@ -1,8 +1,10 @@
 import {
   SET_FETCH_DATA,
   SET_FETCH_BY_ID,
+  SET_SEARCH_BY_ID,
   SET_SET_DATA,
   SET_SET_CURRENT,
+  SET_ADD_BY_LINK,
   SET_ADD_DATA,
   SET_UPDATE_DATA,
   SET_FETCH_ON_PROGRESS,
@@ -22,6 +24,7 @@ export interface SetAction {
   updateWithImageArray?: any;
   updateWithOutImageArray?: any;
   isUpdateWithImage?: any;
+  onWarning?: any;
 }
 
 export function fetchSet(onError: any): SetAction {
@@ -39,11 +42,37 @@ export function fetchSetById(setId: any, onError: any): SetAction {
   };
 }
 
+export function searchSetById(
+  setId: any,
+  onWarning: any,
+  onSuccess: any
+): SetAction {
+  return {
+    type: SET_SEARCH_BY_ID,
+    setId,
+    onWarning,
+    onSuccess,
+  };
+}
+
 export function addSet(set: any, onError: any, onSuccess: any): SetAction {
   return {
     type: SET_ADD_DATA,
     set,
     onError,
+    onSuccess,
+  };
+}
+
+export function addSetByLink(
+  setId: any,
+  onWarning: any,
+  onSuccess: any
+): SetAction {
+  return {
+    type: SET_ADD_BY_LINK,
+    setId,
+    onWarning,
     onSuccess,
   };
 }

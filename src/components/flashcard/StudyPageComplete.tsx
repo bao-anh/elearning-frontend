@@ -5,9 +5,15 @@ import { EmojiEvents as CupIcon } from '@material-ui/icons';
 
 const StudyPageComplete: FunctionComponent<{
   fetchStudyBySetId: any;
+  fetchAllStudy: any;
   onError: any;
   match: any;
-}> = ({ fetchStudyBySetId, onError, match }) => {
+}> = ({ fetchStudyBySetId, fetchAllStudy, onError, match }) => {
+  const handleResetStudy = () => {
+    if (match.params.id === 'all') fetchAllStudy(onError);
+    else fetchStudyBySetId(match.params.id, onError);
+  };
+
   return (
     <React.Fragment>
       <div className='write-page-content'>
@@ -16,7 +22,7 @@ const StudyPageComplete: FunctionComponent<{
       </div>
       <div className='text-right'>
         <Button
-          onClick={() => fetchStudyBySetId(match.params.id, onError)}
+          onClick={() => handleResetStudy()}
           variant='contained'
           color='primary'
         >

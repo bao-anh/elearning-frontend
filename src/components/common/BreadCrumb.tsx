@@ -102,9 +102,11 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
-          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
-            {setState.current.name ? setState.current.name : 'Học phần'}
-          </Link>
+          {params.id === 'all' ? null : (
+            <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+              {setState.current.name ? setState.current.name : 'Học phần'}
+            </Link>
+          )}
           <Link
             to={`/set/${params.id}/write`}
             className='breadcrumb-current-link'
@@ -127,9 +129,11 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
-          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
-            {setState.current.name ? setState.current.name : 'Học phần'}
-          </Link>
+          {params.id === 'all' ? null : (
+            <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+              {setState.current.name ? setState.current.name : 'Học phần'}
+            </Link>
+          )}
           <Link
             to={`/set/${params.id}/listen`}
             className='breadcrumb-current-link'
@@ -152,9 +156,11 @@ const BreadCrumb: FunctionComponent<{
           <Link to='/flashcard' className='breadcrumb-link'>
             Học từ vựng
           </Link>
-          <Link to={`/set/${params.id}`} className='breadcrumb-link'>
-            {setState.current.name ? setState.current.name : 'Học phần'}
-          </Link>
+          {params.id === 'all' ? null : (
+            <Link to={`/set/${params.id}`} className='breadcrumb-link'>
+              {setState.current.name ? setState.current.name : 'Học phần'}
+            </Link>
+          )}
           <Link
             to={`/set/${params.id}/study`}
             className='breadcrumb-current-link'

@@ -7,13 +7,20 @@ import {
   setWrite,
   setListen,
   setStudy,
+  setAllWrite,
+  setAllListen,
+  setAllStudy,
 } from '../actions/learn';
 import {
   LEARN_FETCH_WRITE_BY_SET_ID,
   LEARN_FETCH_LISTEN_BY_SET_ID,
   LEARN_FETCH_STUDY_BY_SET_ID,
   LEARN_UPDATE_REMEMBER,
+  LEARN_FETCH_ALL_WRITE,
+  LEARN_FETCH_ALL_LISTEN,
+  LEARN_FETCH_ALL_STUDY,
 } from '../actions/types';
+import { getSet } from './set';
 
 export const getSetById = (setId: any) => {
   return api.get(`/sets/${setId}`);
@@ -98,14 +105,81 @@ export function* updateRemember(action: any) {
       action.onSuccess();
     } else if (action.practiceType === 'listen') {
       const correct = yield select(
-        (state) => state.learnState[action.setId].write.correct
+        (state) => state.learnState[action.setId].listen.correct
       );
       const incorrect = yield select(
-        (state) => state.learnState[action.setId].write.incorrect
+        (state) => state.learnState[action.setId].listen.incorrect
       );
       yield call(putTermUpdateRemeber, action.setId, correct, incorrect);
       action.onSuccess();
     }
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
+export function* fetchAllWrite(action: any) {
+  try {
+    yield put(fetchLearnOnProgress());
+    const response = yield call(getSet);
+    const termIds = response.data.reduce(
+      (acc: any, setIds: any) => [...acc, ...setIds.termIds],
+      []
+    );
+    const write = {
+      termIds: termIds,
+      remain: shuffleArray(termIds),
+      correct: [],
+      incorrect: [],
+    };
+    yield put(setAllWrite(write));
+    yield put(fetchLearnSuccess());
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
+export function* fetchAllListen(action: any) {
+  try {
+    yield put(fetchLearnOnProgress());
+    const response = yield call(getSet);
+    const termIds = response.data.reduce(
+      (acc: any, setIds: any) => [...acc, ...setIds.termIds],
+      []
+    );
+    const listen = {
+      termIds: termIds,
+      remain: shuffleArray(termIds),
+      correct: [],
+      incorrect: [],
+    };
+    yield put(setAllListen(listen));
+    yield put(fetchLearnSuccess());
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
+export function* fetchAllStudy(action: any) {
+  try {
+    yield put(fetchLearnOnProgress());
+    const response = yield call(getSet);
+    const termIds = response.data.reduce(
+      (acc: any, setIds: any) => [...acc, ...setIds.termIds],
+      []
+    );
+    const study = {
+      termIds: termIds,
+      remain: termIds,
+      familiar: [],
+      mastered: [],
+      current: termIds[0],
+    };
+    yield put(setAllStudy(study));
+    yield put(fetchLearnSuccess());
   } catch (err) {
     action.onError(err.response.data);
     console.log(err);
@@ -128,9 +202,24 @@ export function* watchUpdateRemember() {
   yield takeLatest(LEARN_UPDATE_REMEMBER, updateRemember);
 }
 
+export function* watchFetchAllWrite() {
+  yield takeLatest(LEARN_FETCH_ALL_WRITE, fetchAllWrite);
+}
+
+export function* watchFetchAllListen() {
+  yield takeLatest(LEARN_FETCH_ALL_LISTEN, fetchAllListen);
+}
+
+export function* watchFetchAllStudy() {
+  yield takeLatest(LEARN_FETCH_ALL_STUDY, fetchAllStudy);
+}
+
 export default function* learn() {
   yield fork(watchFetchWriteBySetId);
   yield fork(watchUpdateRemember);
   yield fork(watchFetchListenBySetId);
   yield fork(watchFetchStudyBySetId);
+  yield fork(watchFetchAllWrite);
+  yield fork(watchFetchAllListen);
+  yield fork(watchFetchAllStudy);
 }

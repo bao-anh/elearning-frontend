@@ -10,6 +10,7 @@
 }
 
 .add-set-content {
+  position: relative;
   padding: 10px;
 }
 
@@ -612,4 +613,25 @@
 
 .study-page-left-icon {
   margin: 10px 0px 10px 0px;
+}
+
+.study-set-dialog-container {
+  width: 450px;
+  height: 100px;
+  padding: 10px 5px 10px 5px;
+}
+
+.study-set-dialog-item {
+  display: block;
+  height: 100%;
+  margin: 0px 5px 0px 5px;
+  width: 33%;
+}
+
+.flash-card-header-search {
+  margin-left: 5px;
+}
+
+.flash-card-header-search:hover {
+  cursor: pointer;
 }

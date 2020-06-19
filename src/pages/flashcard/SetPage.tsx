@@ -8,6 +8,7 @@ import SetPageCard from '../../components/flashcard/SetPageCard';
 import SetPageLeft from '../../components/flashcard/SetPageLeft';
 import SetPageRight from '../../components/flashcard/SetPageRight';
 import SetPageBottom from '../../components/flashcard/SetPageBottom';
+import PermissionDialog from '../../components/flashcard/PermissionDialog';
 import HeaderPanel from '../../components/common/HeaderPanel';
 import Loading from '../../components/common/Loading';
 
@@ -16,9 +17,10 @@ import { Grid } from '@material-ui/core';
 const SetPage: FunctionComponent<{
   fetchSetById: any;
   setState: any;
+  authState: any;
   match: any;
   history: any;
-}> = ({ fetchSetById, setState, match, history }) => {
+}> = ({ fetchSetById, setState, authState, match, history }) => {
   useEffect(() => {
     fetchSetById(match.params.id, onError);
     //eslint-disable-next-line
@@ -29,6 +31,11 @@ const SetPage: FunctionComponent<{
     severity: '',
     message: '',
   });
+
+  const isPermitted = authState.setIds.includes(setState.current._id);
+
+  const isNotReadyToRender =
+    setState.isLoading || !Object.keys(setState.current).length;
 
   const onError = (data: any) => {
     let message = '';
@@ -50,44 +57,33 @@ const SetPage: FunctionComponent<{
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      {setState.isLoading || !Object.keys(setState.current).length ? null : (
+  if (isNotReadyToRender) return <Loading />;
+  else if (!isPermitted) return <PermissionDialog />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
         <BreadCrumb
           path={match.path}
           params={match.params}
           setState={setState}
         />
-      )}
-      <Grid container className='container'>
-        {setState.isLoading || !Object.keys(setState.current).length ? (
-          <Loading />
-        ) : (
-          <SetPageLeft setState={setState.current} history={history} />
-        )}
-        {setState.isLoading || !Object.keys(setState.current).length ? (
-          <Loading />
-        ) : (
+        <Grid container className='container'>
+          <SetPageLeft
+            setState={setState.current}
+            authState={authState}
+            history={history}
+          />
           <SetPageCard setState={setState.current} />
-        )}
-        {setState.isLoading || !Object.keys(setState.current).length ? (
-          <Loading />
-        ) : (
           <Grid item xs={4}>
             <HeaderPanel title='Tỷ lệ học thuộc các từ vựng'>
               <SetPageRight setState={setState} />
             </HeaderPanel>
           </Grid>
-        )}
-        {setState.isLoading || !Object.keys(setState.current).length ? (
-          <Loading />
-        ) : (
           <SetPageBottom setState={setState.current} />
-        )}
-      </Grid>
-    </React.Fragment>
-  );
+        </Grid>
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {

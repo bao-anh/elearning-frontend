@@ -1,4 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { isPermittedToEdit } from '../../utils';
 
 import { Grid } from '@material-ui/core';
 import {
@@ -6,15 +8,63 @@ import {
   MenuBook as MenuBookIcon,
   Hearing as HearingIcon,
   Edit as EditIcon,
+  FilterNone as FilterNoneIcon,
+  Check as CheckIcon,
 } from '@material-ui/icons';
 
-const SetPageLeft: FunctionComponent<{ history: any; setState: any }> = ({
-  history,
-  setState,
-}) => {
+const SetPageLeft: FunctionComponent<{
+  history: any;
+  setState: any;
+  authState: any;
+}> = ({ history, setState, authState }) => {
+  const [isCopy, setIsCopy] = useState(false);
+
+  const renderCopyToClipboard = () => {
+    if (isCopy) {
+      return (
+        <div className='set-page-filp-card-flex'>
+          <CheckIcon
+            htmlColor='#4caf50'
+            className='set-page-filp-card-flex-icon'
+          />
+          Sao chép link
+        </div>
+      );
+    } else {
+      return (
+        <CopyToClipboard
+          text={window.location.href}
+          onCopy={() => setIsCopy(true)}
+        >
+          <div className='set-page-filp-card-flex'>
+            <FilterNoneIcon
+              color='primary'
+              className='set-page-filp-card-flex-icon'
+            />
+            Sao chép link
+          </div>
+        </CopyToClipboard>
+      );
+    }
+  };
+
+  const renderEditFeature = () => {
+    if (isPermittedToEdit(authState, setState))
+      return (
+        <div
+          className='set-page-filp-card-flex'
+          onClick={() => handleChangeLink(3)}
+        >
+          <EditIcon color='primary' className='set-page-filp-card-flex-icon' />
+          Chỉnh sửa
+        </div>
+      );
+    else return null;
+  };
+
   const rightItemArray = [
     {
-      title: 'Học',
+      title: 'Học thẻ bài',
       icon: (
         <RotateLeftIcon
           color='primary'
@@ -35,12 +85,6 @@ const SetPageLeft: FunctionComponent<{ history: any; setState: any }> = ({
       title: 'Luyện nghe',
       icon: (
         <HearingIcon color='primary' className='set-page-filp-card-flex-icon' />
-      ),
-    },
-    {
-      title: 'Chỉnh sửa',
-      icon: (
-        <EditIcon color='primary' className='set-page-filp-card-flex-icon' />
       ),
     },
   ];
@@ -65,6 +109,8 @@ const SetPageLeft: FunctionComponent<{ history: any; setState: any }> = ({
           {item.title}
         </div>
       ))}
+      {renderEditFeature()}
+      {renderCopyToClipboard()}
     </Grid>
   );
 };

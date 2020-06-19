@@ -11,11 +11,13 @@ const WritePageContent: FunctionComponent<{
   match: any;
   onError: any;
   fetchWriteBySetId: Function;
+  fetchAllWrite: Function;
   updateRemember: Function;
 }> = ({
   match,
   onError,
   fetchWriteBySetId,
+  fetchAllWrite,
   writeAnswer,
   writeState,
   updateRemember,
@@ -63,7 +65,8 @@ const WritePageContent: FunctionComponent<{
 
   const onSuccess = () => {
     setIsSubmit(false);
-    fetchWriteBySetId(match.params.id, onError);
+    if (match.params.id === 'all') fetchAllWrite(onError);
+    else fetchWriteBySetId(match.params.id, onError);
   };
 
   const renderQuestion = () => {

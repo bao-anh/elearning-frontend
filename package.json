@@ -35,6 +35,7 @@
     "query-string": "^6.12.1",
     "react": "^16.12.0",
     "react-card-flip": "^1.0.10",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-document-meta": "^3.0.0-beta.2",
     "react-dom": "^16.12.0",
     "react-html-parser": "^2.0.2",

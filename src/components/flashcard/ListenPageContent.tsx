@@ -21,12 +21,14 @@ const ListenPageContent: FunctionComponent<{
   match: any;
   onError: any;
   fetchListenBySetId: Function;
+  fetchAllListen: Function;
   updateRemember: Function;
   listenAnswer: Function;
 }> = ({
   match,
   onError,
   fetchListenBySetId,
+  fetchAllListen,
   listenState,
   updateRemember,
   listenAnswer,
@@ -82,7 +84,8 @@ const ListenPageContent: FunctionComponent<{
 
   const onSuccess = () => {
     setIsSubmit(false);
-    fetchListenBySetId(match.params.id, onError);
+    if (match.params.id === 'all') fetchAllListen(onError);
+    else fetchListenBySetId(match.params.id, onError);
   };
 
   const renderQuestion = () => {

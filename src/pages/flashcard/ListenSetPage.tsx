@@ -5,6 +5,7 @@ import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import Loading from '../../components/common/Loading';
+import PermissionDialog from '../../components/flashcard/PermissionDialog';
 import PracticePageLeft from '../../components/flashcard/PracticePageLeft';
 import ListenPageContent from '../../components/flashcard/ListenPageContent';
 
@@ -12,27 +13,33 @@ import { Grid } from '@material-ui/core';
 
 const ListenSetPage: FunctionComponent<{
   fetchListenBySetId: Function;
+  fetchAllListen: Function;
   updateRemember: Function;
   listenAnswer: Function;
   learnState: any;
+  authState: any;
   setState: any;
   match: any;
 }> = ({
   fetchListenBySetId,
+  fetchAllListen,
   updateRemember,
   listenAnswer,
   learnState,
+  authState,
   setState,
   match,
 }) => {
-  const isReadyToRender =
+  const isNotReadyToRender =
+    learnState.isLoading ||
     !learnState[match.params.id] ||
     !learnState[match.params.id].listen ||
     !Object.keys(learnState[match.params.id].listen).length;
 
   useEffect(() => {
-    if (isReadyToRender) {
-      fetchListenBySetId(match.params.id, onError);
+    if (isNotReadyToRender) {
+      if (match.params.id === 'all') fetchAllListen(onError);
+      else fetchListenBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
   }, [match]);
@@ -41,6 +48,8 @@ const ListenSetPage: FunctionComponent<{
     severity: '',
     message: '',
   });
+
+  const isPermitted = authState.setIds.includes(setState.current._id);
 
   const onError = (data: any) => {
     let message = '';
@@ -61,48 +70,44 @@ const ListenSetPage: FunctionComponent<{
       return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
     } else return null;
   };
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      {learnState.isLoading || isReadyToRender ? null : (
+
+  if (isNotReadyToRender) return <Loading />;
+  else if (!isPermitted) return <PermissionDialog />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
         <BreadCrumb
           path={match.path}
           params={match.params}
           setState={setState}
         />
-      )}
-      <Grid container className='container'>
-        <Grid item xs={3}>
-          {learnState.isLoading || isReadyToRender ? (
-            <Loading />
-          ) : (
+        <Grid container className='container'>
+          <Grid item xs={3}>
             <PracticePageLeft
               match={match}
               practiceState={learnState[match.params.id].listen}
             />
-          )}
-        </Grid>
-        <Grid item xs={9}>
-          {learnState.isLoading || isReadyToRender ? (
-            <Loading />
-          ) : (
+          </Grid>
+          <Grid item xs={9}>
             <ListenPageContent
               match={match}
               listenState={learnState[match.params.id].listen}
               onError={onError}
               fetchListenBySetId={fetchListenBySetId}
+              fetchAllListen={fetchAllListen}
               updateRemember={updateRemember}
               listenAnswer={listenAnswer}
             />
-          )}
+          </Grid>
         </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    authState: state.authState,
     setState: state.setState,
     learnState: state.learnState,
     ...ownProps,
@@ -111,6 +116,8 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchListenBySetId: (setId: any, onError: any) =>
     dispatch(learnAction.fetchListenBySetId(setId, onError)),
+  fetchAllListen: (onError: any) =>
+    dispatch(learnAction.fetchAllListen(onError)),
   listenAnswer: (isCorrect: any, setId: any) =>
     dispatch(learnAction.listenAnswer(isCorrect, setId)),
   updateRemember: (

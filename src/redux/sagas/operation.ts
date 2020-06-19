@@ -50,6 +50,7 @@ import {
 import { fetchScale } from '../actions/scale';
 import { fetchToeicByUserId } from '../actions/toeic';
 import { fetchUserInfo } from '../actions/auth';
+import { fetchSet } from '../actions/set';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
 
 import { getLessonByLessonId } from './lesson';
@@ -192,6 +193,7 @@ export function* fetchDataInTestResultPage(action: any) {
 export function* fetchDataInHomePage(action: any) {
   try {
     yield put(fetchUserInfo());
+    yield put(fetchSet(action.onError));
     yield put(fetchToeicByUserId());
   } catch (err) {
     action.onError(err.response.data);
