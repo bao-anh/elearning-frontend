@@ -35,6 +35,7 @@ const persistConfig = {
   storage: localforage,
   stateReconciler: autoMergeLevel2,
   transform: [encryptor],
+  // whitelist: [],
   whitelist: ['categoryState', 'scaleState', 'authState', 'learnState'],
 };
 const pReducer = persistReducer(persistConfig, rootReducer);
