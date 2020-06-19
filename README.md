@@ -254,3 +254,10 @@
 - Added learn all term feature.
 - Added permission dialog in set screen cluster.
 - Change Loading mechanic.
+
+### Version 6.2
+
+19/6/2020
+
+- Fixed css config in production build
+- Deploy to netlify

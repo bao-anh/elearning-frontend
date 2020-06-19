@@ -1,6 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import Routes from '../../routes';
 
 import {
   Button,
@@ -20,7 +19,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
-const PermissionDialog: FunctionComponent<{}> = ({}) => {
+const PermissionDialog = () => {
   return (
     <div>
       <Dialog
