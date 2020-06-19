@@ -1,6 +1,7 @@
 .video-dialog-container {
   position: relative;
   width: 100%;
+  max-width: 100% !important;
   height: 100%;
   margin: 0;
   z-index: 1;
@@ -27,7 +28,7 @@
 }
 
 .video-dialog-close-icon {
-  color: var(--root-color);
+  color: var(--root-color) !important;
   margin: 0px;
   padding: 0px !important;
 }
