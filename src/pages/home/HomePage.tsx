@@ -49,6 +49,9 @@ const HomePage: FunctionComponent<{
     message: '',
   });
 
+  const isNotReadyToRender =
+    authState.isLoading || toeicState.isLoading || setState.isLoading;
+
   const onError = (data: any) => {
     let message = '';
     if (data.errors) {
@@ -69,35 +72,30 @@ const HomePage: FunctionComponent<{
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      <Grid container className='container'>
-        <Grid item xs={8}>
-          <HeaderPanel title='Tiến độ luyện tập'>
-            <ProgressPanel
-              submitToeicScore={submitToeicScore}
-              updateToeicScore={updateToeicScore}
-              authState={authState}
-              toeicState={toeicState}
-              onError={onError}
-            />
-          </HeaderPanel>
-          <HeaderPanel title='Số lượng bài thi đã làm gần đây'>
-            {authState.isLoading ? (
-              <Loading />
-            ) : (
+  if (isNotReadyToRender) return <Loading />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
+        <Grid container className='container'>
+          <Grid item xs={8}>
+            <HeaderPanel title='Tiến độ luyện tập'>
+              <ProgressPanel
+                submitToeicScore={submitToeicScore}
+                updateToeicScore={updateToeicScore}
+                authState={authState}
+                toeicState={toeicState}
+                onError={onError}
+              />
+            </HeaderPanel>
+            <HeaderPanel title='Số lượng bài thi đã làm gần đây'>
               <CustomBarChart
                 data={convertBarChartData(authState.participantIds, 'testId')}
                 color='#82ca9d'
                 name='Số lượng bài thi'
               />
-            )}
-          </HeaderPanel>
-          <HeaderPanel title='Số lượng bài tập đã làm gần đây'>
-            {authState.isLoading ? (
-              <Loading />
-            ) : (
+            </HeaderPanel>
+            <HeaderPanel title='Số lượng bài tập đã làm gần đây'>
               <CustomBarChart
                 data={convertBarChartData(
                   authState.participantIds,
@@ -106,42 +104,37 @@ const HomePage: FunctionComponent<{
                 color='#ffe57f'
                 name='Số lượng bài tập'
               />
-            )}
-          </HeaderPanel>
+            </HeaderPanel>
+          </Grid>
+          <Grid item xs={4}>
+            <HeaderPanel title='Tỷ lệ làm đúng các bài thi TOEIC'>
+              {authState.toeicId ? (
+                <CustomRadarChart
+                  data={convertRadioChartData(toeicState.data.partIds)}
+                  name={authState.name}
+                />
+              ) : (
+                <h3>Bạn chưa có điểm mục tiêu</h3>
+              )}
+            </HeaderPanel>
+            <HeaderPanel title='Tỷ lệ học thuộc tất cả các từ vựng'>
+              {setState.data.length ? (
+                <CustomPieChart
+                  data={convertPieChartData(
+                    mergeElementOfArray(setState.data, 'termIds')
+                  )}
+                  height={350}
+                  outerRadius={100}
+                  isAnimationActive={false}
+                />
+              ) : (
+                <div>Bạn chưa có học phần nào</div>
+              )}
+            </HeaderPanel>
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <HeaderPanel title='Tỷ lệ làm đúng các bài thi TOEIC'>
-            {authState.isLoading || toeicState.isLoading ? (
-              <Loading />
-            ) : authState.toeicId ? (
-              <CustomRadarChart
-                data={convertRadioChartData(toeicState.data.partIds)}
-                name={authState.name}
-              />
-            ) : (
-              <h3>Bạn chưa có điểm mục tiêu</h3>
-            )}
-          </HeaderPanel>
-          <HeaderPanel title='Tỷ lệ học thuộc tất cả các từ vựng'>
-            {authState.isLoading ? (
-              <Loading />
-            ) : authState.setIds.length ? (
-              <CustomPieChart
-                data={convertPieChartData(
-                  mergeElementOfArray(authState.setIds, 'termIds')
-                )}
-                height={350}
-                outerRadius={100}
-                isAnimationActive={false}
-              />
-            ) : (
-              <div>Bạn chưa có học phần nào</div>
-            )}
-          </HeaderPanel>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {

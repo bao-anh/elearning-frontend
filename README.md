@@ -1,7 +1,5 @@
 # Todo list
 
-- Làm tính năng study and learn all term in set [3]
-- Có thể sử dụng được học phần của người khác nếu có link [3]
 - Sửa lỗi className khi build trên production environment [2]
 - Validate Signin, Register page [2]
 
@@ -247,3 +245,12 @@
 - Fixed bug when press "Hoàn tất" in edit set page.
 - Added edit set feature, allow user can preview image of set.
 - Prevent user press button when show "Choose correct answer" in study set page.
+
+### Version 6.1
+
+19/6/2020
+
+- I finally learned how to use array.reduce
+- Added learn all term feature.
+- Added permission dialog in set screen cluster.
+- Change Loading mechanic.

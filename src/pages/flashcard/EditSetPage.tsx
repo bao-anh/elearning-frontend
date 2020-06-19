@@ -1,11 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { isPermittedToEdit } from '../../utils';
 import * as setAction from '../../redux/actions/set';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import SnackBar from '../../components/common/SnackBar';
 import Loading from '../../components/common/Loading';
 import EditSetContent from '../../components/flashcard/EditSetContent';
+import PermissionDialog from '../../components/flashcard/PermissionDialog';
 import '../../resources/scss/flashcard/flashcard.scss';
 
 import { Grid } from '@material-ui/core';
@@ -16,6 +18,7 @@ const EditSetPage: FunctionComponent<{
   deleteTermBySetId: Function;
   match: any;
   setState: any;
+  authState: any;
   history: any;
 }> = ({
   fetchSetById,
@@ -23,6 +26,7 @@ const EditSetPage: FunctionComponent<{
   deleteTermBySetId,
   match,
   setState,
+  authState,
   history,
 }) => {
   useEffect(() => {
@@ -35,6 +39,11 @@ const EditSetPage: FunctionComponent<{
     severity: '',
     message: '',
   });
+
+  const isPermitted = isPermittedToEdit(authState, setState.current);
+
+  const isNotReadyToRender =
+    setState.isLoading || !Object.keys(setState.current).length;
 
   const onError = (data: any) => {
     let message = '';
@@ -56,20 +65,18 @@ const EditSetPage: FunctionComponent<{
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      {setState.isLoading || !Object.keys(setState.current).length ? null : (
+  if (isNotReadyToRender) return <Loading />;
+  else if (!isPermitted) return <PermissionDialog />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
         <BreadCrumb
           path={match.path}
           params={match.params}
           setState={setState}
         />
-      )}
-      <Grid container className='container'>
-        {setState.isLoading || !Object.keys(setState.current).length ? (
-          <Loading />
-        ) : (
+        <Grid container className='container'>
           <EditSetContent
             setState={setState.current}
             modifyTermBySetId={modifyTermBySetId}
@@ -77,10 +84,9 @@ const EditSetPage: FunctionComponent<{
             onError={onError}
             history={history}
           />
-        )}
-      </Grid>
-    </React.Fragment>
-  );
+        </Grid>
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {

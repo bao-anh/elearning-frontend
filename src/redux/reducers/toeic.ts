@@ -4,6 +4,7 @@ import {
   TOEIC_SET_DATA,
   TOEIC_FETCH_ON_PROGRESS,
   TOEIC_FETCH_SUCCESS,
+  AUTH_LOGOUT,
 } from '../actions/types';
 
 export interface ToeicState {
@@ -40,6 +41,9 @@ const toeicState: Reducer<ToeicState> = (
         ...state,
         isLoading: false,
       };
+    }
+    case AUTH_LOGOUT: {
+      return initState;
     }
     default:
       return state;

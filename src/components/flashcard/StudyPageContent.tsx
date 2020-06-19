@@ -8,11 +8,19 @@ import { Check as CheckIcon } from '@material-ui/icons';
 
 const StudyContentPage: FunctionComponent<{
   fetchStudyBySetId: Function;
+  fetchAllStudy: Function;
   studyAnswer: any;
   studyState: any;
   onError: any;
   match: any;
-}> = ({ fetchStudyBySetId, studyAnswer, studyState, onError, match }) => {
+}> = ({
+  fetchStudyBySetId,
+  fetchAllStudy,
+  studyAnswer,
+  studyState,
+  onError,
+  match,
+}) => {
   const [userAnswer, setUserAnswer] = useState('');
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(false);
   const [isRemainAnswerIncorrect, setIsRemainAnswerIncorrect] = useState(false);
@@ -156,6 +164,7 @@ const StudyContentPage: FunctionComponent<{
       ) : (
         <StudyPageComplete
           fetchStudyBySetId={fetchStudyBySetId}
+          fetchAllStudy={fetchAllStudy}
           onError={onError}
           match={match}
         />

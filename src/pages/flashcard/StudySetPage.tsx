@@ -5,6 +5,7 @@ import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
 import StudyPageLeft from '../../components/flashcard/StudyPageLeft';
+import PermissionDialog from '../../components/flashcard/PermissionDialog';
 import StudyPageContent from '../../components/flashcard/StudyPageContent';
 import Loading from '../../components/common/Loading';
 
@@ -12,20 +13,32 @@ import { Grid } from '@material-ui/core';
 
 const StudySetPage: FunctionComponent<{
   fetchStudyBySetId: Function;
+  fetchAllStudy: Function;
   studyAnswer: Function;
   updateRemember: Function;
   learnState: any;
+  authState: any;
   setState: any;
   match: any;
-}> = ({ fetchStudyBySetId, studyAnswer, learnState, setState, match }) => {
-  const isReadyToRender =
+}> = ({
+  fetchStudyBySetId,
+  fetchAllStudy,
+  studyAnswer,
+  learnState,
+  authState,
+  setState,
+  match,
+}) => {
+  const isNotReadyToRender =
+    learnState.isLoading ||
     !learnState[match.params.id] ||
     !learnState[match.params.id].study ||
     !Object.keys(learnState[match.params.id].study).length;
 
   useEffect(() => {
-    if (isReadyToRender) {
-      fetchStudyBySetId(match.params.id, onError);
+    if (isNotReadyToRender) {
+      if (match.params.id === 'all') fetchAllStudy(onError);
+      else fetchStudyBySetId(match.params.id, onError);
     }
     //eslint-disable-next-line
   }, [match]);
@@ -35,6 +48,8 @@ const StudySetPage: FunctionComponent<{
     severity: '',
     message: '',
   });
+
+  const isPermitted = authState.setIds.includes(setState.current._id);
 
   const onError = (data: any) => {
     let message = '';
@@ -56,44 +71,39 @@ const StudySetPage: FunctionComponent<{
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      {learnState.isLoading || isReadyToRender ? null : (
+  if (isNotReadyToRender) return <Loading />;
+  else if (!isPermitted) return <PermissionDialog />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
         <BreadCrumb
           path={match.path}
           params={match.params}
           setState={setState}
         />
-      )}
-      <Grid container className='container'>
-        <Grid item xs={3}>
-          {learnState.isLoading || isReadyToRender ? (
-            <Loading />
-          ) : (
+        <Grid container className='container'>
+          <Grid item xs={3}>
             <StudyPageLeft studyState={learnState[match.params.id].study} />
-          )}
-        </Grid>
-        <Grid item xs={9}>
-          {learnState.isLoading || isReadyToRender ? (
-            <Loading />
-          ) : (
+          </Grid>
+          <Grid item xs={9}>
             <StudyPageContent
               studyState={learnState[match.params.id].study}
               studyAnswer={studyAnswer}
               fetchStudyBySetId={fetchStudyBySetId}
+              fetchAllStudy={fetchAllStudy}
               onError={onError}
               match={match}
             />
-          )}
+          </Grid>
         </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {
   return {
+    authState: state.authState,
     setState: state.setState,
     learnState: state.learnState,
     ...ownProps,
@@ -102,6 +112,7 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchStudyBySetId: (setId: any, onError: any) =>
     dispatch(learnAction.fetchStudyBySetId(setId, onError)),
+  fetchAllStudy: (onError: any) => dispatch(learnAction.fetchAllStudy(onError)),
   studyAnswer: (position: any, isCorrect: any, setId: any) =>
     dispatch(learnAction.studyAnswer(position, isCorrect, setId)),
 });

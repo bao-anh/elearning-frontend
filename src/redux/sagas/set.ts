@@ -1,10 +1,13 @@
-import { call, put, fork, takeLatest } from 'redux-saga/effects';
+import { select, call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { checkifArrayContainElementWithSpecificProperty } from '../../utils';
 import {
   SET_FETCH_DATA,
+  SET_ADD_BY_LINK,
   SET_ADD_DATA,
   SET_UPDATE_DATA,
   SET_FETCH_BY_ID,
+  SET_SEARCH_BY_ID,
   SET_MODIFY_TERM,
   SET_DELETE_TERM,
 } from '../actions/types';
@@ -15,6 +18,7 @@ import {
   setSet,
   setCurrentSet,
 } from '../actions/set';
+import { fetchSet as fetchSetAction } from '../actions/set';
 import { fetchUserInfo } from '../actions/auth';
 
 export const getSet = () => {
@@ -31,6 +35,10 @@ export const postSet = (set: any) => {
       'Content-Type': 'multipart/form-data',
     },
   });
+};
+
+export const postSetByLink = (setId: any) => {
+  return api.post(`/sets/${setId}`);
 };
 
 export const postTermBySetId = (setId: any, payload: any) => {
@@ -93,10 +101,46 @@ export function* fetchSetById(action: any) {
   }
 }
 
+export function* searchSetById(action: any) {
+  try {
+    const response = yield call(getSetById, action.setId);
+    if (response.data.visiable) {
+      yield put(setCurrentSet(response.data));
+      action.onSuccess(response.data);
+    } else action.onWarning('Không thể truy cập học phần này');
+  } catch (err) {
+    action.onWarning('Không tìm thấy học phần');
+    console.log(err);
+  }
+}
+
+export function* addSetByLink(action: any) {
+  try {
+    const setIds = yield select((state) => state.authState.setIds);
+    const isExist = checkifArrayContainElementWithSpecificProperty(
+      setIds,
+      '_id',
+      action.setId
+    );
+    if (isExist)
+      action.onWarning('Học phần này đã nằm trong danh sách của bạn!');
+    else {
+      const response = yield call(postSetByLink, action.setId);
+      console.log(response);
+      yield put(fetchSetAction(action.onError));
+      yield put(fetchUserInfo());
+      action.onSuccess();
+    }
+  } catch (err) {
+    action.onError(err.response.data);
+    console.log(err);
+  }
+}
+
 export function* addSet(action: any) {
   try {
     yield call(postSet, action.set);
-    const response = yield call(getSetById, action.setId);
+    const response = yield call(getSet);
     yield put(setSet(response.data));
     yield put(fetchUserInfo());
     action.onSuccess();
@@ -167,6 +211,14 @@ export function* watchFetchSetById() {
   yield takeLatest(SET_FETCH_BY_ID, fetchSetById);
 }
 
+export function* watchSearchSetById() {
+  yield takeLatest(SET_SEARCH_BY_ID, searchSetById);
+}
+
+export function* watchAddSetByLink() {
+  yield takeLatest(SET_ADD_BY_LINK, addSetByLink);
+}
+
 export function* watchAddSet() {
   yield takeLatest(SET_ADD_DATA, addSet);
 }
@@ -185,9 +237,11 @@ export function* watchDeleteTermBySetId() {
 
 export default function* set() {
   yield fork(watchFetchSet);
+  yield fork(watchAddSetByLink);
   yield fork(watchAddSet);
   yield fork(watchUpdateSet);
   yield fork(watchFetchSetById);
+  yield fork(watchSearchSetById);
   yield fork(watchModifyTermBySetId);
   yield fork(watchDeleteTermBySetId);
 }

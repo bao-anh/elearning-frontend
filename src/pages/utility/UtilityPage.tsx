@@ -32,6 +32,8 @@ const UtilityPage: FunctionComponent<{
     message: '',
   });
 
+  const isNotReadyToRender = topicState.isLoadingLargeTopic;
+
   const onError = (data: any) => {
     let message = '';
     if (data.errors) {
@@ -52,40 +54,34 @@ const UtilityPage: FunctionComponent<{
     } else return null;
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      <Banner topicState={topicState} />
-      <BreadCrumb path={match.path} topicState={topicState} />
-      <PurchaseWarningDialog
-        match={match}
-        authState={authState}
-        topicState={topicState}
-      />
-      <Grid container className='container'>
-        <Grid item xs={9}>
-          <HeaderPanel title='Danh sách thành viên'>
-            {topicState.isLoadingLargeTopic ? (
-              <Loading />
-            ) : (
+  if (isNotReadyToRender) return <Loading />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
+        <Banner topicState={topicState} />
+        <BreadCrumb path={match.path} topicState={topicState} />
+        <PurchaseWarningDialog
+          match={match}
+          authState={authState}
+          topicState={topicState}
+        />
+        <Grid container className='container'>
+          <Grid item xs={9}>
+            <HeaderPanel title='Danh sách thành viên'>
               <MemberTable topicState={topicState} />
-            )}
-          </HeaderPanel>
-          <HeaderPanel title='Danh sách tài liệu'>
-            {topicState.isLoadingLargeTopic ? (
-              <Loading />
-            ) : (
+            </HeaderPanel>
+            <HeaderPanel title='Danh sách tài liệu'>
               <ReferenceTable topicState={topicState} />
-            )}
-          </HeaderPanel>
+            </HeaderPanel>
+          </Grid>
+          <Grid item xs={3}>
+            <UserInfoSideBar authState={authState} topicState={topicState} />
+            <UtilitySideBar topicState={topicState} />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <UserInfoSideBar authState={authState} topicState={topicState} />
-          <UtilitySideBar topicState={topicState} />
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {

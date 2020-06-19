@@ -30,23 +30,33 @@ const Transition = React.forwardRef(function Transition(
 const AddSetDialog: FunctionComponent<{
   isAdd: any;
   isEdit: any;
+  isSearch: any;
   setIsAdd: any;
   setIsEdit: any;
+  setIsSearch: any;
   setInfo: any;
   setSetInfo: any;
   addSet: any;
+  addSetByLink: any;
   updateSet: any;
   onError: any;
+  onWarning: any;
+  onMessage: any;
 }> = ({
   isAdd,
   isEdit,
+  isSearch,
   setIsAdd,
   setIsEdit,
+  setIsSearch,
   setInfo,
   setSetInfo,
   addSet,
+  addSetByLink,
   updateSet,
   onError,
+  onWarning,
+  onMessage,
 }) => {
   const [error, setError] = useState('');
   const [isSubmit, setIsSubmit] = useState(false);
@@ -79,7 +89,9 @@ const AddSetDialog: FunctionComponent<{
       formData.append('visiable', setInfo.visiable);
       formData.append('editable', setInfo.editable);
       if (isAdd) addSet(formData, onError, onSuccess);
-      else {
+      else if (isSearch) {
+        addSetByLink(setInfo._id, onWarning, onSuccess);
+      } else {
         if (
           setInfo.imageURL === '' ||
           setInfo.imageLocalURL !== setInfo.imageURL
@@ -93,9 +105,17 @@ const AddSetDialog: FunctionComponent<{
   };
 
   const onSuccess = () => {
+    if (isAdd) {
+      onMessage('Thêm mới học phần thành công!');
+    } else if (isSearch) {
+      onMessage('Thêm thành công học phần vào danh sách!');
+    } else if (isEdit) {
+      onMessage('Chỉnh sửa học phần thành công');
+    }
     setIsSubmit(false);
     setIsEdit(false);
     setIsAdd(false);
+    setIsSearch(false);
     setSetInfo({
       _id: uuidv4(),
       name: '',
@@ -121,6 +141,7 @@ const AddSetDialog: FunctionComponent<{
     });
     setIsEdit(false);
     setIsAdd(false);
+    setIsSearch(false);
   };
 
   const handleDeleteImage = () => {
@@ -135,7 +156,7 @@ const AddSetDialog: FunctionComponent<{
   return (
     <React.Fragment>
       <Dialog
-        open={isAdd || isEdit}
+        open={isAdd || isEdit || isSearch}
         TransitionComponent={Transition}
         keepMounted
         onClose={() => handleClose()}
@@ -147,7 +168,11 @@ const AddSetDialog: FunctionComponent<{
         ) : null}
         <div className='assigment-dialog-header'>
           <div className='assigment-dialog-header-title'>
-            {isAdd ? 'Thêm học phần mới' : 'Chỉnh sửa học phần'}
+            {isAdd
+              ? 'Thêm học phần mới'
+              : isEdit
+              ? 'Chỉnh sửa học phần'
+              : 'Bạn có muốn thêm học phần này?'}
           </div>
           <IconButton
             className='assigment-dialog-close-icon'
@@ -157,6 +182,7 @@ const AddSetDialog: FunctionComponent<{
           </IconButton>
         </div>
         <div className='add-set-content flex-center'>
+          {isSearch ? <div className='assignment-dialog-overlay' /> : null}
           <div>
             <div className='add-set-textfield'>
               <TextField
@@ -187,7 +213,7 @@ const AddSetDialog: FunctionComponent<{
                   onChange={(e) => handleChange(e)}
                   fullWidth
                 >
-                  <MenuItem value={0}>Chỉ mình tôi</MenuItem>
+                  <MenuItem value={0}>Chỉ người sở hữu</MenuItem>
                   <MenuItem value={1}>Mọi người</MenuItem>
                 </Select>
               </FormControl>
@@ -202,7 +228,7 @@ const AddSetDialog: FunctionComponent<{
                   onChange={(e) => handleChange(e)}
                   fullWidth
                 >
-                  <MenuItem value={0}>Chỉ mình tôi</MenuItem>
+                  <MenuItem value={0}>Chỉ người sở hữu</MenuItem>
                   <MenuItem value={1}>Mọi người</MenuItem>
                 </Select>
               </FormControl>
@@ -290,7 +316,7 @@ const AddSetDialog: FunctionComponent<{
             fullWidth
             disabled={isSubmit}
           >
-            {isAdd ? 'Thêm học phần' : 'Chỉnh sửa học phần'}
+            {isEdit ? 'Chỉnh sửa học phần' : 'Thêm học phần'}
           </Button>
         </div>
       </Dialog>

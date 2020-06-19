@@ -2,9 +2,15 @@ import {
   LEARN_FETCH_STUDY_BY_SET_ID,
   LEARN_FETCH_WRITE_BY_SET_ID,
   LEARN_FETCH_LISTEN_BY_SET_ID,
+  LEARN_FETCH_ALL_WRITE,
+  LEARN_FETCH_ALL_LISTEN,
+  LEARN_FETCH_ALL_STUDY,
   LEARN_SET_LISTEN_DATA,
   LEARN_SET_STUDY_DATA,
   LEARN_SET_WRITE_DATA,
+  LEARN_SET_ALL_WRITE_DATA,
+  LEARN_SET_ALL_LISTEN_DATA,
+  LEARN_SET_ALL_STUDY_DATA,
   LEARN_WRITE_ANSWER,
   LEARN_LISTEN_ANSWER,
   LEARN_STUDY_ANSWER,
@@ -53,6 +59,27 @@ export function fetchListenBySetId(setId: any, onError: any): LearnAction {
   };
 }
 
+export function fetchAllWrite(onError: any): LearnAction {
+  return {
+    type: LEARN_FETCH_ALL_WRITE,
+    onError,
+  };
+}
+
+export function fetchAllListen(onError: any): LearnAction {
+  return {
+    type: LEARN_FETCH_ALL_LISTEN,
+    onError,
+  };
+}
+
+export function fetchAllStudy(onError: any): LearnAction {
+  return {
+    type: LEARN_FETCH_ALL_STUDY,
+    onError,
+  };
+}
+
 export function setStudy(study: any, setId: any): LearnAction {
   return {
     type: LEARN_SET_STUDY_DATA,
@@ -74,6 +101,27 @@ export function setListen(listen: any, setId: any): LearnAction {
     type: LEARN_SET_LISTEN_DATA,
     listen,
     setId,
+  };
+}
+
+export function setAllWrite(write: any): LearnAction {
+  return {
+    type: LEARN_SET_ALL_WRITE_DATA,
+    write,
+  };
+}
+
+export function setAllListen(listen: any): LearnAction {
+  return {
+    type: LEARN_SET_ALL_LISTEN_DATA,
+    listen,
+  };
+}
+
+export function setAllStudy(study: any): LearnAction {
+  return {
+    type: LEARN_SET_ALL_STUDY_DATA,
+    study,
   };
 }
 

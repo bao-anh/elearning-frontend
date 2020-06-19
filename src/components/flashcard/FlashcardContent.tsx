@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { isPermittedToEdit } from '../../utils';
 
 import { Paper, Typography } from '@material-ui/core';
 import {
@@ -9,10 +10,11 @@ import {
 
 const FlashcardContent: FunctionComponent<{
   setState: any;
+  authState: any;
   history: any;
   setIsEdit: any;
   setSetInfo: any;
-}> = ({ setState, history, setIsEdit, setSetInfo }) => {
+}> = ({ setState, authState, history, setIsEdit, setSetInfo }) => {
   const handleClick = (set: any) => {
     if (set.termIds.length) {
       history.push(`/set/${set._id}`);
@@ -66,23 +68,25 @@ const FlashcardContent: FunctionComponent<{
               <Typography color='primary'>{set.ownerId.name}</Typography>
             </div>
             <div>
-              <EditIcon
-                fontSize='small'
-                className='flash-card-content-edit-icon'
-                onClick={() => {
-                  setSetInfo({
-                    _id: set._id,
-                    name: set.name,
-                    description: set.description,
-                    imageLocalURL: set.imageURL,
-                    imageLocalFile: null,
-                    imageURL: set.imageURL,
-                    visiable: set.visiable,
-                    editable: set.editable,
-                  });
-                  setIsEdit(true);
-                }}
-              />
+              {isPermittedToEdit(authState, set) ? (
+                <EditIcon
+                  fontSize='small'
+                  className='flash-card-content-edit-icon'
+                  onClick={() => {
+                    setSetInfo({
+                      _id: set._id,
+                      name: set.name,
+                      description: set.description,
+                      imageLocalURL: set.imageURL,
+                      imageLocalFile: null,
+                      imageURL: set.imageURL,
+                      visiable: set.visiable,
+                      editable: set.editable,
+                    });
+                    setIsEdit(true);
+                  }}
+                />
+              ) : null}
             </div>
           </div>
         </Paper>
