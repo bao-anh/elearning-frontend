@@ -9,9 +9,9 @@
 
 ### Line of codes
 
-- Frontend: 18092 lines
-- Backend: 3735 lines
-- Total: 21827 lines
+- Frontend: 19546 lines
+- Backend: 4071 lines
+- Total: 23617 lines
 
 ---
 
