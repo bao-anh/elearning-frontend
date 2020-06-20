@@ -9,7 +9,7 @@ import AssignmentPage from './pages/assignment/AssignmentPage';
 import SignInPage from './pages/auth/SignInPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import UtilityPage from './pages/utility/UtilityPage';
-import NotFoundPage from './pages/404/NotFoundPage';
+import NotFoundPage from './pages/redirect/NotFoundPage';
 import ToeicPage from './pages/toeic/ToeicPage';
 import TestPage from './pages/test/TestPage';
 import TestResultPage from './pages/test/TestResultPage';
@@ -21,6 +21,9 @@ import EditSetPage from './pages/flashcard/EditSetPage';
 import SetPage from './pages/flashcard/SetPage';
 import Routes from './routes';
 import Layout from './components/common/Layout';
+import UnAuthorizedPage from './pages/redirect/UnAuthorizedPage';
+import UnprocessableEntityPage from './pages/redirect/UnprocessableEntityPage';
+import ServerErrorPage from './pages/redirect/ServerErrorPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -107,6 +110,21 @@ function App() {
             component={EditSetPage}
           />
           <PrivateRoute exact path={Routes.TEST_SCREEN} component={TestPage} />
+          <PrivateRoute
+            exact
+            path={Routes.UNAUTHORIZED_SCREEN}
+            component={UnAuthorizedPage}
+          />
+          <PrivateRoute
+            exact
+            path={Routes.UNPROCESSABLE_ENTITY_SCREEN}
+            component={UnprocessableEntityPage}
+          />
+          <PrivateRoute
+            exact
+            path={Routes.SERVER_ERROR_SCREEN}
+            component={ServerErrorPage}
+          />
           <PrivateRoute path='*' component={NotFoundPage} />
         </Switch>
       </Layout>

@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   fetchAssignmentOnProgress,
   fetchAssignmentSuccess,
@@ -21,7 +23,8 @@ export function* fetchAssignmentByAssignmentId(action: any) {
     yield put(setAssignment(response.data));
     yield put(fetchAssignmentSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

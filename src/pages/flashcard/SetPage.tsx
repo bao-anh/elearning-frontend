@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import * as setAction from '../../redux/actions/set';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -37,13 +38,8 @@ const SetPage: FunctionComponent<{
   const isNotReadyToRender =
     setState.isLoading || !Object.keys(setState.current).length;
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

@@ -18,5 +18,8 @@ class Routes {
   static STUDY_SET_SCREEN = '/set/:id/study';
   static LISTEN_SET_SCREEN = '/set/:id/listen';
   static EDIT_SET_SCREEN = '/set/:id/edit';
+  static UNAUTHORIZED_SCREEN = '/401';
+  static UNPROCESSABLE_ENTITY_SCREEN = '/422';
+  static SERVER_ERROR_SCREEN = '/500';
 }
 export default Routes;

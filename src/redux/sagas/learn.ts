@@ -1,6 +1,7 @@
 import { select, call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
-import { shuffleArray } from '../../utils';
+import { handleRedirectWhenServerError, shuffleArray } from '../../utils';
+import Routes from '../../routes';
 import {
   fetchLearnOnProgress,
   fetchLearnSuccess,
@@ -48,8 +49,8 @@ export function* fetchWriteBySetId(action: any) {
     yield put(setWrite(write, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -67,8 +68,8 @@ export function* fetchListenBySetId(action: any) {
     yield put(setListen(listen, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -87,8 +88,8 @@ export function* fetchStudyBySetId(action: any) {
     yield put(setStudy(study, action.setId));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -114,8 +115,8 @@ export function* updateRemember(action: any) {
       action.onSuccess();
     }
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -136,8 +137,8 @@ export function* fetchAllWrite(action: any) {
     yield put(setAllWrite(write));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -158,8 +159,8 @@ export function* fetchAllListen(action: any) {
     yield put(setAllListen(listen));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -181,8 +182,8 @@ export function* fetchAllStudy(action: any) {
     yield put(setAllStudy(study));
     yield put(fetchLearnSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 

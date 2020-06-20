@@ -2,7 +2,7 @@ import React, { useEffect, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import { getQuestionOrder } from '../../utils';
+import { getQuestionOrder, handleExtractErrorMessage } from '../../utils';
 import HeaderPanel from '../../components/common/HeaderPanel';
 import Loading from '../../components/common/Loading';
 import AssignmentInfo from '../../components/common/AssignmentInfo';
@@ -49,13 +49,8 @@ const AssignmentPage: FunctionComponent<{
     message: '',
   });
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

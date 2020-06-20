@@ -2,6 +2,7 @@ import React, { useState, FunctionComponent, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import * as authAction from '../../redux/actions/auth';
 import SnackBar from '../../components/common/SnackBar';
 import '../../resources/scss/auth.scss';
@@ -36,13 +37,8 @@ const SignInPage: FunctionComponent<{
     login(userInfo, onError);
   };
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

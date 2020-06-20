@@ -2,7 +2,11 @@ import React, { FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import * as operationAction from '../../redux/actions/operation';
 import { AppState } from '../../redux/appstate';
-import { convertSecondToMinute, renderNumberOfQuestion } from '../../utils';
+import {
+  convertSecondToMinute,
+  renderNumberOfQuestion,
+  handleExtractErrorMessage,
+} from '../../utils';
 import Routes from '../../routes';
 import HourGlass from '../../resources/images/hourglasstrans.gif';
 import Loading from './Loading';
@@ -51,13 +55,8 @@ const AssignmentDialog: FunctionComponent<{
     message: '',
   });
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

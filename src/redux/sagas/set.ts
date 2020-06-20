@@ -1,5 +1,7 @@
 import { select, call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import { checkifArrayContainElementWithSpecificProperty } from '../../utils';
 import {
   SET_FETCH_DATA,
@@ -84,8 +86,8 @@ export function* fetchSet(action: any) {
     yield put(setSet(response.data));
     yield put(fetchSetSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -96,8 +98,8 @@ export function* fetchSetById(action: any) {
     yield put(setCurrentSet(response.data));
     yield put(fetchSetSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -110,7 +112,7 @@ export function* searchSetById(action: any) {
     } else action.onWarning('Không thể truy cập học phần này');
   } catch (err) {
     action.onWarning('Không tìm thấy học phần');
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -132,8 +134,8 @@ export function* addSetByLink(action: any) {
       action.onSuccess();
     }
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -145,8 +147,8 @@ export function* addSet(action: any) {
     yield put(fetchUserInfo());
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -161,8 +163,8 @@ export function* updateSet(action: any) {
     yield put(setSet(response.data));
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -190,6 +192,7 @@ export function* modifyTermBySetId(action: any) {
   } catch (err) {
     if (err.response) action.onError(err.response.data);
     else action.onError('modifyTermBySetId went wrong');
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -198,8 +201,8 @@ export function* deleteTermBySetId(action: any) {
     yield call(deleteTerm, action.setId, action.termId);
     action.onSuccess(action.termId);
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 

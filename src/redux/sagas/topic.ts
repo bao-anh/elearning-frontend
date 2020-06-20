@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   setLargeTopic,
   setSmallTopic,
@@ -28,7 +30,8 @@ export function* fetchTopicByCourseId(action: any) {
     yield put(setLargeTopic(response.data));
     yield put(fetchLargeTopicSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
@@ -39,7 +42,8 @@ export function* fetchTopicByTopicId(action: any) {
     yield put(setSmallTopic(response.data));
     yield put(fetchSmallTopicSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

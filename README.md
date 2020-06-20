@@ -1,6 +1,6 @@
 # Todo list
 
-- Sửa lỗi className khi build trên production environment [2]
+- Sửa lại server cho đúng cấu trúc routes -> middleware -> controller -> service -> model [3]
 - Validate Signin, Register page [2]
 
 **Mai Gia Bảo Anh**
@@ -257,7 +257,9 @@
 
 ### Version 6.2
 
-19/6/2020
+20/6/2020
 
-- Fixed css config in production build
-- Deploy to netlify
+- Fixed css config in production build.
+- Deploy to netlify.
+- Updated throw error page with 401, 422, 500 page.
+- Updated onError mechanic.

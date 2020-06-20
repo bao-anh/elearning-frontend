@@ -1,4 +1,6 @@
 import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   OPERATION_FETCH_DATA_IN_LESSON_PAGE,
   OPERATION_FETCH_DATA_IN_COURSE_PAGE,
@@ -82,8 +84,8 @@ export function* fetchDataInCategoryPage(action: any) {
       yield put(fetchCourseByCategoryId(action.params.id));
     }
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -91,8 +93,8 @@ export function* fetchDataInCoursePage(action: any) {
   try {
     yield put(fetchTopicByCourseId(action.courseId));
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -106,8 +108,8 @@ export function* fetchDataInTopicPage(action: any) {
 
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -122,8 +124,8 @@ export function* fetchDataInLessonPage(action: any) {
     yield put(fetchTopicByTopicId(response.data.topicId));
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -142,8 +144,8 @@ export function* fetchDataInAssignmentPage(action: any) {
     yield put(fetchTopicByTopicId(response.data.topicId));
     yield put(fetchTopicByCourseId(response.data.courseId));
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -154,8 +156,8 @@ export function* fetchDataInUtilityPage(action: any) {
     yield put(setLargeTopic(response.data));
     yield put(fetchLargeTopicSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -164,8 +166,8 @@ export function* fetchDataInToeicPage(action: any) {
     yield put(fetchToeicByUserId());
     yield put(fetchScale());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -173,8 +175,8 @@ export function* fetchDataInTestPage(action: any) {
   try {
     yield put(fetchTest(action.testType));
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -185,8 +187,8 @@ export function* fetchDataInTestResultPage(action: any) {
     yield put(setTest(response.data));
     yield put(fetchTestSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -196,8 +198,8 @@ export function* fetchDataInHomePage(action: any) {
     yield put(fetchSet(action.onError));
     yield put(fetchToeicByUserId());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -243,8 +245,8 @@ export function* submitAssignment(action: any) {
     yield put(setAssignment(assignment.data));
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -299,8 +301,8 @@ export function* submitTest(action: any) {
     yield put(setTest(testStateData));
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -311,8 +313,8 @@ export function* purchaseCourse(action: any) {
     yield put(fetchUserInfo());
     action.onSuccess();
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 

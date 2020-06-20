@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import { v4 as uuidv4 } from 'uuid';
 import * as setAction from '../../redux/actions/set';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -63,13 +64,8 @@ const FlashcardPage: FunctionComponent<{
 
   const isNotReadyToRender = setState.isLoading;
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

@@ -1,6 +1,7 @@
 import React, { useEffect, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import * as operationAction from '../../redux/actions/operation';
 import Banner from '../../components/course/Banner';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -40,13 +41,8 @@ const CoursePage: FunctionComponent<{
     message: '',
   });
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

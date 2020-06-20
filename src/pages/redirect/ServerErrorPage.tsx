@@ -6,14 +6,22 @@ import '../../resources/scss/404.scss';
 
 import { Button } from '@material-ui/core';
 
-const NotFoundPage: FunctionComponent<{ authState: any }> = ({ authState }) => {
+const UnAuthorizedPage: FunctionComponent<{ history: any }> = ({ history }) => {
+  const handleRedirect = () => {
+    history.push('/');
+  };
+
   return (
     <div className='container-404'>
-      <h1 className='header-404'>404</h1>
-      <h3 className='content-404'>Page not found</h3>
+      <h1 className='header-404'>500</h1>
+      <h3 className='content-404'>Hệ thống đã xảy ra lỗi!</h3>
       <Button color='primary' variant='contained'>
-        <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
-          Quay lại trang chủ
+        <Link
+          to='/'
+          style={{ textDecoration: 'none', color: 'white' }}
+          onClick={handleRedirect}
+        >
+          Quay trở lại trang chủ
         </Link>
       </Button>
     </div>
@@ -28,4 +36,4 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(NotFoundPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UnAuthorizedPage);

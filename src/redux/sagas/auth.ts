@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api, setToken, removeToken } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   setUserInfo,
   fetchUserSuccess,
@@ -38,7 +40,7 @@ export function* login(action: any) {
     yield put(setAuthenticate(true));
     yield put(fetchUserSuccess());
   } catch (err) {
-    action.onError(err.response.data);
+    action.onError(err.response);
     yield put(fetchUserSuccess());
   }
 }
@@ -53,7 +55,7 @@ export function* register(action: any) {
     yield put(setAuthenticate(true));
     yield put(fetchUserSuccess());
   } catch (err) {
-    action.onError(err.response.data);
+    action.onError(err.response);
     yield put(fetchUserSuccess());
   }
 }
@@ -65,7 +67,8 @@ export function* fetchUserInfo() {
     yield put(setUserInfo(response.data));
     yield put(fetchUserSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

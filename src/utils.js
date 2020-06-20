@@ -229,3 +229,31 @@ export function isPermittedToEdit(auth, set) {
     else return false;
   }
 }
+
+export function handleRedirectWhenServerError(err, routes) {
+  if (err.response.status === 401) {
+    if (window.location.href !== routes.UNAUTHORIZED_SCREEN)
+      window.location.href = routes.UNAUTHORIZED_SCREEN;
+  } else if (err.response.status === 422) {
+    if (window.location.href !== routes.UNPROCESSABLE_ENTITY_SCREEN)
+      window.location.href = routes.UNPROCESSABLE_ENTITY_SCREEN;
+  } else if (err.response.status === 500) {
+    if (window.location.href !== routes.SERVER_ERROR_SCREEN)
+      window.location.href = routes.SERVER_ERROR_SCREEN;
+  }
+}
+
+export function handleExtractErrorMessage(response) {
+  const { data, statusText } = response;
+  let message = '';
+  if (data) {
+    if (data.errors) {
+      data.errors.forEach((error) => {
+        message += `${error.msg}. `;
+      });
+    } else message += data.msg;
+  } else {
+    message = statusText;
+  }
+  return message;
+}

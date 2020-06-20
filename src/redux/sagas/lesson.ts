@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   setLesson,
   fetchLessonOnProgress,
@@ -18,7 +20,8 @@ export function* fetchLessonByLessonId(action: any) {
     yield put(setLesson(response.data));
     yield put(fetchLessonSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

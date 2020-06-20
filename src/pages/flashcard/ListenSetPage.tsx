@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -51,13 +52,8 @@ const ListenSetPage: FunctionComponent<{
 
   const isPermitted = authState.setIds.includes(setState.current._id);
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

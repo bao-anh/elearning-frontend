@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
+import { handleExtractErrorMessage } from '../../utils';
 import * as operationAction from '../../redux/actions/operation';
 import PurchaseWarningDialog from '../../components/course/PurchaseWarningDialog';
 import VideoDialog from './VideoDialog';
@@ -44,13 +45,8 @@ const LessonPage: FunctionComponent<{
     message: '',
   });
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

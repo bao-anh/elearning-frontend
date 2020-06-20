@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
-import { getQuestionOrder } from '../../utils';
+import { getQuestionOrder, handleExtractErrorMessage } from '../../utils';
 import ToeicWarningDialog from '../../components/toiec/ToeicWarningDialog';
 import AssignmentDialogResult from '../../components/common/AssignmentDialogResult';
 import Loading from '../../components/common/Loading';
@@ -25,13 +25,8 @@ const TestResultPage: FunctionComponent<{
     message: '',
   });
 
-  const onError = (data: any) => {
-    let message = '';
-    if (data.errors) {
-      data.errors.forEach((error: any) => {
-        message += `${error.msg}. `;
-      });
-    } else message += data.msg;
+  const onError = (response: any) => {
+    let message = handleExtractErrorMessage(response);
     setSnackBar({
       isOpen: true,
       severity: 'error',

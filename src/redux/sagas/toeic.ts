@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   TOEIC_FETCH_BY_USER_ID,
   TOEIC_SUBMIT_SCORE,
@@ -37,7 +39,8 @@ export function* fetchToeicByUserId() {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
@@ -51,8 +54,8 @@ export function* submitToeicScore(action: any) {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 
@@ -65,8 +68,8 @@ export function* updateToeicScore(action: any) {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
-    action.onError(err.response.data);
-    console.log(err);
+    action.onError(err.response);
+    handleRedirectWhenServerError(err, Routes);
   }
 }
 

@@ -32,3 +32,27 @@ api.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response.status === 401) {
+//       removeToken();
+//       window.location = '/signin';
+//     } else {
+//       return Promise.reject(error);
+//     }
+//     return error;
+//   }
+// );
+// api.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response.status === 500) {
+//       window.location = '/';
+//     } else {
+//       return Promise.reject(error);
+//     }
+//     return error;
+//   }
+// );

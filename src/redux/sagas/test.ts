@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   fetchTestOnProgress,
   fetchTestSuccess,
@@ -63,7 +65,8 @@ export function* fetchTestByType(action: any) {
     yield put(setTest(toeicStateData));
     yield put(fetchTestSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

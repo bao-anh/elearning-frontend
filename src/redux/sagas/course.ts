@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   fetchAllCourse as fetchAllCourseAction,
   setCourse,
@@ -40,7 +42,8 @@ export function* fetchAllCourse() {
     yield put(setCourse(response.data));
     yield put(fetchCourseSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
@@ -51,7 +54,8 @@ export function* fetchCourseByCategoryId(action: any) {
     yield put(setCourse(response.data.courseIds));
     yield put(fetchCourseSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
@@ -62,7 +66,8 @@ export function* fetchCourseByUserId(action: any) {
     yield put(setCourse(response.data.courseIds));
     yield put(fetchCourseSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
@@ -71,7 +76,8 @@ export function* updateCourse(action: any) {
     yield call(updateMemberInCourseByCourseId, action.courseId);
     yield put(fetchAllCourseAction());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import { SCALE_FETCH_DATA } from '../actions/types';
 
 import {
@@ -19,7 +21,8 @@ export function* fetchScale() {
     yield put(setScale(response.data));
     yield put(fetchScaleSuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 

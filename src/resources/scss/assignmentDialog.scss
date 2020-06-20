@@ -1,6 +1,7 @@
 .assignment-dialog-container {
   position: absolute;
   width: calc(100%);
+  max-width: 100% !important;
   height: calc(100%);
   margin: 0;
   z-index: 2;
@@ -58,8 +59,8 @@
 }
 
 .assignment-user-answer-list {
-  display: flex;
-  flex-direction: row;
+  display: flex !important;
+  flex-direction: row !important;
 }
 
 .assignment-question-item-title {

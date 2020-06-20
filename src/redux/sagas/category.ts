@@ -1,5 +1,7 @@
 import { call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
+import { handleRedirectWhenServerError } from '../../utils';
+import Routes from '../../routes';
 import {
   setCategory,
   fetchCategorySuccess,
@@ -18,7 +20,8 @@ export function* fetchAllCategory() {
     yield put(setCategory(response.data));
     yield put(fetchCategorySuccess());
   } catch (err) {
-    console.log(err);
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
   }
 }
 
