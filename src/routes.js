@@ -21,5 +21,6 @@ class Routes {
   static UNAUTHORIZED_SCREEN = '/401';
   static UNPROCESSABLE_ENTITY_SCREEN = '/422';
   static SERVER_ERROR_SCREEN = '/500';
+  static REQUEST_TIMEOUT_SCREEN = '/408';
 }
 export default Routes;

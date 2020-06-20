@@ -240,6 +240,9 @@ export function handleRedirectWhenServerError(err, routes) {
   } else if (err.response.status === 500) {
     if (window.location.href !== routes.SERVER_ERROR_SCREEN)
       window.location.href = routes.SERVER_ERROR_SCREEN;
+  } else {
+    if (window.location.href !== routes.REQUEST_TIMEOUT_SCREEN)
+      window.location.href = routes.REQUEST_TIMEOUT_SCREEN;
   }
 }
 

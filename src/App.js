@@ -24,6 +24,7 @@ import Layout from './components/common/Layout';
 import UnAuthorizedPage from './pages/redirect/UnAuthorizedPage';
 import UnprocessableEntityPage from './pages/redirect/UnprocessableEntityPage';
 import ServerErrorPage from './pages/redirect/ServerErrorPage';
+import RequestTimeoutPage from './pages/redirect/RequestTimeoutPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 
@@ -124,6 +125,11 @@ function App() {
             exact
             path={Routes.SERVER_ERROR_SCREEN}
             component={ServerErrorPage}
+          />
+          <PrivateRoute
+            exact
+            path={Routes.REQUEST_TIMEOUT_SCREEN}
+            component={RequestTimeoutPage}
           />
           <PrivateRoute path='*' component={NotFoundPage} />
         </Switch>

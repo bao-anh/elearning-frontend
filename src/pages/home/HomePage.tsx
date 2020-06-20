@@ -50,8 +50,11 @@ const HomePage: FunctionComponent<{
     message: '',
   });
 
-  const isNotReadyToRender =
-    authState.isLoading || toeicState.isLoading || setState.isLoading;
+  const isNotReadyToRender = () => {
+    if (authState.toeicId)
+      return authState.isLoading || toeicState.isLoading || setState.isLoading;
+    else return authState.isLoading || setState.isLoading;
+  };
 
   const onError = (response: any) => {
     let message = handleExtractErrorMessage(response);
@@ -68,7 +71,7 @@ const HomePage: FunctionComponent<{
     } else return null;
   };
 
-  if (isNotReadyToRender) return <Loading />;
+  if (isNotReadyToRender()) return <Loading />;
   else
     return (
       <React.Fragment>

@@ -39,7 +39,7 @@ export function* fetchToeicByUserId() {
     yield put(setToeic({ ...response.data, leaderboard: leaderboard.data }));
     yield put(fetchToeicSuccess());
   } catch (err) {
-    handleRedirectWhenServerError(err, Routes);
+    // handleRedirectWhenServerError(err, Routes);
     console.log(err.response);
   }
 }

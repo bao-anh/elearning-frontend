@@ -194,9 +194,15 @@ export function* fetchDataInTestResultPage(action: any) {
 
 export function* fetchDataInHomePage(action: any) {
   try {
-    yield put(fetchUserInfo());
-    yield put(fetchSet(action.onError));
-    yield put(fetchToeicByUserId());
+    const toeicId = yield select((state) => state.authState.toeicId);
+    if (toeicId) {
+      yield put(fetchUserInfo());
+      yield put(fetchSet(action.onError));
+      yield put(fetchToeicByUserId());
+    } else {
+      yield put(fetchUserInfo());
+      yield put(fetchSet(action.onError));
+    }
   } catch (err) {
     action.onError(err.response);
     handleRedirectWhenServerError(err, Routes);
@@ -224,7 +230,6 @@ export function* submitAssignment(action: any) {
         topicId: action.assignmentState.topicId,
         courseId: action.assignmentState.courseId,
       };
-      console.log(progressPayload);
       yield createOrUpdateProgressChain(progressPayload);
     }
 
