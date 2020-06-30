@@ -81,15 +81,8 @@ const YourActivity: FunctionComponent<{
     if (columnId === 'button')
       return (
         <React.Fragment>
-          {!isNaN(Number(match.params.part)) ? (
-            <Button
-              color='primary'
-              variant='contained'
-              onClick={() => handleOpenResult(index)}
-            >
-              Xem lại
-            </Button>
-          ) : (
+          {match.params.part === 'short-test' ||
+          match.params.part === 'full-test' ? (
             <Button color='primary' variant='contained'>
               <Link
                 to={`/review/${participant._id}`}
@@ -98,6 +91,14 @@ const YourActivity: FunctionComponent<{
               >
                 Xem lại
               </Link>
+            </Button>
+          ) : (
+            <Button
+              color='primary'
+              variant='contained'
+              onClick={() => handleOpenResult(index)}
+            >
+              Xem lại
             </Button>
           )}
         </React.Fragment>

@@ -33,9 +33,13 @@ const UserInfoSideBar: FunctionComponent<{
             </Grid>
             <div className='user-info-content-panel'>
               {`Tiến độ hoàn thành khóa học: ${
-                topicState.largeTopic.progressIds.length
+                topicState.largeTopic.progressIds.filter(
+                  (progress: any) => progress.userId._id === authState._id
+                ).length
                   ? Math.round(
-                      topicState.largeTopic.progressIds[0].percentComplete * 10
+                      topicState.largeTopic.progressIds.filter(
+                        (progress: any) => progress.userId._id === authState._id
+                      )[0].percentComplete * 10
                     ) / 10
                   : 0
               } %`}

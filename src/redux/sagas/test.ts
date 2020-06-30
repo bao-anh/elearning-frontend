@@ -18,6 +18,10 @@ export const postTest = (payload: any) => {
   return api.post('/tests', payload);
 };
 
+export const postFirstTimeTest = (payload: any) => {
+  return api.post('/tests/first-time', payload);
+};
+
 export const getLeaderBoard = (partId: number) => {
   return api.get(`/tests/leaderboard/${partId}`);
 };

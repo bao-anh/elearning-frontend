@@ -225,7 +225,15 @@ export function checkifArrayContainElementWithSpecificProperty(
 export function isPermittedToEdit(auth, set) {
   if (auth._id === set.ownerId._id) return true;
   else {
-    if (set.editable) return true;
+    if (auth.setIds.includes(set._id) && set.editable) return true;
+    else return false;
+  }
+}
+
+export function isPermittedToAccess(auth, set) {
+  if (auth._id === set.ownerId._id) return true;
+  else {
+    if (auth.setIds.includes(set._id) && set.visiable) return true;
     else return false;
   }
 }

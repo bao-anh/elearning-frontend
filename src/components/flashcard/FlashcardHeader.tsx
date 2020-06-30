@@ -42,7 +42,9 @@ const FlashcardHeader: FunctionComponent<{
 
   return (
     <Paper elevation={1} className='flash-card-header-container'>
-      <h3 className='flash-card-header-title'>{`Bạn có tổng cộng ${setState.data.length} học phần`}</h3>
+      <h3 className='flash-card-header-title'>
+        Danh sách các học phần của bạn
+      </h3>
       <Button
         aria-controls='paste-set-link'
         aria-haspopup='true'

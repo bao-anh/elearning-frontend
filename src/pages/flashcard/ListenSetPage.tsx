@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import { handleExtractErrorMessage } from '../../utils';
+import { handleExtractErrorMessage, isPermittedToAccess } from '../../utils';
 import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -50,8 +50,6 @@ const ListenSetPage: FunctionComponent<{
     message: '',
   });
 
-  const isPermitted = authState.setIds.includes(setState.current._id);
-
   const onError = (response: any) => {
     let message = handleExtractErrorMessage(response);
     setSnackBar({
@@ -68,7 +66,12 @@ const ListenSetPage: FunctionComponent<{
   };
 
   if (isNotReadyToRender) return <Loading />;
-  else if (!isPermitted) return <PermissionDialog />;
+  else if (
+    !isPermittedToAccess(authState, setState.current) ||
+    !learnState[match.params.id].listen.termIds ||
+    !learnState[match.params.id].listen.termIds.length
+  )
+    return <PermissionDialog />;
   else
     return (
       <React.Fragment>

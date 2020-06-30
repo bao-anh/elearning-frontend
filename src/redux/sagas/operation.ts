@@ -63,6 +63,7 @@ import { getParticipantSubmitAssignment } from './participant';
 import { createOrUpdateProgressChain } from './progress';
 import {
   postTest,
+  postFirstTimeTest,
   postTestByType,
   getLeaderBoard,
   getTestResult,
@@ -238,7 +239,6 @@ export function* submitAssignment(action: any) {
         getLessonByLessonId,
         action.assignment.lessonId
       );
-      console.log(lesson.data);
       yield put(setLesson(lesson.data));
     }
 
@@ -248,6 +248,11 @@ export function* submitAssignment(action: any) {
     );
 
     yield put(setAssignment(assignment.data));
+    const response = yield call(
+      getCourseByCourseId,
+      action.assignmentState.courseId
+    );
+    yield put(setLargeTopic(response.data));
     action.onSuccess();
   } catch (err) {
     action.onError(err.response);
@@ -257,15 +262,23 @@ export function* submitAssignment(action: any) {
 
 export function* submitTest(action: any) {
   try {
+    const toeicId = yield select((state) => state.authState.toeicId);
     const payload = {
-      testType: action.testType,
+      testType: toeicId ? action.testType : undefined,
       assignment: action.assignment,
       score: action.score,
       percentComplete: action.percentComplete,
       userAnswer: action.userAnswer,
       numberOfQuestionIds: action.numberOfQuestionIds,
     };
-    yield call(postTest, payload);
+    if (toeicId) yield call(postTest, payload);
+    else {
+      yield call(postFirstTimeTest, payload);
+      yield put(fetchUserInfo());
+      yield put(fetchSet(action.onError));
+      yield put(fetchToeicByUserId());
+    }
+    // Lấy dữ liệu bài test mới
     const response = yield call(postTestByType, action.testType);
     // Fetch lại dữ liệu
     const oldQuestionIds = yield select(

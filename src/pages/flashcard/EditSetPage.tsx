@@ -40,8 +40,6 @@ const EditSetPage: FunctionComponent<{
     message: '',
   });
 
-  const isPermitted = isPermittedToEdit(authState, setState.current);
-
   const isNotReadyToRender =
     setState.isLoading || !Object.keys(setState.current).length;
 
@@ -61,7 +59,8 @@ const EditSetPage: FunctionComponent<{
   };
 
   if (isNotReadyToRender) return <Loading />;
-  else if (!isPermitted) return <PermissionDialog />;
+  else if (!isPermittedToEdit(authState, setState.current))
+    return <PermissionDialog />;
   else
     return (
       <React.Fragment>

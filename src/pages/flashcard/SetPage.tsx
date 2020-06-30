@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import { handleExtractErrorMessage } from '../../utils';
+import { handleExtractErrorMessage, isPermittedToAccess } from '../../utils';
 import * as setAction from '../../redux/actions/set';
 import SnackBar from '../../components/common/SnackBar';
 import BreadCrumb from '../../components/common/BreadCrumb';
@@ -33,8 +33,6 @@ const SetPage: FunctionComponent<{
     message: '',
   });
 
-  const isPermitted = authState.setIds.includes(setState.current._id);
-
   const isNotReadyToRender =
     setState.isLoading || !Object.keys(setState.current).length;
 
@@ -54,7 +52,8 @@ const SetPage: FunctionComponent<{
   };
 
   if (isNotReadyToRender) return <Loading />;
-  else if (!isPermitted) return <PermissionDialog />;
+  else if (!isPermittedToAccess(authState, setState.current))
+    return <PermissionDialog />;
   else
     return (
       <React.Fragment>

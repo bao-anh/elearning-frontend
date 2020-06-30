@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import { handleExtractErrorMessage } from '../../utils';
+import { handleExtractErrorMessage, isPermittedToAccess } from '../../utils';
 import * as learnAction from '../../redux/actions/learn';
 import SnackBar from '../../components/common/SnackBar';
 import PracticePageLeft from '../../components/flashcard/PracticePageLeft';
@@ -45,8 +45,6 @@ const WriteSetPage: FunctionComponent<{
     //eslint-disable-next-line
   }, [match]);
 
-  const isPermitted = authState.setIds.includes(setState.current._id);
-
   const [snackBar, setSnackBar] = useState({
     isOpen: false,
     severity: '',
@@ -69,7 +67,12 @@ const WriteSetPage: FunctionComponent<{
   };
 
   if (isNotReadyToRender) return <Loading />;
-  if (!isPermitted) return <PermissionDialog />;
+  if (
+    !isPermittedToAccess(authState, setState.current) ||
+    !learnState[match.params.id].write.termIds ||
+    !learnState[match.params.id].write.termIds.length
+  )
+    return <PermissionDialog />;
   else
     return (
       <React.Fragment>

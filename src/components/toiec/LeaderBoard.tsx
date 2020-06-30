@@ -13,15 +13,13 @@ const LeaderBoard: FunctionComponent<{ leaderboard: any; match: any }> = ({
   let sortedLeaderboard = [] as any[];
 
   if (match.path === Routes.TOEIC_SCREEN || isNaN(Number(match.params.part))) {
-    sortedLeaderboard = sortArrayByPropertyValue(
-      leaderboard,
-      'currentScore'
-    ).reverse();
+    sortedLeaderboard = sortArrayByPropertyValue(leaderboard, 'currentScore')
+      .reverse()
+      .slice(0, 10);
   } else {
-    sortedLeaderboard = sortArrayByPropertyValue(
-      leaderboard,
-      'percentComplete'
-    ).reverse();
+    sortedLeaderboard = sortArrayByPropertyValue(leaderboard, 'percentComplete')
+      .reverse()
+      .slice(0, 10);
   }
 
   const handleRenderStyle = (index: number) => {

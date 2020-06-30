@@ -140,6 +140,29 @@ const ProgressPanel: FunctionComponent<{
           >
             Cập nhật
           </Button>
+          {authState.toeicId ? null : (
+            <React.Fragment>
+              <div className='toeci-progress-panel-flex'>
+                <div>
+                  Hoặc bạn cũng có thể dành 20 phút để kiểm tra trình độ hiện
+                  tại của mình
+                </div>
+              </div>
+              <Button
+                variant='outlined'
+                color='primary'
+                style={{ marginLeft: '10px' }}
+                disabled={isSubmit}
+              >
+                <Link
+                  to='/test/short-test'
+                  style={{ textDecoration: 'none', color: '#3f51b5' }}
+                >
+                  Làm đề rút gọn
+                </Link>
+              </Button>
+            </React.Fragment>
+          )}
         </div>
       );
   };

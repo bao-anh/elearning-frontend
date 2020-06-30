@@ -50,6 +50,8 @@ const CategoryPage: FunctionComponent<{
     //eslint-disable-next-line
   }, [match]);
 
+  const isNotReadyToRender = courseState.isLoading || categoryState.isLoading;
+
   const [categoryArray, setCategoryArray] = useState(categoryState.data);
   const [isOpenPurchaseDetailCourse, setIsOpenPurchaseDetailCourse] = useState(
     false
@@ -87,40 +89,38 @@ const CategoryPage: FunctionComponent<{
   };
 
   const renderCategoryItems = (category: any) => {
-    if (!categoryState.isLoading) {
-      if (category.childrenIds.length) {
-        return (
-          <React.Fragment key={category._id}>
-            <ListItem button onClick={() => handleExpandList(category._id)}>
-              <ListItemText primary={category.name} />
-              {category.isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </ListItem>
-            <Collapse in={category.isOpen ? category.isOpen : false}>
-              <List>
-                {category.childrenIds.map((children: any) => (
-                  <Link
-                    key={children._id}
-                    to={`/category/${children._id}`}
-                    className='category-left-side-link'
+    if (category.childrenIds.length) {
+      return (
+        <React.Fragment key={category._id}>
+          <ListItem button onClick={() => handleExpandList(category._id)}>
+            <ListItemText primary={category.name} />
+            {category.isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </ListItem>
+          <Collapse in={category.isOpen ? category.isOpen : false}>
+            <List>
+              {category.childrenIds.map((children: any) => (
+                <Link
+                  key={children._id}
+                  to={`/category/${children._id}`}
+                  className='category-left-side-link'
+                >
+                  <ListItem
+                    className='category-left-side-item'
+                    button
+                    style={
+                      categoryState.current === children._id
+                        ? { backgroundColor: '#e0e0e0' }
+                        : {}
+                    }
                   >
-                    <ListItem
-                      className='category-left-side-item'
-                      button
-                      style={
-                        categoryState.current === children._id
-                          ? { backgroundColor: '#e0e0e0' }
-                          : {}
-                      }
-                    >
-                      {children.name}
-                    </ListItem>
-                  </Link>
-                ))}
-              </List>
-            </Collapse>
-          </React.Fragment>
-        );
-      } else return null;
+                    {children.name}
+                  </ListItem>
+                </Link>
+              ))}
+            </List>
+          </Collapse>
+        </React.Fragment>
+      );
     }
   };
 
@@ -191,98 +191,100 @@ const CategoryPage: FunctionComponent<{
     else history.push(`/course/${course._id}`);
   };
 
-  return (
-    <React.Fragment>
-      {renderSnackBar()}
-      <BreadCrumb path={match.path} />
-      {forcusCourse ? (
-        <PurchaseDetailDialog
-          onError={onError}
-          course={forcusCourse}
-          purchaseCourse={purchaseCourse}
-          isOpenPurchaseDetailCourse={isOpenPurchaseDetailCourse}
-          setIsOpenPurchaseDetailCourse={setIsOpenPurchaseDetailCourse}
-        />
-      ) : null}
-      <Grid container className='container'>
-        <Grid item xs={3}>
-          {categoryState.data.length ? (
-            <Paper elevation={1} className='category-left-side'>
-              <List component='nav' aria-labelledby='nested-list-subheader'>
-                <Link to='/category/all' className='category-content-link'>
-                  <ListItem
-                    button
-                    style={
-                      categoryState.current === 'all'
-                        ? { backgroundColor: '#e0e0e0' }
-                        : {}
-                    }
-                  >
-                    <ListItemText primary='Tất cả khóa học' />
-                  </ListItem>
-                </Link>
-                <Link to='/category/me' className='category-content-link'>
-                  <ListItem
-                    button
-                    style={
-                      categoryState.current === 'me'
-                        ? { backgroundColor: '#e0e0e0' }
-                        : {}
-                    }
-                  >
-                    <ListItemText primary='Khóa học của tôi' />
-                  </ListItem>
-                </Link>
-                {categoryArray.map((category: any) =>
-                  renderCategoryItems(category)
-                )}
-              </List>
-            </Paper>
-          ) : null}
-        </Grid>
-        <Grid item xs={9} style={{ position: 'relative' }}>
-          {courseState.isLoading ? (
-            <Loading />
-          ) : courseState.data.length ? (
-            courseState.data.map((course: any) => (
-              <React.Fragment key={course._id}>
-                <Paper
-                  className='category-content-item'
-                  onClick={() => {
-                    setForcusCourse(course);
-                    handleClickOnCourse(course);
-                  }}
-                >
-                  <div className='category-content-link'>
-                    <img
-                      src={course.avatar}
-                      alt={course.name}
-                      className='category-content-avatar'
-                    />
-                    <div className='category-content-title'>{course.name}</div>
-                    <div className='category-content-description'>
-                      <Typography variant='subtitle2'>
-                        {course.description}
-                      </Typography>
-                    </div>
-                    <div className='category-content-footer'>
-                      <div className='category-content-member'>
-                        <PersonIcon />
-                        <div className='category-content-member-text'>
-                          {` ${course.memberIds.length} Học viên`}
+  if (isNotReadyToRender) return <Loading />;
+  else
+    return (
+      <React.Fragment>
+        {renderSnackBar()}
+        <BreadCrumb path={match.path} />
+        {forcusCourse ? (
+          <PurchaseDetailDialog
+            onError={onError}
+            course={forcusCourse}
+            purchaseCourse={purchaseCourse}
+            isOpenPurchaseDetailCourse={isOpenPurchaseDetailCourse}
+            setIsOpenPurchaseDetailCourse={setIsOpenPurchaseDetailCourse}
+          />
+        ) : null}
+        <Grid container className='container'>
+          <Grid item xs={3}>
+            {categoryState.data.length ? (
+              <Paper elevation={1} className='category-left-side'>
+                <List component='nav' aria-labelledby='nested-list-subheader'>
+                  <Link to='/category/all' className='category-content-link'>
+                    <ListItem
+                      button
+                      style={
+                        categoryState.current === 'all'
+                          ? { backgroundColor: '#e0e0e0' }
+                          : {}
+                      }
+                    >
+                      <ListItemText primary='Tất cả khóa học' />
+                    </ListItem>
+                  </Link>
+                  <Link to='/category/me' className='category-content-link'>
+                    <ListItem
+                      button
+                      style={
+                        categoryState.current === 'me'
+                          ? { backgroundColor: '#e0e0e0' }
+                          : {}
+                      }
+                    >
+                      <ListItemText primary='Khóa học của tôi' />
+                    </ListItem>
+                  </Link>
+                  {categoryArray.map((category: any) =>
+                    renderCategoryItems(category)
+                  )}
+                </List>
+              </Paper>
+            ) : null}
+          </Grid>
+          <Grid item xs={9} style={{ position: 'relative' }}>
+            {courseState.data.length
+              ? courseState.data.map((course: any) => (
+                  <React.Fragment key={course._id}>
+                    <Paper
+                      className='category-content-item'
+                      onClick={() => {
+                        setForcusCourse(course);
+                        handleClickOnCourse(course);
+                      }}
+                    >
+                      <div className='category-content-link'>
+                        <img
+                          src={course.avatar}
+                          alt={course.name}
+                          className='category-content-avatar'
+                        />
+                        <div className='category-content-title'>
+                          {course.name}
+                        </div>
+                        <div className='category-content-description'>
+                          <Typography variant='subtitle2'>
+                            {course.description}
+                          </Typography>
+                        </div>
+                        <div className='category-content-footer'>
+                          <div className='category-content-member'>
+                            <PersonIcon />
+                            <div className='category-content-member-text'>
+                              {` ${course.memberIds.length} Học viên`}
+                            </div>
+                          </div>
+                          {renderPriceOfItem(course)}
                         </div>
                       </div>
-                      {renderPriceOfItem(course)}
-                    </div>
-                  </div>
-                </Paper>
-              </React.Fragment>
-            ))
-          ) : null}
+                    </Paper>
+                  </React.Fragment>
+                ))
+              : null}
+          </Grid>
         </Grid>
-      </Grid>
-    </React.Fragment>
-  );
+      </React.Fragment>
+    );
 };
 
 const mapStateToProps = (state: AppState, ownProps: any) => {

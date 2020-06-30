@@ -56,7 +56,7 @@ const TestPage: FunctionComponent<{
     <React.Fragment>
       {renderSnackBar()}
       <BreadCrumb path={match.path} params={match.params} />
-      {authState.isLoading ? null : (
+      {authState.isLoading || match.params.part === 'short-test' ? null : (
         <ToeicWarningDialog authState={authState} />
       )}
       <Grid container className='container'>
