@@ -9,9 +9,9 @@
 
 ### Line of codes
 
-- Frontend: 18092 lines
-- Backend: 3735 lines
-- Total: 21827 lines
+- Frontend: 19546 lines
+- Backend: 4071 lines
+- Total: 23617 lines
 
 ---
 
@@ -263,3 +263,12 @@
 - Deploy to netlify.
 - Updated throw error page with 401, 422, 500 page.
 - Updated onError mechanic.
+
+### Version 6.3
+
+30/6/2020
+
+- Fixed bug in course.
+- Fixed bug in toeic.
+- Added take short test instead of type current score.
+- Fixed bug in flashcard.
