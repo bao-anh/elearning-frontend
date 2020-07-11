@@ -2,7 +2,6 @@ import { select, call, put, fork, takeLatest } from 'redux-saga/effects';
 import { api } from '../../services';
 import { handleRedirectWhenServerError } from '../../utils';
 import Routes from '../../routes';
-import { checkifArrayContainElementWithSpecificProperty } from '../../utils';
 import {
   SET_FETCH_DATA,
   SET_ADD_BY_LINK,
@@ -112,25 +111,24 @@ export function* searchSetById(action: any) {
     } else action.onWarning('Không thể truy cập học phần này');
   } catch (err) {
     action.onWarning('Không tìm thấy học phần');
-    handleRedirectWhenServerError(err, Routes);
+    // Không áp dụng bắt lỗi từ server vì đã bắt lỗi từ client rôi
+    // handleRedirectWhenServerError(err, Routes);
   }
 }
 
 export function* addSetByLink(action: any) {
   try {
     const setIds = yield select((state) => state.authState.setIds);
-    const isExist = checkifArrayContainElementWithSpecificProperty(
-      setIds,
-      '_id',
-      action.setId
-    );
-    if (isExist)
+    const isExist = setIds.includes(action.setId);
+    if (isExist) {
       action.onWarning('Học phần này đã nằm trong danh sách của bạn!');
-    else {
-      const response = yield call(postSetByLink, action.setId);
-      console.log(response);
-      yield put(fetchSetAction(action.onError));
+    } else {
+      // Để currentSet lại bằng {}
+      yield put(setCurrentSet({}));
+      yield call(postSetByLink, action.setId);
       yield put(fetchUserInfo());
+      const response = yield call(getSet);
+      yield put(setSet(response.data));
       action.onSuccess();
     }
   } catch (err) {

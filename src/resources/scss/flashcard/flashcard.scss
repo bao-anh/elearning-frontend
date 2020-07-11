@@ -22,16 +22,16 @@
 }
 
 .flash-card-content-container {
-  display: flex;
-  justify-items: center;
-  align-items: center;
+  width: 100%;
   margin-top: 10px;
 }
 
 .flash-card-content-item {
   padding: 10px 10px 5px 10px;
   margin: 0 10px 10px 0;
-  width: 34%;
+  position: relative;
+  float: left;
+  width: 32.7%;
   height: 245px;
   display: flex;
   flex-direction: column;

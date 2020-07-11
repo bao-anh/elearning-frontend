@@ -21,7 +21,6 @@ import {
   setSmallTopic,
   setLargeTopic,
   fetchTopicByCourseId,
-  fetchTopicByTopicId,
   fetchSmallTopicOnProgress,
   fetchSmallTopicSuccess,
   fetchLargeTopicOnProgress,
@@ -56,7 +55,7 @@ import { fetchSet } from '../actions/set';
 import { fetchAllCategory, setCurrentCategory } from '../actions/category';
 
 import { getLessonByLessonId } from './lesson';
-import { getTopicByTopicId } from './topic';
+import { getTopicByTopicId, getTopicByCourseId } from './topic';
 import { getCourseByCourseId } from './course';
 import { getAssignmentByAssignmentId } from './assignment';
 import { getParticipantSubmitAssignment } from './participant';
@@ -102,12 +101,17 @@ export function* fetchDataInCoursePage(action: any) {
 export function* fetchDataInTopicPage(action: any) {
   try {
     // We cant use directly fetchTopicByTopicId because by that way we cant take the real data
+    // Lấy dữ liệu về smallTopic sau đó fetch dữ liệu các part bên phải
     yield put(fetchSmallTopicOnProgress());
-    const response = yield call(getTopicByTopicId, action.topicId);
-    yield put(setSmallTopic(response.data));
-    yield put(fetchSmallTopicSuccess());
+    yield put(fetchLargeTopicOnProgress());
 
-    yield put(fetchTopicByCourseId(response.data.courseId));
+    const smallTopic = yield call(getTopicByTopicId, action.topicId);
+    yield put(setSmallTopic(smallTopic.data));
+    const largeTopic = yield call(getTopicByCourseId, smallTopic.data.courseId);
+    yield put(setLargeTopic(largeTopic.data));
+
+    yield put(fetchLargeTopicSuccess());
+    yield put(fetchSmallTopicSuccess());
   } catch (err) {
     action.onError(err.response);
     handleRedirectWhenServerError(err, Routes);
@@ -118,12 +122,20 @@ export function* fetchDataInLessonPage(action: any) {
   try {
     yield put(fetchLessonOnProgress());
     yield put(fetchLargeTopicOnProgress());
-    const response = yield call(getLessonByLessonId, action.lessonId);
-    yield put(setLesson(response.data));
-    yield put(fetchLessonSuccess());
+    yield put(fetchSmallTopicOnProgress());
 
-    yield put(fetchTopicByTopicId(response.data.topicId));
-    yield put(fetchTopicByCourseId(response.data.courseId));
+    const lesson = yield call(getLessonByLessonId, action.lessonId);
+    yield put(setLesson(lesson.data));
+
+    const smallTopic = yield call(getTopicByTopicId, lesson.data.topicId);
+    yield put(setSmallTopic(smallTopic.data));
+
+    const largeTopic = yield call(getTopicByCourseId, lesson.data.courseId);
+    yield put(setLargeTopic(largeTopic.data));
+
+    yield put(fetchSmallTopicSuccess());
+    yield put(fetchLargeTopicSuccess());
+    yield put(fetchLessonSuccess());
   } catch (err) {
     action.onError(err.response);
     handleRedirectWhenServerError(err, Routes);
@@ -134,16 +146,26 @@ export function* fetchDataInAssignmentPage(action: any) {
   try {
     yield put(fetchAssignmentOnProgress());
     yield put(fetchSmallTopicOnProgress());
-    const response = yield call(
+    yield put(fetchLargeTopicOnProgress());
+
+    const assignment = yield call(
       getAssignmentByAssignmentId,
       action.assignmentId
     );
+    yield put(setAssignment(assignment.data));
 
-    yield put(setAssignment(response.data));
+    const smallTopic = yield call(getTopicByTopicId, assignment.data.topicId);
+    yield put(setSmallTopic(smallTopic.data));
+
+    const largetTopic = yield call(
+      getTopicByCourseId,
+      assignment.data.courseId
+    );
+    yield put(setLargeTopic(largetTopic.data));
+
     yield put(fetchAssignmentSuccess());
-
-    yield put(fetchTopicByTopicId(response.data.topicId));
-    yield put(fetchTopicByCourseId(response.data.courseId));
+    yield put(fetchSmallTopicSuccess());
+    yield put(fetchLargeTopicSuccess());
   } catch (err) {
     action.onError(err.response);
     handleRedirectWhenServerError(err, Routes);
@@ -228,9 +250,14 @@ export function* submitAssignment(action: any) {
         percentComplete: action.percentComplete,
         lessonId: action.assignment.lessonId || null,
         assignmentId: action.assignment._id || action.assignmentState._id,
-        topicId: action.assignmentState.topicId,
-        courseId: action.assignmentState.courseId,
+        topicId: action.assignmentState.topicId
+          ? action.assignmentState.topicId
+          : action.assignment.topicId,
+        courseId: action.assignmentState.courseId
+          ? action.assignmentState.courseId
+          : action.assignment.courseId,
       };
+      console.log(progressPayload);
       yield createOrUpdateProgressChain(progressPayload);
     }
 
@@ -251,12 +278,14 @@ export function* submitAssignment(action: any) {
     const response = yield call(
       getCourseByCourseId,
       action.assignmentState.courseId
+        ? action.assignmentState.courseId
+        : action.assignment.courseId
     );
     yield put(setLargeTopic(response.data));
     action.onSuccess();
   } catch (err) {
     action.onError(err.response);
-    handleRedirectWhenServerError(err, Routes);
+    // handleRedirectWhenServerError(err, Routes);
   }
 }
 

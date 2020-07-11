@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import { MainWidget } from './Widgets';
 import { withRouter } from 'react-router-dom';
-import CustomHeader from './CustomHeader';
-import Header from './Header';
-import Footer from './Footer';
+import Header from '../auth/Header';
+import AuthHeader from '../auth/AuthHeader';
+import Footer from '../auth/Footer';
 
 const Layout: FunctionComponent<{ location: any; children: any }> = ({
   location,
@@ -14,7 +14,7 @@ const Layout: FunctionComponent<{ location: any; children: any }> = ({
   if (location.pathname === '/signin' || location.pathname === '/register') {
     return (
       <MainWidget className={'home-page'}>
-        <Header />
+        <AuthHeader />
         {children}
         <Footer />
       </MainWidget>
@@ -22,7 +22,7 @@ const Layout: FunctionComponent<{ location: any; children: any }> = ({
   }
   return (
     <MainWidget className={'home-page'}>
-      <CustomHeader>{children}</CustomHeader>
+      <Header>{children}</Header>
       <Footer />
     </MainWidget>
   );

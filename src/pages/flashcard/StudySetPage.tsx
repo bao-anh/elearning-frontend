@@ -67,9 +67,10 @@ const StudySetPage: FunctionComponent<{
 
   if (isNotReadyToRender) return <Loading />;
   else if (
-    !isPermittedToAccess(authState, setState.current) ||
     !learnState[match.params.id].study.termIds ||
-    !learnState[match.params.id].study.termIds.length
+    !learnState[match.params.id].study.termIds.length ||
+    (match.params.id !== 'all' &&
+      !isPermittedToAccess(authState, setState.current))
   )
     return <PermissionDialog />;
   else

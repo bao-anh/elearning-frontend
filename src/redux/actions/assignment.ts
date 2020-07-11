@@ -5,6 +5,8 @@ import {
   ASSIGNMENT_SET_PARTICIPANT_DATA,
   ASSIGNMENT_FETCH_SUCCESS,
   ASSIGNMENT_FETCH_ON_PROGRESS,
+  ASSIGNMENT_SET_COMMENT,
+  ASSIGNMENT_LIKE_COMMENT,
 } from '../actions/types';
 
 export interface AssignmentAction {
@@ -12,6 +14,10 @@ export interface AssignmentAction {
   assignment?: Array<Topic>;
   assignmentId?: number;
   data?: any;
+  userId?: any;
+  item?: any;
+  parent?: any;
+  isLike?: any;
 }
 
 export function fetchAssignmentByAssignmentId(
@@ -34,6 +40,28 @@ export function setParticipantData(data: any): AssignmentAction {
   return {
     type: ASSIGNMENT_SET_PARTICIPANT_DATA,
     data,
+  };
+}
+
+export function setAssignmentComment(data: any): AssignmentAction {
+  return {
+    type: ASSIGNMENT_SET_COMMENT,
+    data,
+  };
+}
+
+export function likeAssignmentComment(
+  userId: any,
+  item: any,
+  parent: any,
+  isLike: any
+): AssignmentAction {
+  return {
+    type: ASSIGNMENT_LIKE_COMMENT,
+    userId,
+    item,
+    parent,
+    isLike,
   };
 }
 

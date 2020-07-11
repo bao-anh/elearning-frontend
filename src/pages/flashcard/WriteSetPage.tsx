@@ -68,9 +68,10 @@ const WriteSetPage: FunctionComponent<{
 
   if (isNotReadyToRender) return <Loading />;
   if (
-    !isPermittedToAccess(authState, setState.current) ||
     !learnState[match.params.id].write.termIds ||
-    !learnState[match.params.id].write.termIds.length
+    !learnState[match.params.id].write.termIds.length ||
+    (match.params.id !== 'all' &&
+      !isPermittedToAccess(authState, setState.current))
   )
     return <PermissionDialog />;
   else

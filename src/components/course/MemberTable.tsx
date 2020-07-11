@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import { ROW_PER_PAGE } from '../../enum';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -39,7 +40,7 @@ const MemberTable: FunctionComponent<{
 }> = ({ topicState }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(ROW_PER_PAGE);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);

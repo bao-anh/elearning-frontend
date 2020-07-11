@@ -3,6 +3,9 @@ import ReactPlayer from 'react-player';
 import { convertSecondToMinute, getQuestionOrder } from '../../utils';
 import AssignmentDialog from '../../components/common/AssignmentDialog';
 import Reference from '../../components/course/Reference';
+import HeaderPanel from '../../components/common/HeaderPanel';
+import Comment from '../../components/course/Comment';
+import Loading from '../../components/common/Loading';
 import '../../resources/scss/videoDialog.scss';
 import '../../resources/scss/lesson.scss';
 
@@ -24,8 +27,25 @@ const VideoDialog: FunctionComponent<{
   isOpenVideo: any;
   setOpenVideo: Function;
   lessonState: any;
+  authState: any;
+  addComment: any;
+  updateComment: any;
+  deleteComment: any;
+  likeComment: any;
+  content: any;
   match: any;
-}> = ({ isOpenVideo, setOpenVideo, lessonState, match }) => {
+}> = ({
+  isOpenVideo,
+  setOpenVideo,
+  authState,
+  lessonState,
+  match,
+  addComment,
+  updateComment,
+  deleteComment,
+  likeComment,
+  content,
+}) => {
   const [assignmentArray, setAssignmentArray] = useState([
     ...lessonState.data.assignmentIds,
   ]);
@@ -113,9 +133,24 @@ const VideoDialog: FunctionComponent<{
               </div>
             ))}
           </div>
+          <Reference lessonState={lessonState} />
         </div>
         <div className='video-dialog-right-panel'>
-          <Reference lessonState={lessonState} />
+          <HeaderPanel title='Bình luận'>
+            {lessonState.isLoading ? (
+              <Loading />
+            ) : (
+              <Comment
+                authState={authState}
+                match={match}
+                addComment={addComment}
+                deleteComment={deleteComment}
+                updateComment={updateComment}
+                likeComment={likeComment}
+                content={lessonState.data.commentIds}
+              />
+            )}
+          </HeaderPanel>
         </div>
       </div>
     </Dialog>

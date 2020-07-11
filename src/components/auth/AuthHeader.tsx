@@ -19,7 +19,6 @@ import {
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import GTranslateIcon from '@material-ui/icons/GTranslate';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link } from '@material-ui/core';
 import Logo from '../../resources/images/logo.svg';
@@ -174,9 +173,6 @@ const Header: FunctionComponent<{
             </div>
           </div>
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='translate' color='inherit'>
-              <GTranslateIcon />
-            </IconButton>
             <IconButton
               edge='end'
               aria-label='account of current user'
@@ -199,11 +195,6 @@ const Header: FunctionComponent<{
           <Typography className={classes.title} variant='h6' noWrap>
             E-LEARNING
           </Typography>
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label='translate' color='inherit'>
-              <GTranslateIcon />
-            </IconButton>
-          </div>
         </React.Fragment>
       );
     }

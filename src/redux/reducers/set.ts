@@ -5,6 +5,7 @@ import {
   SET_SET_CURRENT,
   SET_FETCH_ON_PROGRESS,
   SET_FETCH_SUCCESS,
+  AUTH_LOGOUT,
 } from '../actions/types';
 
 export interface SetState {
@@ -50,6 +51,8 @@ const setState: Reducer<SetState> = (
         isLoading: false,
       };
     }
+    case AUTH_LOGOUT:
+      return initState;
     default:
       return state;
   }

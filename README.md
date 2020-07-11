@@ -272,3 +272,10 @@
 - Fixed bug in toeic.
 - Added take short test instead of type current score.
 - Fixed bug in flashcard.
+
+### Version 6.4
+
+9/7/2020
+
+- Fixed alot of bug.
+- Added comment mechanic.

@@ -27,3 +27,76 @@
   padding: 10px;
   position: relative;
 }
+
+.comment-message-content {
+  margin: 0px 10px 0px 10px;
+}
+
+.comment-message-item {
+  position: relative;
+  margin-top: 10px;
+}
+
+.comment-message-item-info {
+  margin-left: 10px;
+  flex-grow: 1;
+}
+
+.comment-message-item-name {
+  color: var(--primary-color);
+  margin-right: 5px;
+}
+
+.comment-message-item-react {
+  color: var(--primary-color);
+  margin-right: 5px;
+}
+
+.comment-message-item-react:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.comment-message-item-date {
+  color: #aaaaaa;
+  font-size: 0.9em;
+}
+
+.comment-message-send-icon:hover {
+  cursor: pointer;
+}
+
+.comment-message-children-reply {
+  position: relative;
+  margin-left: 51px;
+}
+
+.comment-message-children-reply-message {
+  position: relative;
+  margin: 10px 0px 0px 51px;
+}
+
+.comment-message-children-reply-item {
+  margin-top: 10px;
+}
+
+.border-left {
+  border-left: solid 1px #aaaaaa;
+}
+
+.comment-message-icon {
+  margin-bottom: 5px;
+}
+
+.comment-message-icon:hover {
+  cursor: pointer;
+}
+
+.comment-message-next {
+  font-style: italic;
+  color: var(--primary-color);
+}
+
+.comment-message-next:hover {
+  cursor: pointer;
+}

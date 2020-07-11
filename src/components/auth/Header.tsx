@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import clsx from 'clsx';
 import {
   createStyles,
@@ -14,6 +14,9 @@ import { Link } from 'react-router-dom';
 import Routes from '../../routes';
 import * as authAction from '../../redux/actions/auth';
 import Logo from '../../resources/images/white-wolf-transparent.png';
+import SideBar from '../common/SideBar';
+import SnackBar from '../../components/common/SnackBar';
+import UserInfoDialog from './UserInfoDialog';
 
 import {
   Drawer,
@@ -24,15 +27,11 @@ import {
   Typography,
   Divider,
   IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
 } from '@material-ui/core';
 import {
   AccountCircle,
-  GTranslate as GTranslateIcon,
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
@@ -142,17 +141,24 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CustomHeader: FunctionComponent<{
+  updateUserInfo: Function;
   history: any;
   location: any;
   logout: any;
   authState: any;
   children: any;
-}> = ({ authState, history, location, logout, children }) => {
+}> = ({ updateUserInfo, authState, history, location, logout, children }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [isOpenUserInfoDialog, setIsOpenUserInfoDialog] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    isOpen: false,
+    severity: '',
+    message: '',
+  });
 
   const iconArray = [
     { text: 'Trang chủ', icon: <DashboardIcon /> },
@@ -177,6 +183,11 @@ const CustomHeader: FunctionComponent<{
     setAnchorEl(null);
   };
 
+  const handleChangeUserInfo = () => {
+    setIsOpenUserInfoDialog(true);
+    handleMenuClose();
+  };
+
   const handleLogout = () => {
     removeToken();
     logout();
@@ -195,7 +206,7 @@ const CustomHeader: FunctionComponent<{
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Thông tin cá nhân</MenuItem>
+      <MenuItem onClick={handleChangeUserInfo}>Thông tin cá nhân</MenuItem>
       <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
     </Menu>
   );
@@ -226,9 +237,6 @@ const CustomHeader: FunctionComponent<{
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='translate' color='inherit'>
-              <GTranslateIcon />
-            </IconButton>
             <IconButton
               edge='end'
               aria-label='account of current user'
@@ -251,11 +259,6 @@ const CustomHeader: FunctionComponent<{
           <Typography className={classes.title} variant='h6' noWrap>
             E-LEARNING
           </Typography>
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label='translate' color='inherit'>
-              <GTranslateIcon />
-            </IconButton>
-          </div>
         </React.Fragment>
       );
     }
@@ -297,6 +300,28 @@ const CustomHeader: FunctionComponent<{
     else if (index === 3) history.push('/flashcard');
   };
 
+  const onMessage = (message: any) => {
+    setSnackBar({
+      isOpen: true,
+      severity: 'success',
+      message,
+    });
+  };
+
+  const onError = (message: any) => {
+    setSnackBar({
+      isOpen: true,
+      severity: 'error',
+      message,
+    });
+  };
+
+  const renderSnackBar = () => {
+    if (snackBar.isOpen) {
+      return <SnackBar snackBar={snackBar} setSnackBar={setSnackBar} />;
+    } else return null;
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -333,24 +358,25 @@ const CustomHeader: FunctionComponent<{
         </div>
         <Divider />
         <List>
-          {iconArray.map((children, index) => (
-            <ListItem
-              button
-              key={children.text}
-              style={renderStyleListItem(index)}
-              onClick={() => handleChangeLink(index)}
-            >
-              <ListItemIcon style={{ minWidth: '40px' }}>
-                {children.icon}
-              </ListItemIcon>
-              <ListItemText primary={children.text} />
-            </ListItem>
-          ))}
+          <SideBar
+            renderStyleListItem={renderStyleListItem}
+            handleChangeLink={handleChangeLink}
+            iconArray={iconArray}
+          />
         </List>
         <Divider />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
+        {renderSnackBar()}
+        <UserInfoDialog
+          authState={authState}
+          onMessage={onMessage}
+          onError={onError}
+          updateUserInfo={updateUserInfo}
+          isOpenUserInfoDialog={isOpenUserInfoDialog}
+          setIsOpenUserInfoDialog={setIsOpenUserInfoDialog}
+        />
         {children}
       </main>
     </div>
@@ -365,6 +391,15 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 };
 const mapDispatchToProps = (dispatch: any) => ({
   logout: () => dispatch(authAction.logout()),
+  updateUserInfo: (
+    userInfo: any,
+    isUpdateWithImage: any,
+    onSuccess: any,
+    onError: any
+  ) =>
+    dispatch(
+      authAction.updateUserInfo(userInfo, isUpdateWithImage, onSuccess, onError)
+    ),
 });
 
 export default withRouter(

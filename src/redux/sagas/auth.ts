@@ -10,6 +10,7 @@ import {
 } from '../actions/auth';
 import {
   AUTH_FETCH_USER_INFO,
+  AUTH_UPDATE_USER_INFO,
   AUTH_LOGIN,
   AUTH_REGISTER,
 } from '../actions/types';
@@ -24,6 +25,18 @@ const onRegister = (credentials: any) => {
 
 const getUserInfo = () => {
   return api.get('auth');
+};
+
+export const putUserInfoWithImage = (user: any) => {
+  return api.put('/users/with-image', user, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const putUserInfoWithoutImage = (user: any) => {
+  return api.put('users/without-image', user);
 };
 
 export const updateCourseIds = (courseId: any) => {
@@ -72,6 +85,29 @@ export function* fetchUserInfo() {
   }
 }
 
+export function* updateUserInfo(action: any) {
+  try {
+    if (action.isUpdateWithImage) {
+      const response = yield call(putUserInfoWithImage, action.userInfo);
+      if (response.status === 200) {
+        const userInfo = yield call(getUserInfo);
+        yield put(setUserInfo(userInfo.data));
+        action.onSuccess();
+      }
+    } else {
+      const response = yield call(putUserInfoWithoutImage, action.userInfo);
+      if (response.status === 200) {
+        const userInfo = yield call(getUserInfo);
+        yield put(setUserInfo(userInfo.data));
+        action.onSuccess();
+      }
+    }
+  } catch (err) {
+    handleRedirectWhenServerError(err, Routes);
+    console.log(err.response);
+  }
+}
+
 export function* watchLogin() {
   yield takeLatest(AUTH_LOGIN, login);
 }
@@ -84,8 +120,13 @@ export function* watchFetchUserInfo() {
   yield takeLatest(AUTH_FETCH_USER_INFO, fetchUserInfo);
 }
 
+export function* watchUpdateUserInfo() {
+  yield takeLatest(AUTH_UPDATE_USER_INFO, updateUserInfo);
+}
+
 export default function* auth() {
   yield fork(watchLogin);
   yield fork(watchRegister);
   yield fork(watchFetchUserInfo);
+  yield fork(watchUpdateUserInfo);
 }

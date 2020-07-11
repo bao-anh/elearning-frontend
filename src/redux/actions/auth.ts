@@ -5,6 +5,7 @@ import {
   AUTH_LOGOUT,
   AUTH_FETCH_USER_INFO,
   AUTH_SET_USER_INFO,
+  AUTH_UPDATE_USER_INFO,
   AUTH_SET_AUTHENTICATE,
   AUTH_ON_PROGRESS,
   AUTH_ON_SUCCESS,
@@ -16,6 +17,8 @@ export interface AuthAction {
   userInfo?: Auth;
   isAuthenticated?: boolean;
   onError?: Function;
+  onSuccess?: any;
+  isUpdateWithImage?: any;
 }
 
 export function login(credentials: any, onError: Function): AuthAction {
@@ -50,6 +53,21 @@ export function setUserInfo(userInfo: any): AuthAction {
   return {
     type: AUTH_SET_USER_INFO,
     userInfo,
+  };
+}
+
+export function updateUserInfo(
+  userInfo: any,
+  isUpdateWithImage: any,
+  onSuccess: any,
+  onError: any
+): AuthAction {
+  return {
+    type: AUTH_UPDATE_USER_INFO,
+    userInfo,
+    isUpdateWithImage,
+    onSuccess,
+    onError,
   };
 }
 

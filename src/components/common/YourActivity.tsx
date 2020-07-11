@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import AssignmentDialogResult from './AssignmentDialogResult';
 import { getQuestionOrder, renderNumberOfQuestion } from '../../utils';
+import { ROW_PER_PAGE } from '../../enum';
 import Routes from '../../routes';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,7 +48,7 @@ const YourActivity: FunctionComponent<{
 }> = ({ assignmentState, authState, match }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(ROW_PER_PAGE);
   const [openResult, handleOpenResult] = useState(-1);
 
   const { participantIds, questionIds } = assignmentState;

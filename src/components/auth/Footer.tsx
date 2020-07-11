@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
-import { FixedContainer } from './Widgets';
+import { FixedContainer } from '../common/Widgets';
 
 const Footer: FunctionComponent<{}> = () => {
   return (

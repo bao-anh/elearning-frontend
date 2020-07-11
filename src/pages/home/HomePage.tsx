@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
-import { handleExtractErrorMessage } from '../../utils';
+import { handleExtractErrorMessage, filterAccessableSet } from '../../utils';
 import {
   convertRadioChartData,
   convertBarChartData,
@@ -117,10 +117,13 @@ const HomePage: FunctionComponent<{
               )}
             </HeaderPanel>
             <HeaderPanel title='Tỷ lệ học thuộc tất cả các từ vựng'>
-              {setState.data.length ? (
+              {filterAccessableSet(authState, setState.data).length ? (
                 <CustomPieChart
                   data={convertPieChartData(
-                    mergeElementOfArray(setState.data, 'termIds')
+                    mergeElementOfArray(
+                      filterAccessableSet(authState, setState.data),
+                      'termIds'
+                    )
                   )}
                   height={350}
                   outerRadius={100}

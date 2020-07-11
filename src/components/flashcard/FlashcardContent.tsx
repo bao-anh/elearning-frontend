@@ -95,6 +95,7 @@ const FlashcardContent: FunctionComponent<{
               </div>
             </Paper>
           );
+        else return null;
       })}
     </div>
   );

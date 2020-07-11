@@ -4,6 +4,8 @@ import {
   LESSON_SET_DATA,
   LESSON_FETCH_SUCCESS,
   LESSON_FETCH_ON_PROGRESS,
+  LESSON_SET_COMMENT,
+  LESSON_LIKE_COMMENT,
 } from '../actions/types';
 
 export interface LessonAction {
@@ -11,6 +13,11 @@ export interface LessonAction {
   lesson?: Array<Topic>;
   lessonId?: number;
   currentLesson?: Topic;
+  data?: any;
+  userId?: any;
+  item?: any;
+  parent?: any;
+  isLike?: any;
 }
 
 export function fetchLessonByLessonId(lessonId: any): LessonAction {
@@ -24,6 +31,28 @@ export function setLesson(lesson: any): LessonAction {
   return {
     type: LESSON_SET_DATA,
     lesson,
+  };
+}
+
+export function setLessonComment(data: any): LessonAction {
+  return {
+    type: LESSON_SET_COMMENT,
+    data,
+  };
+}
+
+export function likeLessonComment(
+  userId: any,
+  item: any,
+  parent: any,
+  isLike: any
+): LessonAction {
+  return {
+    type: LESSON_LIKE_COMMENT,
+    userId,
+    item,
+    parent,
+    isLike,
   };
 }
 

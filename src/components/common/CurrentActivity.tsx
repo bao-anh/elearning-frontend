@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import Moment from 'react-moment';
 import { renderNumberOfQuestion } from '../../utils';
+import { ROW_PER_PAGE } from '../../enum';
 import Routes from '../../routes';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -44,7 +45,7 @@ const CurrentActivity: FunctionComponent<{
 }> = ({ participantIds, questionIds, match }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(ROW_PER_PAGE);
 
   const currentParticipantIds = participantIds.filter((participant: any) => {
     if (match.path === Routes.TEST_SCREEN) {

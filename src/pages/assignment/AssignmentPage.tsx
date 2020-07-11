@@ -2,6 +2,7 @@ import React, { useEffect, FunctionComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/appstate';
 import * as operationAction from '../../redux/actions/operation';
+import * as commentAction from '../../redux/actions/comment';
 import { getQuestionOrder, handleExtractErrorMessage } from '../../utils';
 import HeaderPanel from '../../components/common/HeaderPanel';
 import Loading from '../../components/common/Loading';
@@ -15,6 +16,7 @@ import AssignmentDialog from '../../components/common/AssignmentDialog';
 import CurrentActivity from '../../components/common/CurrentActivity';
 import YourActivity from '../../components/common/YourActivity';
 import SnackBar from '../../components/common/SnackBar';
+import Comment from '../../components/course/Comment';
 import '../../resources/scss/about.scss';
 import '../../resources/scss/main.scss';
 
@@ -22,6 +24,10 @@ import { Grid } from '@material-ui/core';
 
 const AssignmentPage: FunctionComponent<{
   fetchDataInAssignmentPage: Function;
+  addComment: Function;
+  updateComment: Function;
+  deleteComment: Function;
+  likeComment: Function;
   match: any;
   assignmentState: any;
   courseState: any;
@@ -30,6 +36,10 @@ const AssignmentPage: FunctionComponent<{
   authState: any;
 }> = ({
   fetchDataInAssignmentPage,
+  addComment,
+  updateComment,
+  deleteComment,
+  likeComment,
   match,
   assignmentState,
   topicState,
@@ -119,6 +129,21 @@ const AssignmentPage: FunctionComponent<{
               />
             )}
           </HeaderPanel>
+          <HeaderPanel title='Bình luận'>
+            {assignmentState.isLoading ? (
+              <Loading />
+            ) : (
+              <Comment
+                authState={authState}
+                match={match}
+                addComment={addComment}
+                deleteComment={deleteComment}
+                updateComment={updateComment}
+                likeComment={likeComment}
+                content={assignmentState.data.commentIds}
+              />
+            )}
+          </HeaderPanel>
         </Grid>
         <Grid item xs={3}>
           <TopicSideBar
@@ -147,6 +172,72 @@ const mapStateToProps = (state: AppState, ownProps: any) => {
 const mapDispatchToProps = (dispatch: any) => ({
   fetchDataInAssignmentPage: (assignmentId: number, onError: any) =>
     dispatch(operationAction.fetchDataInAssignmentPage(assignmentId, onError)),
+  addComment: (
+    parentId: any,
+    parentCommentId: any,
+    position: any,
+    message: any,
+    onSuccess: any
+  ) =>
+    dispatch(
+      commentAction.addComment(
+        parentId,
+        parentCommentId,
+        position,
+        message,
+        onSuccess
+      )
+    ),
+  deleteComment: (
+    commentId: any,
+    parentId: any,
+    parentCommentId: any,
+    position: any,
+    onSuccess: any
+  ) =>
+    dispatch(
+      commentAction.deleteComment(
+        commentId,
+        parentId,
+        parentCommentId,
+        position,
+        onSuccess
+      )
+    ),
+  updateComment: (
+    commentId: any,
+    parentId: any,
+    position: any,
+    message: any,
+    onSuccess: any
+  ) =>
+    dispatch(
+      commentAction.updateComment(
+        commentId,
+        parentId,
+        position,
+        message,
+        onSuccess
+      )
+    ),
+  likeComment: (
+    userId: any,
+    item: any,
+    parent: any,
+    isLike: any,
+    position: any,
+    onSuccess: any
+  ) =>
+    dispatch(
+      commentAction.likeComment(
+        userId,
+        item,
+        parent,
+        isLike,
+        position,
+        onSuccess
+      )
+    ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignmentPage);

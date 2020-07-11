@@ -67,9 +67,10 @@ const ListenSetPage: FunctionComponent<{
 
   if (isNotReadyToRender) return <Loading />;
   else if (
-    !isPermittedToAccess(authState, setState.current) ||
     !learnState[match.params.id].listen.termIds ||
-    !learnState[match.params.id].listen.termIds.length
+    !learnState[match.params.id].listen.termIds.length ||
+    (match.params.id !== 'all' &&
+      !isPermittedToAccess(authState, setState.current))
   )
     return <PermissionDialog />;
   else

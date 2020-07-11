@@ -79,6 +79,7 @@ const FlashcardPage: FunctionComponent<{
       severity: 'warning',
       message,
     });
+    setIsSearch(false);
   };
 
   const onSuccess = (setInfo: any) => {

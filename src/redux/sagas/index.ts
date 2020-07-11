@@ -11,6 +11,7 @@ import operation from './operation';
 import test from './test';
 import set from './set';
 import learn from './learn';
+import comment from './comment';
 
 export default function* rootSaga() {
   yield fork(auth);
@@ -25,4 +26,5 @@ export default function* rootSaga() {
   yield fork(test);
   yield fork(set);
   yield fork(learn);
+  yield fork(comment);
 }

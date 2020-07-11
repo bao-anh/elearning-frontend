@@ -22,7 +22,7 @@ const UserInfoSideBar: FunctionComponent<{
               <Grid item xs={3}>
                 <Avatar
                   alt='user default image'
-                  src={UserImage}
+                  src={authState.imageURL ? authState.imageURL : UserImage}
                   style={{ width: '100%', height: 'auto' }}
                 />
               </Grid>

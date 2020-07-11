@@ -30,7 +30,7 @@ const PermissionDialog = () => {
         aria-describedby='alert-dialog-slide-description'
       >
         <DialogTitle id='alert-dialog-slide-title'>
-          {'Bạn không có quyền truy cập!'}
+          {'Bạn không có quyền truy cập hoặc không có học phần này!'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-slide-description'>

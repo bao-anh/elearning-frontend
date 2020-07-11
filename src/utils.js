@@ -238,6 +238,14 @@ export function isPermittedToAccess(auth, set) {
   }
 }
 
+export function filterAccessableSet(auth, set) {
+  return set.filter((item) => {
+    if (auth._id === item.ownerId._id) return true;
+    else if (auth.setIds.includes(item._id) && item.visiable) return true;
+    else return false;
+  });
+}
+
 export function handleRedirectWhenServerError(err, routes) {
   if (err.response.status === 401) {
     if (window.location.href !== routes.UNAUTHORIZED_SCREEN)
@@ -267,4 +275,99 @@ export function handleExtractErrorMessage(response) {
     message = statusText;
   }
   return message;
+}
+
+export function orderIndexOfComment(commentIds, element, parent) {
+  let count = 0;
+  if (parent) {
+    const index = commentIds.indexOf(parent);
+    for (let i = 0; i < index; i++) {
+      count += 1 + commentIds[i].childrenIds.length;
+    }
+    count += 2 + commentIds[index].childrenIds.indexOf(element);
+  } else {
+    const index = commentIds.indexOf(element);
+    for (let i = 0; i < index; i++) {
+      count += 1 + commentIds[i].childrenIds.length;
+    }
+    count++;
+  }
+  return count;
+}
+
+export function likeComment(state, action, position) {
+  if (action.isLike) {
+    if (action.parent) {
+      const newCommentIds = [...state[position].commentIds];
+      const parentIndex = newCommentIds.indexOf(action.parent);
+      const childrenIndex = newCommentIds[parentIndex].childrenIds.indexOf(
+        action.item
+      );
+      newCommentIds[parentIndex].childrenIds[childrenIndex].likeIds = [
+        ...newCommentIds[parentIndex].childrenIds[childrenIndex].likeIds,
+        action.userId,
+      ];
+      return {
+        ...state,
+        largeTopic: {
+          ...state.largeTopic,
+          commentIds: newCommentIds,
+        },
+      };
+    } else {
+      const newCommentIds = [...state[position].commentIds];
+      const index = newCommentIds.indexOf(action.item);
+      newCommentIds[index].likeIds = [
+        ...newCommentIds[index].likeIds,
+        action.userId,
+      ];
+      return {
+        ...state,
+        largeTopic: {
+          ...state.largeTopic,
+          commentIds: newCommentIds,
+        },
+      };
+    }
+  } else {
+    if (action.parent) {
+      const newCommentIds = [...state[position].commentIds];
+      const parentIndex = newCommentIds.indexOf(action.parent);
+      const childrenIndex = newCommentIds[parentIndex].childrenIds.indexOf(
+        action.item
+      );
+
+      const newLikeIds = newCommentIds[parentIndex].childrenIds[
+        childrenIndex
+      ].likeIds.filter((likeId) => likeId !== action.userId);
+
+      newCommentIds[parentIndex].childrenIds[childrenIndex].likeIds = [
+        ...newLikeIds,
+      ];
+
+      return {
+        ...state,
+        largeTopic: {
+          ...state.largeTopic,
+          commentIds: newCommentIds,
+        },
+      };
+    } else {
+      const newCommentIds = [...state[position].commentIds];
+      const index = newCommentIds.indexOf(action.item);
+
+      const newLikeIds = newCommentIds[index].likeIds.filter(
+        (likeId) => likeId !== action.userId
+      );
+
+      newCommentIds[index].likeIds = [...newLikeIds];
+      return {
+        ...state,
+        largeTopic: {
+          ...state.largeTopic,
+          commentIds: newCommentIds,
+        },
+      };
+    }
+  }
 }
